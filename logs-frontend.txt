@@ -1,0 +1,28 @@
+
+> real-estate-dashboard@1.0.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3003
+  - Environments: .env
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 1872ms
+ ○ Compiling / ...
+ ✓ Compiled / in 783ms (309 modules)
+ HEAD / 200 in 861ms
+ GET / 200 in 41ms
+ ✓ Compiled in 88ms (309 modules)
+ GET / 200 in 16ms
+   Reload env: .env
+ ✓ Compiled in 61ms (309 modules)
+ GET / 200 in 25ms
+ GET / 200 in 11ms

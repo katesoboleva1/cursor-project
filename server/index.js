@@ -27,17 +27,42 @@ const userSessions = new Map();
 
 // BigQuery real-time data fetcher
 async function fetchRealEstateData(filters = {}) {
+  const tableName = process.env.BIGQUERY_TABLE || 'unified_properties_table_full_light';
+  
   const query = `
     SELECT 
-      *
-    FROM \`${process.env.GOOGLE_CLOUD_PROJECT}.${process.env.BIGQUERY_DATASET}.properties\`
+      adId as id,
+      title,
+      description,
+      building as property_type,
+      developer_name_en as developer,
+      refty_district as location,
+      district as area,
+      rooms as bedrooms,
+      baths as bathrooms,
+      area as size,
+      price,
+      'AED' as currency,
+      NULL as payment_plan,
+      handover_date as completion_date,
+      CASE WHEN isActive THEN 'available' ELSE 'sold' END as status,
+      false as is_new,
+      NULL as amenities,
+      url,
+      photos as images,
+      phone_number as contact_info,
+      created_at,
+      parsed_at as updated_at
+    FROM \`${process.env.GOOGLE_CLOUD_PROJECT}.${process.env.BIGQUERY_DATASET}.${tableName}\`
     WHERE 1=1
-    ${filters.priceMin ? `AND price >= ${filters.priceMin}` : ''}
-    ${filters.priceMax ? `AND price <= ${filters.priceMax}` : ''}
-    ${filters.bedrooms ? `AND bedrooms = ${filters.bedrooms}` : ''}
-    ${filters.location ? `AND LOWER(location) LIKE '%${filters.location.toLowerCase()}%'` : ''}
-    ${filters.developer ? `AND LOWER(developer) LIKE '%${filters.developer.toLowerCase()}%'` : ''}
-    ORDER BY created_at DESC
+      AND isActive = true
+      ${filters.priceMin ? `AND price >= ${filters.priceMin}` : ''}
+      ${filters.priceMax ? `AND price <= ${filters.priceMax}` : ''}
+      ${filters.bedrooms ? `AND rooms = ${filters.bedrooms}` : ''}
+      ${filters.location ? `AND (LOWER(refty_district) LIKE '%${filters.location.toLowerCase()}%' OR LOWER(district) LIKE '%${filters.location.toLowerCase()}%')` : ''}
+      ${filters.developer ? `AND LOWER(developer_name_en) LIKE '%${filters.developer.toLowerCase()}%'` : ''}
+      ${filters.propertyType ? `AND LOWER(building) LIKE '%${filters.propertyType.toLowerCase()}%'` : ''}
+    ORDER BY parsed_at DESC
     LIMIT 100
   `;
 
@@ -304,15 +329,17 @@ app.post('/api/query', async (req, res) => {
 
 app.get('/api/stats', async (req, res) => {
   try {
+    const tableName = process.env.BIGQUERY_TABLE || 'unified_properties_table_full_light';
     const query = `
       SELECT 
         COUNT(*) as total_properties,
         AVG(price) as avg_price,
         MIN(price) as min_price,
         MAX(price) as max_price,
-        COUNT(DISTINCT developer) as total_developers,
-        COUNT(DISTINCT location) as total_locations
-      FROM \`${process.env.GOOGLE_CLOUD_PROJECT}.${process.env.BIGQUERY_DATASET}.properties\`
+        COUNT(DISTINCT developer_name_en) as total_developers,
+        COUNT(DISTINCT refty_district) as total_locations
+      FROM \`${process.env.GOOGLE_CLOUD_PROJECT}.${process.env.BIGQUERY_DATASET}.${tableName}\`
+      WHERE isActive = true AND price > 0
     `;
 
     const [rows] = await bigquery.query({ query });

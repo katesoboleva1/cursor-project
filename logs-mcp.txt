@@ -1,0 +1,73 @@
+[MCP Refty] Server running on port 3002
+[MCP Refty] Processing query from user_gtk57crgw: Квартира в Downtown до 2 миллионов
+[MCP Refty] Error: AuthenticationError: 401 You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.
+    at APIError.generate (/Users/ceorefty/real-estate-dashboard/node_modules/openai/error.js:48:20)
+    at OpenAI.makeStatusError (/Users/ceorefty/real-estate-dashboard/node_modules/openai/core.js:302:33)
+    at OpenAI.makeRequest (/Users/ceorefty/real-estate-dashboard/node_modules/openai/core.js:346:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /Users/ceorefty/real-estate-dashboard/server/mcp-refty-server.js:76:24 {
+  status: 401,
+  headers: {
+    'alt-svc': 'h3=":443"; ma=86400',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '98ad4a2bae669a3e-ARN',
+    connection: 'keep-alive',
+    'content-length': '496',
+    'content-type': 'application/json; charset=utf-8',
+    date: 'Tue, 07 Oct 2025 12:09:27 GMT',
+    server: 'cloudflare',
+    'set-cookie': '__cf_bm=kwuBILZhoNeCb87zeZ.6C_VZ3PR8zWDRZ_lDtOezHNU-1759838967-1.0.1.1-DwIz_bAOROb166XdfQZZWj3HKhxDDYSbQoQxKBc.gOf0sOXqY4lh.BINnaS5gviKap6HUpBE_gPA3BwNVeu1pY6jssPpP931JNT1NH1FrBE; path=/; expires=Tue, 07-Oct-25 12:39:27 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None, _cfuvid=1UmQgw2BP6fi2N16Sjop.2W0YdjoWDb0frkOm4SwOJw-1759838967808-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    vary: 'Origin',
+    'x-content-type-options': 'nosniff',
+    'x-envoy-upstream-service-time': '0',
+    'x-openai-proxy-wasm': 'v0.1',
+    'x-request-id': 'req_34e9686052334916a6493d914215138f'
+  },
+  request_id: 'req_34e9686052334916a6493d914215138f',
+  error: {
+    message: "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.",
+    type: 'invalid_request_error',
+    param: null,
+    code: null
+  },
+  code: null,
+  param: null,
+  type: 'invalid_request_error'
+}
+[MCP Refty] Processing query from user_gtk57crgw: Апартаменты с 2 спальнями в Marina
+[MCP Refty] Error: AuthenticationError: 401 You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.
+    at APIError.generate (/Users/ceorefty/real-estate-dashboard/node_modules/openai/error.js:48:20)
+    at OpenAI.makeStatusError (/Users/ceorefty/real-estate-dashboard/node_modules/openai/core.js:302:33)
+    at OpenAI.makeRequest (/Users/ceorefty/real-estate-dashboard/node_modules/openai/core.js:346:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /Users/ceorefty/real-estate-dashboard/server/mcp-refty-server.js:76:24 {
+  status: 401,
+  headers: {
+    'alt-svc': 'h3=":443"; ma=86400',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '98ad4ac9aeb7f3c7-ARN',
+    connection: 'keep-alive',
+    'content-length': '496',
+    'content-type': 'application/json; charset=utf-8',
+    date: 'Tue, 07 Oct 2025 12:09:53 GMT',
+    server: 'cloudflare',
+    'set-cookie': '__cf_bm=670pkMu9ylx6U0zOu9xxl.VALqmf.eVxNPk1Tq9uuQE-1759838993-1.0.1.1-fTnejcmFiNrWCP6wYpGtZU0Yc_5s5qheFcZU51.BPdeSLdYS1ngo5P04xtg5GC6BIHRjsritnSL47sx3BQ9GkjoJ6.c_ClYwTRgtkM5XP.4; path=/; expires=Tue, 07-Oct-25 12:39:53 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None, _cfuvid=7x2FhqEJ.McmQ9yMhDkdy0WY3suCiuGs4hckSJUJSMg-1759838993037-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    vary: 'Origin',
+    'x-content-type-options': 'nosniff',
+    'x-envoy-upstream-service-time': '0',
+    'x-openai-proxy-wasm': 'v0.1',
+    'x-request-id': 'req_7f03178191ff4f2aa3fc5aaed55734cc'
+  },
+  request_id: 'req_7f03178191ff4f2aa3fc5aaed55734cc',
+  error: {
+    message: "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.",
+    type: 'invalid_request_error',
+    param: null,
+    code: null
+  },
+  code: null,
+  param: null,
+  type: 'invalid_request_error'
+}
