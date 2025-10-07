@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    env_file:
+      - .env
+    volumes:
+      - ./service-account-key.json:/app/service-account-key.json:ro
+    depends_on:
+      - mcp-refty
+    restart: unless-stopped
+    networks:
+      - refty-network
+
+  mcp-refty:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - MCP_REFTY_PORT=3002
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - refty-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - SOCKET_URL=http://backend:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - refty-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD:-changeme}
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n:5678/
+      - GENERIC_TIMEZONE=Asia/Dubai
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/home/node/.n8n/workflows:ro
+    restart: unless-stopped
+    networks:
+      - refty-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - refty-network
+
+volumes:
+  n8n_data:
+    driver: local
+
+networks:
+  refty-network:
+    driver: bridge
+
