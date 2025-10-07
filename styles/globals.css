@@ -70,3 +70,32 @@ body {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+/* Text clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Image loading animation */
+img {
+  transition: opacity 0.3s ease-in-out;
+}
+
+img[src=""] {
+  opacity: 0;
+}
+
+/* Hover effects for property cards */
+.group:hover img {
+  transform: scale(1.05);
+}
+
