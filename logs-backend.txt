@@ -147,3 +147,12 @@ n8n webhook error: Error
 New client connected: nyU2OFW3hc3Sdwy5AAAW
 Query from user_gtk57crgw: Студия в Business Bay до 800 тысяч
 n8n webhook error: Error
+Query from user_gtk57crgw: cамая прибыльная квартира в дубае за 1 млн дирхам
+n8n webhook error: Error
+Client disconnected: nyU2OFW3hc3Sdwy5AAAW
+Client disconnected: GYo0Cb5_vt7FLKmtAAAT
+New client connected: krZ9o3205IUAg7MGAAAZ
+Query from user_gtk57crgw: cамая прибыльная квартира в дубае за 1 млн дирхам
+n8n webhook error: Error
+New client connected: 6GAfzNLUEvXlhUORAAAc
+New client connected: 27STWxwoyNbapNDHAAAf

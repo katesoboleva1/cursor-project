@@ -110,6 +110,65 @@ export default function Dashboard({ filters, onFilterChange }) {
           </select>
         </div>
 
+        {/* Purpose (Sale/Rent) */}
+        <div>
+          <label className="block text-blue-200 text-sm font-medium mb-2">
+            Цель
+          </label>
+          <select
+            value={localFilters.purpose || ''}
+            onChange={(e) => handleChange('purpose', e.target.value)}
+            className="w-full px-3 py-2 rounded bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">Все</option>
+            <option value="for-sale">Продажа</option>
+            <option value="for-rent">Аренда</option>
+          </select>
+        </div>
+
+        {/* ROI Range */}
+        <div>
+          <label className="block text-blue-200 text-sm font-medium mb-2">
+            ROI по аренде (%)
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="number"
+              placeholder="От %"
+              step="0.1"
+              value={localFilters.roiMin || ''}
+              onChange={(e) => handleChange('roiMin', e.target.value)}
+              className="px-3 py-2 rounded bg-white/20 text-white placeholder-blue-300 border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="number"
+              placeholder="До %"
+              step="0.1"
+              value={localFilters.roiMax || ''}
+              onChange={(e) => handleChange('roiMax', e.target.value)}
+              className="px-3 py-2 rounded bg-white/20 text-white placeholder-blue-300 border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+        </div>
+
+        {/* ROI Segment */}
+        <div>
+          <label className="block text-blue-200 text-sm font-medium mb-2">
+            ROI Сегмент
+          </label>
+          <select
+            value={localFilters.roiSegment || ''}
+            onChange={(e) => handleChange('roiSegment', e.target.value)}
+            className="w-full px-3 py-2 rounded bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">Все</option>
+            <option value="<6%">&lt;6%</option>
+            <option value="6-8%">6-8%</option>
+            <option value="8-10%">8-10%</option>
+            <option value=">10%">&gt;10%</option>
+          </select>
+        </div>
+
         {/* Buttons */}
         <div className="space-y-2 pt-4">
           <button

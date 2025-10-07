@@ -52,7 +52,11 @@ async function fetchRealEstateData(filters = {}) {
       photos as images,
       phone_number as contact_info,
       created_at,
-      parsed_at as updated_at
+      parsed_at as updated_at,
+      ai_rent_roi_p50 as rent_roi,
+      all_rent_based_rent_roi_p50 as rent_roi_market,
+      roi_segment,
+      purpose
     FROM \`${process.env.GOOGLE_CLOUD_PROJECT}.${process.env.BIGQUERY_DATASET}.${tableName}\`
     WHERE 1=1
       AND isActive = true
@@ -62,6 +66,10 @@ async function fetchRealEstateData(filters = {}) {
       ${filters.location ? `AND (LOWER(refty_district) LIKE '%${filters.location.toLowerCase()}%' OR LOWER(district) LIKE '%${filters.location.toLowerCase()}%')` : ''}
       ${filters.developer ? `AND LOWER(developer_name_en) LIKE '%${filters.developer.toLowerCase()}%'` : ''}
       ${filters.propertyType ? `AND LOWER(building) LIKE '%${filters.propertyType.toLowerCase()}%'` : ''}
+      ${filters.roiMin ? `AND ai_rent_roi_p50 >= ${filters.roiMin}` : ''}
+      ${filters.roiMax ? `AND ai_rent_roi_p50 <= ${filters.roiMax}` : ''}
+      ${filters.roiSegment ? `AND roi_segment = '${filters.roiSegment}'` : ''}
+      ${filters.purpose ? `AND purpose = '${filters.purpose}'` : ''}
     ORDER BY parsed_at DESC
     LIMIT 100
   `;

@@ -113,7 +113,7 @@ export default function PropertyGrid({ properties, onPropertyView, isLoading }) 
                 )}
 
                 <div className="flex justify-between items-end mt-3">
-                  <div>
+                  <div className="flex-1">
                     {property.bedrooms && (
                       <p className="text-blue-100 text-sm">
                         🛏️ {property.bedrooms} {property.bedrooms == 1 ? 'спальня' : 'спален'}
@@ -124,12 +124,19 @@ export default function PropertyGrid({ properties, onPropertyView, isLoading }) 
                         📐 {Math.round(property.size)} кв.м
                       </p>
                     )}
+                    {property.rent_roi && property.purpose === 'for-sale' && (
+                      <p className="text-green-400 text-sm font-semibold mt-1">
+                        📊 ROI: {property.rent_roi.toFixed(1)}%
+                      </p>
+                    )}
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold text-white">
                       {property.price?.toLocaleString() || 'N/A'}
                     </p>
-                    <p className="text-blue-300 text-sm">AED</p>
+                    <p className="text-blue-300 text-sm">
+                      {property.purpose === 'for-rent' ? 'AED/год' : 'AED'}
+                    </p>
                   </div>
                 </div>
 
