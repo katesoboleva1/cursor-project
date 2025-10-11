@@ -397,7 +397,198 @@ SELECT
     CASE WHEN permit_abuse_score > 0 THEN 'PERMIT_ABUSE ' ELSE '' END,
     CASE WHEN unit_number_mismatch_score > 0 THEN 'UNIT_NUMBER_MISMATCH ' ELSE '' END,
     CASE WHEN karma_penalty_score > 0 THEN 'KARMA_PENALTY ' ELSE '' END
-  ) as refty_tags
+  ) as refty_tags,
+  
+  -- ================================================================
+  -- TROUBLESHOOTING: ДЕТАЛЬНОЕ ОБЪЯСНЕНИЕ РЕШЕНИЯ
+  -- Полное описание всех критериев и причин классификации
+  -- ================================================================
+  CONCAT(
+    '🎯 REFTY VERIFY SCORE: ', CAST(LEAST(100, GREATEST(0,
+      sold_score + overprice_score + stale_score + size_mismatch_score + 
+      price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+      karma_penalty_score
+    )) AS STRING), '/100 | ',
+    
+    'CLASSIFICATION: ',
+    CASE
+      WHEN LEAST(100, GREATEST(0,
+        sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+        karma_penalty_score
+      )) >= 50 THEN '🚨 FAKE'
+      WHEN LEAST(100, GREATEST(0,
+        sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+        karma_penalty_score
+      )) >= 30 THEN '⚠️ LIKELY_FAKE'
+      ELSE '✅ REAL_UNIT'
+    END,
+    
+    '\n\n📊 BREAKDOWN BY CRITERIA:\n',
+    
+    -- 1. SOLD
+    CASE 
+      WHEN sold_score > 0 THEN 
+        CONCAT('🚨 [SOLD +', CAST(sold_score AS STRING), ' pts] Property was sold in DLD within last 3 months (permit: ', 
+               CAST(permit_number AS STRING), ') but still actively advertised. MAJOR RED FLAG!\n')
+      ELSE '✓ [SOLD 0 pts] Not recently sold or not found in DLD sales records.\n'
+    END,
+    
+    -- 2. OVERPRICE
+    CASE 
+      WHEN overprice_score > 0 THEN 
+        CONCAT('💰 [OVERPRICE +', CAST(overprice_score AS STRING), ' pts] Price is ', 
+               CAST(ROUND(price_vs_market * 100, 1) AS STRING), 
+               '% BELOW market (price_vs_market: ', CAST(price_vs_market AS STRING),
+               '). Suspiciously cheap - possible bait pricing.\n')
+      WHEN overprice_score < 0 THEN 
+        CONCAT('💸 [OVERPRICE ', CAST(overprice_score AS STRING), ' pts] Price is ', 
+               CAST(ROUND(ABS(price_vs_market) * 100, 1) AS STRING), 
+               '% ABOVE market (price_vs_market: ', CAST(price_vs_market AS STRING),
+               '). Premium pricing.\n')
+      ELSE '✓ [OVERPRICE 0 pts] Price within normal market range (±10%).\n'
+    END,
+    
+    -- 3. STALE
+    CASE 
+      WHEN stale_score > 0 THEN 
+        CONCAT('⏰ [STALE +', CAST(stale_score AS STRING), ' pts] Listing exposure: ', 
+               CAST(all_time_exposure_days AS STRING), ' days vs median ', 
+               CAST(ROUND(median_days) AS STRING), ' days for ', completion_status,
+               '. Exceeds median by ', CAST(ROUND((all_time_exposure_days - median_days) / median_days * 100, 1) AS STRING),
+               '% - stale listing.\n')
+      ELSE 
+        CONCAT('✓ [STALE 0 pts] Fresh listing. Exposure: ', 
+               COALESCE(CAST(all_time_exposure_days AS STRING), 'N/A'), ' days.\n')
+    END,
+    
+    -- 4. SIZE_MISMATCH
+    CASE 
+      WHEN size_mismatch_score > 0 THEN 
+        CONCAT('📐 [SIZE_MISMATCH +', CAST(size_mismatch_score AS STRING), ' pts] Area discrepancy detected! ',
+               'Listing area: ', CAST(area AS STRING), ' m² vs DLD ',
+               CASE 
+                 WHEN category_name IN ('Villa', 'Townhouse') AND built_up_area_dld IS NOT NULL 
+                   THEN CONCAT('BUA: ', CAST(built_up_area_dld AS STRING), ' m²')
+                 ELSE CONCAT('area: ', CAST(tp_propertySize AS STRING), ' m²')
+               END,
+               ' (', category_name, '). Deviation: ',
+               CASE 
+                 WHEN category_name IN ('Villa', 'Townhouse') AND built_up_area_dld IS NOT NULL AND built_up_area_dld > 0
+                   THEN CAST(ROUND(ABS(area - built_up_area_dld) / built_up_area_dld * 100, 1) AS STRING)
+                 WHEN tp_propertySize > 0
+                   THEN CAST(ROUND(ABS(area - tp_propertySize) / tp_propertySize * 100, 1) AS STRING)
+                 ELSE 'N/A'
+               END, '%.\n')
+      ELSE 
+        CONCAT('✓ [SIZE_MISMATCH 0 pts] Area matches DLD records. Listing: ', 
+               CAST(area AS STRING), ' m².\n')
+    END,
+    
+    -- 5. PRICE_MANIPULATION
+    CASE 
+      WHEN price_manipulation_score > 0 THEN 
+        CONCAT('🎯 [PRICE_MANIPULATION +', CAST(price_manipulation_score AS STRING), ' pts] ',
+               CASE 
+                 WHEN price < project_value 
+                   THEN CONCAT('Price (', CAST(ROUND(price, 0) AS STRING), ' AED) is LOWER than project_value (', 
+                              CAST(ROUND(project_value, 0) AS STRING), ' AED) by ',
+                              CAST(ROUND((project_value - price) / project_value * 100, 1) AS STRING),
+                              '% AND listing is fresh (<30 days). Likely gaming search rankings!')
+                 ELSE CONCAT('Price (', CAST(ROUND(price, 0) AS STRING), ' AED) is HIGHER than project_value (', 
+                            CAST(ROUND(project_value, 0) AS STRING), ' AED) by ',
+                            CAST(ROUND((price - project_value) / project_value * 100, 1) AS STRING),
+                            '%. Contract not updated or fake listing.')
+               END, '\n')
+      ELSE '✓ [PRICE_MANIPULATION 0 pts] Price aligned with project value.\n'
+    END,
+    
+    -- 6. PERMIT_ABUSE
+    CASE 
+      WHEN permit_abuse_score > 0 THEN 
+        CONCAT('🔥 [PERMIT_ABUSE +', CAST(permit_abuse_score AS STRING), ' pts] ',
+               'Permit #', CAST(permit_number AS STRING), ' has multiple listings ',
+               CASE 
+                 WHEN unique_agents_for_permit = 1 AND unique_sources_for_permit_agent = 1 
+                   THEN 'by SAME agent on SAME platform with DIFFERENT areas - SEVERE abuse!'
+                 ELSE 'with varying areas across agents/platforms.'
+               END, 
+               ' Area variation: ', CAST(ROUND(COALESCE(area_variation_pct_for_permit_agent_source, 0) * 100, 1) AS STRING), '%.\n')
+      ELSE '✓ [PERMIT_ABUSE 0 pts] Permit usage is normal.\n'
+    END,
+    
+    -- 7. UNIT_NUMBER_MISMATCH
+    CASE 
+      WHEN unit_number_mismatch_score > 0 THEN 
+        CONCAT('📋 [UNIT_NUMBER_MISMATCH +', CAST(unit_number_mismatch_score AS STRING), ' pts] ',
+               'Unit number "', COALESCE(property_number, 'N/A'), '" appears in ', 
+               CAST(unique_projects_count AS STRING), ' DIFFERENT projects! ',
+               'Current project: ', COALESCE(project_name_en, 'N/A'), '. ',
+               'This is a clear sign of data manipulation or fake listings.\n')
+      ELSE 
+        CONCAT('✓ [UNIT_NUMBER_MISMATCH 0 pts] Unit number unique to project: ', 
+               COALESCE(project_name_en, 'N/A'), '.\n')
+    END,
+    
+    -- 8. KARMA_PENALTY
+    CASE 
+      WHEN karma_penalty_score > 0 THEN 
+        CONCAT('⭐ [KARMA_PENALTY +', CAST(karma_penalty_score AS STRING), ' pts] ',
+               'Historical reputation penalty applied.\n',
+               '  • Agency: ', COALESCE(tp_authorityNameEn, 'N/A'), 
+               ' (Trust: ', CAST(ROUND(agency_trust_score, 1) AS STRING), '%, ',
+               'Karma: ', CAST(agency_karma_coefficient AS STRING), ', ',
+               'Fake penalty: ', CAST(agency_fake_penalty AS STRING), ')\n',
+               '  • Broker: ', COALESCE(contactName, 'N/A'),
+               ' (Trust: ', CAST(ROUND(broker_trust_score, 1) AS STRING), '%, ',
+               'Karma: ', CAST(broker_karma_coefficient AS STRING), ', ',
+               'Fake penalty: ', CAST(broker_fake_penalty AS STRING), ')\n')
+      ELSE 
+        CONCAT('✓ [KARMA_PENALTY 0 pts] Good reputation. Agency: ', 
+               COALESCE(tp_authorityNameEn, 'N/A'), 
+               ' (Trust: ', CAST(ROUND(agency_trust_score, 1) AS STRING), '%). ',
+               'Broker: ', COALESCE(contactName, 'N/A'),
+               ' (Trust: ', CAST(ROUND(broker_trust_score, 1) AS STRING), '%).\n')
+    END,
+    
+    '\n📌 SUMMARY:\n',
+    'Total Active Criteria: ', 
+    CAST((
+      CASE WHEN sold_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN overprice_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN stale_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN size_mismatch_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN price_manipulation_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN permit_abuse_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN unit_number_mismatch_score > 0 THEN 1 ELSE 0 END +
+      CASE WHEN karma_penalty_score > 0 THEN 1 ELSE 0 END
+    ) AS STRING), '/8\n',
+    
+    'Property Details: ', COALESCE(category_name, 'N/A'), ' | ',
+    COALESCE(project_name_en, 'N/A'), ' | ',
+    COALESCE(location_hierarchy, 'N/A'), '\n',
+    
+    'Price: ', CAST(ROUND(price, 0) AS STRING), ' AED | ',
+    'Area: ', CAST(area AS STRING), ' m² | ',
+    'Completion: ', COALESCE(completion_status, 'N/A'), '\n',
+    
+    '\n💡 RECOMMENDATION: ',
+    CASE
+      WHEN LEAST(100, GREATEST(0,
+        sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+        karma_penalty_score
+      )) >= 50 THEN 'DO NOT TRUST - High probability of fake listing. Verify all details directly with developer/owner.'
+      WHEN LEAST(100, GREATEST(0,
+        sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+        karma_penalty_score
+      )) >= 30 THEN 'PROCEED WITH CAUTION - Verify information independently before making decisions.'
+      ELSE 'Listing appears legitimate - Standard due diligence recommended.'
+    END
+    
+  ) as refty_fake_status_troubleshooting
 
 FROM scoring;
 
