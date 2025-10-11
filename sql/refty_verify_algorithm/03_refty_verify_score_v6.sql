@@ -168,13 +168,23 @@ scoring AS (
         AND ABS(p.area - p.tp_propertySize) / p.tp_propertySize > 0.01
       THEN 50
       
-      -- Для вилл и таунхаусов: ТОЛЬКО сравнение с built_up_area_dld (BUA)
-      -- Не сравниваем с tp_propertySize, т.к. это plot size (участок), а не BUA
+      -- Для вилл и таунхаусов: приоритетное сравнение с built_up_area_dld (BUA)
+      -- Если BUA нет, то fallback на сравнение listing_area с area
+      -- НЕ сравниваем с tp_propertySize, т.к. это plot size (участок), а не BUA!
       WHEN p.category_name IN ('Villa', 'Townhouse')
         AND p.built_up_area_dld IS NOT NULL
         AND p.area IS NOT NULL
         AND p.built_up_area_dld > 0
         AND ABS(p.area - p.built_up_area_dld) / p.built_up_area_dld > 0.01
+      THEN 50
+      
+      -- Fallback для Villa/Townhouse: если нет BUA, сравниваем listing_area с area
+      WHEN p.category_name IN ('Villa', 'Townhouse')
+        AND p.built_up_area_dld IS NULL
+        AND p.listing_area IS NOT NULL
+        AND p.area IS NOT NULL
+        AND p.listing_area > 0
+        AND ABS(p.area - p.listing_area) / p.listing_area > 0.01
       THEN 50
       
       ELSE 0
