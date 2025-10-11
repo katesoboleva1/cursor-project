@@ -63,22 +63,7 @@ permit_variations AS (
 ),
 
 -- ====================================================================
--- CTE 4: UNIT NUMBER MISMATCH (для критерия UNIT_NUMBER_MISMATCH)
--- ====================================================================
-unit_number_projects AS (
-  SELECT
-    property_number,
-    COUNT(DISTINCT project_name_en) as unique_projects_count
-  FROM `refty-409711.refty_looker_dashboard.unified_properties_table_full_light`
-  WHERE property_number IS NOT NULL
-    AND project_name_en IS NOT NULL
-    AND isActive = TRUE
-    AND purpose = 'for-sale'
-  GROUP BY property_number
-),
-
--- ====================================================================
--- CTE 5: MAIN SCORING LOGIC
+-- CTE 4: MAIN SCORING LOGIC
 -- ====================================================================
 scoring AS (
   SELECT
@@ -89,7 +74,6 @@ scoring AS (
     pv.area_variation_pct_for_permit_agent_source,
     pv.unique_agents_for_permit,
     pv.unique_sources_for_permit_agent,
-    unp.unique_projects_count,
     
     -- ================================================================
     -- КАРМА АГЕНТСТВА
@@ -270,25 +254,7 @@ scoring AS (
     END as permit_abuse_score,
     
     -- ================================================================
-    -- 7️⃣ КРИТЕРИЙ "UNIT_NUMBER_MISMATCH" (0 до +50 баллов) 📋
-    -- Один property_number используется в разных project_name_en
-    -- ================================================================
-    CASE
-      WHEN unp.unique_projects_count IS NOT NULL 
-        AND unp.unique_projects_count > 1 
-      THEN
-        CASE
-          WHEN unp.unique_projects_count > 20 THEN 50   -- >20 проектов
-          WHEN unp.unique_projects_count > 10 THEN 40   -- 11-20 проектов
-          WHEN unp.unique_projects_count > 5 THEN 30    -- 6-10 проектов
-          WHEN unp.unique_projects_count > 1 THEN 20    -- 2-5 проектов
-          ELSE 0
-        END
-      ELSE 0
-    END as unit_number_mismatch_score,
-    
-    -- ================================================================
-    -- 8️⃣ КРИТЕРИЙ "KARMA_PENALTY" (0 до +20 баллов) 🆕⭐
+    -- 7️⃣ КРИТЕРИЙ "KARMA_PENALTY" (0 до +20 баллов) 🆕⭐
     -- Штраф на основе исторической кармы агентства и брокера
     -- Формула: (agency_karma + broker_karma) / 2
     -- где karma = fake_penalty * 3.33 + violation_penalty * 1.67
@@ -323,10 +289,6 @@ scoring AS (
     AND p.tp_authorityNameEn = pv.tp_authorityNameEn
     AND p.source = pv.source
   
-  -- JOIN с unit_number_projects для критерия UNIT_NUMBER_MISMATCH
-  LEFT JOIN unit_number_projects unp 
-    ON p.property_number = unp.property_number
-  
   -- JOIN с agency_karma для KARMA_PENALTY
   LEFT JOIN `refty-409711.refty_looker_dashboard.agency_karma` ak 
     ON p.tp_authorityNameEn = ak.agency_name
@@ -358,7 +320,6 @@ SELECT
     size_mismatch_score + 
     price_manipulation_score + 
     permit_abuse_score + 
-    unit_number_mismatch_score + 
     karma_penalty_score
   )) as refty_verify_score,
   
@@ -371,13 +332,13 @@ SELECT
   CASE
     WHEN LEAST(100, GREATEST(0,
       sold_score + overprice_score + stale_score + size_mismatch_score + 
-      price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+      price_manipulation_score + permit_abuse_score + 
       karma_penalty_score
     )) >= 50 THEN 'FAKE'
     
     WHEN LEAST(100, GREATEST(0,
       sold_score + overprice_score + stale_score + size_mismatch_score + 
-      price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
+      price_manipulation_score + permit_abuse_score + 
       karma_penalty_score
     )) >= 30 THEN 'LIKELY_FAKE'
     
@@ -395,7 +356,6 @@ SELECT
     CASE WHEN size_mismatch_score > 0 THEN 'SIZE_MISMATCH ' ELSE '' END,
     CASE WHEN price_manipulation_score > 0 THEN 'PRICE_MANIPULATION ' ELSE '' END,
     CASE WHEN permit_abuse_score > 0 THEN 'PERMIT_ABUSE ' ELSE '' END,
-    CASE WHEN unit_number_mismatch_score > 0 THEN 'UNIT_NUMBER_MISMATCH ' ELSE '' END,
     CASE WHEN karma_penalty_score > 0 THEN 'KARMA_PENALTY ' ELSE '' END
   ) as refty_tags,
   
@@ -406,7 +366,6 @@ SELECT
   CONCAT(
     '🎯 REFTY VERIFY SCORE: ', CAST(LEAST(100, GREATEST(0,
       sold_score + overprice_score + stale_score + size_mismatch_score + 
-      price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
       karma_penalty_score
     )) AS STRING), '/100 | ',
     
@@ -414,12 +373,10 @@ SELECT
     CASE
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
-        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
         karma_penalty_score
       )) >= 50 THEN '🚨 FAKE'
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
-        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
         karma_penalty_score
       )) >= 30 THEN '⚠️ LIKELY_FAKE'
       ELSE '✅ REAL_UNIT'
@@ -518,16 +475,12 @@ SELECT
       ELSE '✓ [PERMIT_ABUSE 0 pts] Permit usage is normal.\n'
     END,
     
-    -- 7. UNIT_NUMBER_MISMATCH
     CASE 
-      WHEN unit_number_mismatch_score > 0 THEN 
-        CONCAT('📋 [UNIT_NUMBER_MISMATCH +', CAST(unit_number_mismatch_score AS STRING), ' pts] ',
                'Unit number "', COALESCE(property_number, 'N/A'), '" appears in ', 
                CAST(unique_projects_count AS STRING), ' DIFFERENT projects! ',
                'Current project: ', COALESCE(project_name_en, 'N/A'), '. ',
                'This is a clear sign of data manipulation or fake listings.\n')
       ELSE 
-        CONCAT('✓ [UNIT_NUMBER_MISMATCH 0 pts] Unit number unique to project: ', 
                COALESCE(project_name_en, 'N/A'), '.\n')
     END,
     
@@ -561,9 +514,8 @@ SELECT
       CASE WHEN size_mismatch_score > 0 THEN 1 ELSE 0 END +
       CASE WHEN price_manipulation_score > 0 THEN 1 ELSE 0 END +
       CASE WHEN permit_abuse_score > 0 THEN 1 ELSE 0 END +
-      CASE WHEN unit_number_mismatch_score > 0 THEN 1 ELSE 0 END +
       CASE WHEN karma_penalty_score > 0 THEN 1 ELSE 0 END
-    ) AS STRING), '/8\n',
+    ) AS STRING), '/7\n',
     
     'Property Details: ', COALESCE(category_name, 'N/A'), ' | ',
     COALESCE(project_name_en, 'N/A'), ' | ',
@@ -577,12 +529,10 @@ SELECT
     CASE
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
-        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
         karma_penalty_score
       )) >= 50 THEN 'DO NOT TRUST - High probability of fake listing. Verify all details directly with developer/owner.'
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
-        price_manipulation_score + permit_abuse_score + unit_number_mismatch_score + 
         karma_penalty_score
       )) >= 30 THEN 'PROCEED WITH CAUTION - Verify information independently before making decisions.'
       ELSE 'Listing appears legitimate - Standard due diligence recommended.'
