@@ -366,6 +366,7 @@ SELECT
   CONCAT(
     '🎯 REFTY VERIFY SCORE: ', CAST(LEAST(100, GREATEST(0,
       sold_score + overprice_score + stale_score + size_mismatch_score + 
+      price_manipulation_score + permit_abuse_score + 
       karma_penalty_score
     )) AS STRING), '/100 | ',
     
@@ -373,10 +374,12 @@ SELECT
     CASE
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + 
         karma_penalty_score
       )) >= 50 THEN '🚨 FAKE'
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + 
         karma_penalty_score
       )) >= 30 THEN '⚠️ LIKELY_FAKE'
       ELSE '✅ REAL_UNIT'
@@ -475,16 +478,7 @@ SELECT
       ELSE '✓ [PERMIT_ABUSE 0 pts] Permit usage is normal.\n'
     END,
     
-    CASE 
-               'Unit number "', COALESCE(property_number, 'N/A'), '" appears in ', 
-               CAST(unique_projects_count AS STRING), ' DIFFERENT projects! ',
-               'Current project: ', COALESCE(project_name_en, 'N/A'), '. ',
-               'This is a clear sign of data manipulation or fake listings.\n')
-      ELSE 
-               COALESCE(project_name_en, 'N/A'), '.\n')
-    END,
-    
-    -- 8. KARMA_PENALTY
+    -- 7. KARMA_PENALTY
     CASE 
       WHEN karma_penalty_score > 0 THEN 
         CONCAT('⭐ [KARMA_PENALTY +', CAST(karma_penalty_score AS STRING), ' pts] ',
@@ -529,10 +523,12 @@ SELECT
     CASE
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + 
         karma_penalty_score
       )) >= 50 THEN 'DO NOT TRUST - High probability of fake listing. Verify all details directly with developer/owner.'
       WHEN LEAST(100, GREATEST(0,
         sold_score + overprice_score + stale_score + size_mismatch_score + 
+        price_manipulation_score + permit_abuse_score + 
         karma_penalty_score
       )) >= 30 THEN 'PROCEED WITH CAUTION - Verify information independently before making decisions.'
       ELSE 'Listing appears legitimate - Standard due diligence recommended.'
