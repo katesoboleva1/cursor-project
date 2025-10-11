@@ -156,8 +156,8 @@ scoring AS (
     -- 4️⃣ КРИТЕРИЙ "SIZE_MISMATCH" (0 или 50 баллов) 📐
     -- Несоответствие площади между объявлением и DLD
     -- Apartment/Office: сравнение area с tp_propertySize (если НЕ NULL)
-    -- Villa/Townhouse: сравнение area с built_up_area_dld или tp_propertySize (если НЕ NULL)
-    -- ВАЖНО: Если tp_propertySize = NULL, то критерий НЕ применяется (0 баллов)
+    -- Villa/Townhouse: ТОЛЬКО сравнение area с built_up_area_dld (BUA)
+    -- ВАЖНО: Для Villa/Townhouse НЕ сравниваем с tp_propertySize (это plot, а не BUA!)
     -- ================================================================
     CASE
       -- Для квартир и офисов: простое сравнение с tp_propertySize (ТОЛЬКО если НЕ NULL)
@@ -168,25 +168,15 @@ scoring AS (
         AND ABS(p.area - p.tp_propertySize) / p.tp_propertySize > 0.01
       THEN 50
       
-      -- Для вилл и таунхаусов: сложная логика с BUA и Plot
-      WHEN p.category_name IN ('Villa', 'Townhouse') THEN
-        CASE
-          -- Сравнение с built_up_area_dld (площадь дома) - если есть
-          WHEN p.built_up_area_dld IS NOT NULL
-            AND p.area IS NOT NULL
-            AND p.built_up_area_dld > 0
-            AND ABS(p.area - p.built_up_area_dld) / p.built_up_area_dld > 0.01
-          THEN 50
-          
-          -- Сравнение с tp_propertySize (площадь участка) - ТОЛЬКО если НЕ NULL
-          WHEN p.area IS NOT NULL
-            AND p.tp_propertySize IS NOT NULL
-            AND p.tp_propertySize > 0
-            AND ABS(p.area - p.tp_propertySize) / p.tp_propertySize > 0.01
-          THEN 50
-          
-          ELSE 0
-        END
+      -- Для вилл и таунхаусов: ТОЛЬКО сравнение с built_up_area_dld (BUA)
+      -- Не сравниваем с tp_propertySize, т.к. это plot size (участок), а не BUA
+      WHEN p.category_name IN ('Villa', 'Townhouse')
+        AND p.built_up_area_dld IS NOT NULL
+        AND p.area IS NOT NULL
+        AND p.built_up_area_dld > 0
+        AND ABS(p.area - p.built_up_area_dld) / p.built_up_area_dld > 0.01
+      THEN 50
+      
       ELSE 0
     END as size_mismatch_score,
     
