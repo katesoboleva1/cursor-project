@@ -1,0 +1,158 @@
+Server running on port 3001
+New client connected: 84XkbxN8UKuORIqFAAAB
+New client connected: mo73fwDuvoTqhFPrAAAE
+Client disconnected: 84XkbxN8UKuORIqFAAAB
+Client disconnected: mo73fwDuvoTqhFPrAAAE
+New client connected: KnE3YOC1wJ1tUKOnAAAH
+Client disconnected: KnE3YOC1wJ1tUKOnAAAH
+New client connected: BL6uHFs33pGXhcZpAAAK
+Client disconnected: BL6uHFs33pGXhcZpAAAK
+New client connected: AOSYmZub9UrtwsjsAAAN
+Query from user_gtk57crgw: Квартира в Downtown до 2 миллионов
+n8n webhook error: Error
+Query from user_gtk57crgw: Апартаменты с 2 спальнями в Marina
+Query processing error: ApiError: No matching signature for operator = for argument types: STRING, INT64
+  Signature: T1 = T1
+    Unable to find common supertype for templated argument <T1>
+      Input types for <T1>: {INT64, STRING} at [30:11]
+    at new ApiError (/Users/ceorefty/real-estate-dashboard/node_modules/@google-cloud/common/build/src/util.js:75:15)
+    at Util.parseHttpRespBody (/Users/ceorefty/real-estate-dashboard/node_modules/@google-cloud/common/build/src/util.js:210:38)
+    at Util.handleResp (/Users/ceorefty/real-estate-dashboard/node_modules/@google-cloud/common/build/src/util.js:151:117)
+    at /Users/ceorefty/real-estate-dashboard/node_modules/@google-cloud/common/build/src/util.js:534:22
+    at onResponse (/Users/ceorefty/real-estate-dashboard/node_modules/retry-request/index.js:259:7)
+    at /Users/ceorefty/real-estate-dashboard/node_modules/teeny-request/build/src/index.js:226:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 400,
+  errors: [
+    {
+      message: 'No matching signature for operator = for argument types: STRING, INT64\n' +
+        '  Signature: T1 = T1\n' +
+        '    Unable to find common supertype for templated argument <T1>\n' +
+        '      Input types for <T1>: {INT64, STRING} at [30:11]',
+      domain: 'global',
+      reason: 'invalidQuery',
+      location: 'q',
+      locationType: 'parameter'
+    }
+  ],
+  response: Gunzip {
+    _writeState: Uint32Array(2) [ 15643, 0 ],
+    _events: {
+      close: undefined,
+      error: [Array],
+      prefinish: [Function: prefinish],
+      finish: undefined,
+      drain: undefined,
+      data: [Function (anonymous)],
+      end: [Function (anonymous)],
+      readable: undefined,
+      unpipe: undefined
+    },
+    _readableState: ReadableState {
+      highWaterMark: 65536,
+      buffer: [],
+      bufferIndex: 0,
+      length: 0,
+      pipes: [],
+      awaitDrainWriters: null,
+      Symbol(kState): 194512764
+    },
+    _writableState: WritableState {
+      highWaterMark: 65536,
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writelen: 0,
+      bufferedIndex: 0,
+      pendingcb: 0,
+      Symbol(kState): 1091466620,
+      Symbol(kBufferedValue): null,
+      Symbol(kWriteCbValue): null
+    },
+    allowHalfOpen: true,
+    _maxListeners: undefined,
+    _eventsCount: 4,
+    bytesWritten: 313,
+    _handle: null,
+    _outBuffer: <Buffer 7b 0a 20 20 22 65 72 72 6f 72 22 3a 20 7b 0a 20 20 20 20 22 63 6f 64 65 22 3a 20 34 30 30 2c 0a 20 20 20 20 22 6d 65 73 73 61 67 65 22 3a 20 22 4e 6f ... 16334 more bytes>,
+    _outOffset: 741,
+    _chunkSize: 16384,
+    _defaultFlushFlag: 2,
+    _finishFlushFlag: 2,
+    _defaultFullFlushFlag: 3,
+    _info: undefined,
+    _maxOutputLength: 9007199254740991,
+    _rejectGarbageAfterEnd: false,
+    _level: -1,
+    _strategy: 0,
+    _mode: 4,
+    statusCode: 400,
+    statusMessage: 'Bad Request',
+    request: {
+      agent: [Agent],
+      headers: [Object],
+      href: 'https://bigquery.googleapis.com/bigquery/v2/projects/refty-409711/queries?prettyPrint=false'
+    },
+    body: '{\n' +
+      '  "error": {\n' +
+      '    "code": 400,\n' +
+      '    "message": "No matching signature for operator = for argument types: STRING, INT64\\n  Signature: T1 = T1\\n    Unable to find common supertype for templated argument \\u003cT1\\u003e\\n      Input types for \\u003cT1\\u003e: {INT64, STRING} at [30:11]",\n' +
+      '    "errors": [\n' +
+      '      {\n' +
+      '        "message": "No matching signature for operator = for argument types: STRING, INT64\\n  Signature: T1 = T1\\n    Unable to find common supertype for templated argument \\u003cT1\\u003e\\n      Input types for \\u003cT1\\u003e: {INT64, STRING} at [30:11]",\n' +
+      '        "domain": "global",\n' +
+      '        "reason": "invalidQuery",\n' +
+      '        "location": "q",\n' +
+      '        "locationType": "parameter"\n' +
+      '      }\n' +
+      '    ],\n' +
+      '    "status": "INVALID_ARGUMENT"\n' +
+      '  }\n' +
+      '}\n',
+    headers: {
+      'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+      'content-encoding': 'gzip',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Tue, 07 Oct 2025 12:14:44 GMT',
+      server: 'ESF',
+      'transfer-encoding': 'chunked',
+      vary: 'Origin, X-Origin, Referer',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    toJSON: [Function: toJSON],
+    Symbol(shapeMode): true,
+    Symbol(kCapture): false,
+    Symbol(kCallback): null,
+    Symbol(kError): null
+  }
+}
+Query from user_gtk57crgw: dubai marina
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+n8n webhook error: Error
+Client disconnected: AOSYmZub9UrtwsjsAAAN
+New client connected: IX6mRE_6yAXlt5sjAAAQ
+Query from user_gtk57crgw: dubai marina
+Client disconnected: IX6mRE_6yAXlt5sjAAAQ
+New client connected: GYo0Cb5_vt7FLKmtAAAT
+n8n webhook error: Error
+n8n webhook error: Error
+New client connected: nyU2OFW3hc3Sdwy5AAAW
+Query from user_gtk57crgw: Студия в Business Bay до 800 тысяч
+n8n webhook error: Error
+Query from user_gtk57crgw: cамая прибыльная квартира в дубае за 1 млн дирхам
+n8n webhook error: Error
+Client disconnected: nyU2OFW3hc3Sdwy5AAAW
+Client disconnected: GYo0Cb5_vt7FLKmtAAAT
+New client connected: krZ9o3205IUAg7MGAAAZ
+Query from user_gtk57crgw: cамая прибыльная квартира в дубае за 1 млн дирхам
+n8n webhook error: Error
+New client connected: 6GAfzNLUEvXlhUORAAAc
+New client connected: 27STWxwoyNbapNDHAAAf

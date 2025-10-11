@@ -1,0 +1,214 @@
+{
+  "name": "Real Estate Personalization Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "user-interaction",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-user-interaction",
+      "name": "Webhook - User Interaction",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "user-interaction-webhook"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract user interaction data\nconst userId = $input.first().json.userId;\nconst interaction = $input.first().json.interaction;\nconst timestamp = $input.first().json.timestamp;\n\n// Store interaction data\nreturn [\n  {\n    json: {\n      userId,\n      interactionType: interaction.type,\n      data: interaction,\n      timestamp,\n      processed: false\n    }\n  }\n];"
+      },
+      "id": "process-interaction",
+      "name": "Process Interaction",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "projectId": "={{ $env.GOOGLE_CLOUD_PROJECT }}",
+        "datasetId": "={{ $env.BIGQUERY_DATASET }}",
+        "tableId": "user_interactions",
+        "rows": "={{ JSON.stringify([$json]) }}"
+      },
+      "id": "save-to-bigquery",
+      "name": "Save to BigQuery",
+      "type": "n8n-nodes-base.googleBigQuery",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.interactionType }}",
+              "operation": "equals",
+              "value2": "search"
+            }
+          ]
+        }
+      },
+      "id": "check-interaction-type",
+      "name": "Check Interaction Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Analyze search patterns\nconst userId = $input.first().json.userId;\nconst filters = $input.first().json.data.filters;\n\n// Calculate preference scores\nconst preferences = {\n  userId,\n  priceRange: filters.priceMax || null,\n  preferredBedrooms: filters.bedrooms || null,\n  preferredLocations: filters.location ? [filters.location] : [],\n  preferredDevelopers: filters.developer ? [filters.developer] : [],\n  lastUpdated: new Date().toISOString(),\n  searchCount: 1\n};\n\nreturn [{ json: preferences }];"
+      },
+      "id": "analyze-search-pattern",
+      "name": "Analyze Search Pattern",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 250]
+    },
+    {
+      "parameters": {
+        "projectId": "={{ $env.GOOGLE_CLOUD_PROJECT }}",
+        "datasetId": "={{ $env.BIGQUERY_DATASET }}",
+        "query": "MERGE `{{ $env.GOOGLE_CLOUD_PROJECT }}.{{ $env.BIGQUERY_DATASET }}.user_preferences` T\nUSING (SELECT '{{ $json.userId }}' as userId) S\nON T.userId = S.userId\nWHEN MATCHED THEN\n  UPDATE SET \n    priceRange = COALESCE({{ $json.priceRange }}, T.priceRange),\n    preferredBedrooms = COALESCE({{ $json.preferredBedrooms }}, T.preferredBedrooms),\n    preferredLocations = ARRAY_CONCAT(T.preferredLocations, {{ JSON.stringify($json.preferredLocations) }}),\n    searchCount = T.searchCount + 1,\n    lastUpdated = '{{ $json.lastUpdated }}'\nWHEN NOT MATCHED THEN\n  INSERT (userId, priceRange, preferredBedrooms, preferredLocations, preferredDevelopers, searchCount, lastUpdated)\n  VALUES ('{{ $json.userId }}', {{ $json.priceRange }}, {{ $json.preferredBedrooms }}, {{ JSON.stringify($json.preferredLocations) }}, {{ JSON.stringify($json.preferredDevelopers) }}, 1, '{{ $json.lastUpdated }}')"
+      },
+      "id": "update-preferences",
+      "name": "Update User Preferences",
+      "type": "n8n-nodes-base.googleBigQuery",
+      "typeVersion": 1,
+      "position": [1250, 250]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Track property views\nconst userId = $input.first().json.userId;\nconst propertyId = $input.first().json.data.propertyId;\n\nreturn [{\n  json: {\n    userId,\n    propertyId,\n    viewedAt: new Date().toISOString(),\n    viewDuration: 0\n  }\n}];"
+      },
+      "id": "track-property-view",
+      "name": "Track Property View",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 350]
+    },
+    {
+      "parameters": {
+        "projectId": "={{ $env.GOOGLE_CLOUD_PROJECT }}",
+        "datasetId": "={{ $env.BIGQUERY_DATASET }}",
+        "tableId": "property_views",
+        "rows": "={{ JSON.stringify([$json]) }}"
+      },
+      "id": "save-view-tracking",
+      "name": "Save View Tracking",
+      "type": "n8n-nodes-base.googleBigQuery",
+      "typeVersion": 1,
+      "position": [1250, 350]
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        }
+      },
+      "id": "schedule-recommendations",
+      "name": "Schedule Recommendations",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 500]
+    },
+    {
+      "parameters": {
+        "projectId": "={{ $env.GOOGLE_CLOUD_PROJECT }}",
+        "datasetId": "={{ $env.BIGQUERY_DATASET }}",
+        "query": "WITH user_stats AS (\n  SELECT \n    userId,\n    priceRange,\n    preferredBedrooms,\n    preferredLocations,\n    searchCount\n  FROM `{{ $env.GOOGLE_CLOUD_PROJECT }}.{{ $env.BIGQUERY_DATASET }}.user_preferences`\n  WHERE lastUpdated >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 DAY)\n),\nrecommendations AS (\n  SELECT \n    us.userId,\n    p.*,\n    -- Scoring algorithm\n    (\n      CASE WHEN p.price <= us.priceRange THEN 10 ELSE 0 END +\n      CASE WHEN p.bedrooms = us.preferredBedrooms THEN 15 ELSE 0 END +\n      CASE WHEN p.location IN UNNEST(us.preferredLocations) THEN 20 ELSE 0 END +\n      CASE WHEN p.is_new THEN 5 ELSE 0 END\n    ) as recommendation_score\n  FROM user_stats us\n  CROSS JOIN `{{ $env.GOOGLE_CLOUD_PROJECT }}.{{ $env.BIGQUERY_DATASET }}.properties` p\n  WHERE p.status = 'available'\n)\nSELECT *\nFROM recommendations\nWHERE recommendation_score > 20\nORDER BY userId, recommendation_score DESC"
+      },
+      "id": "generate-recommendations",
+      "name": "Generate Recommendations",
+      "type": "n8n-nodes-base.googleBigQuery",
+      "typeVersion": 1,
+      "position": [450, 500]
+    },
+    {
+      "parameters": {
+        "projectId": "={{ $env.GOOGLE_CLOUD_PROJECT }}",
+        "datasetId": "={{ $env.BIGQUERY_DATASET }}",
+        "tableId": "user_recommendations",
+        "rows": "={{ JSON.stringify($input.all().map(item => item.json)) }}"
+      },
+      "id": "save-recommendations",
+      "name": "Save Recommendations",
+      "type": "n8n-nodes-base.googleBigQuery",
+      "typeVersion": 1,
+      "position": [650, 500]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "text": "=✅ Generated {{ $input.all().length }} recommendations for users"
+      },
+      "id": "notify-complete",
+      "name": "Notify Complete",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [850, 500]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, message: 'Interaction processed' }) }}"
+      },
+      "id": "response-success",
+      "name": "Response Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook - User Interaction": {
+      "main": [[{ "node": "Process Interaction", "type": "main", "index": 0 }]]
+    },
+    "Process Interaction": {
+      "main": [[{ "node": "Save to BigQuery", "type": "main", "index": 0 }]]
+    },
+    "Save to BigQuery": {
+      "main": [[{ "node": "Check Interaction Type", "type": "main", "index": 0 }]]
+    },
+    "Check Interaction Type": {
+      "main": [
+        [{ "node": "Analyze Search Pattern", "type": "main", "index": 0 }],
+        [{ "node": "Track Property View", "type": "main", "index": 0 }]
+      ]
+    },
+    "Analyze Search Pattern": {
+      "main": [[{ "node": "Update User Preferences", "type": "main", "index": 0 }]]
+    },
+    "Update User Preferences": {
+      "main": [[{ "node": "Response Success", "type": "main", "index": 0 }]]
+    },
+    "Track Property View": {
+      "main": [[{ "node": "Save View Tracking", "type": "main", "index": 0 }]]
+    },
+    "Save View Tracking": {
+      "main": [[{ "node": "Response Success", "type": "main", "index": 0 }]]
+    },
+    "Schedule Recommendations": {
+      "main": [[{ "node": "Generate Recommendations", "type": "main", "index": 0 }]]
+    },
+    "Generate Recommendations": {
+      "main": [[{ "node": "Save Recommendations", "type": "main", "index": 0 }]]
+    },
+    "Save Recommendations": {
+      "main": [[{ "node": "Notify Complete", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "pinData": {},
+  "versionId": "1"
+}
+

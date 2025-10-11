@@ -1,0 +1,60 @@
+{
+  "name": "real-estate-dashboard",
+  "version": "1.0.0",
+  "description": "Real-time dashboard with BigQuery and MCP Refty integration",
+  "main": "server.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "server": "node server/index.js",
+    "mcp": "node server/mcp-refty-server.js",
+    "n8n": "n8n start",
+    "start-all": "chmod +x scripts/start-all.sh && ./scripts/start-all.sh",
+    "docker": "docker-compose up -d",
+    "docker-down": "docker-compose down",
+    "setup-bigquery": "chmod +x scripts/setup-bigquery.sh && ./scripts/setup-bigquery.sh",
+    "import-csv": "node scripts/import-csv-to-bigquery.js",
+    "sync-data": "node scripts/sync-data.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "@google-cloud/bigquery": "^7.3.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.2",
+    "recharts": "^2.10.3",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.1.1",
+    "date-fns": "^3.0.6",
+    "swr": "^2.2.4",
+    "openai": "^4.20.1",
+    "csv-parser": "^3.0.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "real-estate",
+    "dashboard",
+    "bigquery",
+    "mcp",
+    "refty",
+    "dubai",
+    "property-search"
+  ],
+  "author": "Refty Team",
+  "license": "MIT"
+}

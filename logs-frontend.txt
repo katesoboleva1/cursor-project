@@ -1,0 +1,43 @@
+
+> real-estate-dashboard@1.0.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3003
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1109ms
+ ○ Compiling / ...
+ ✓ Compiled / in 709ms (311 modules)
+ GET /_next/static/webpack/d510326768c86c40.webpack.hot-update.json 404 in 743ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 757ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /_next/static/webpack/d510326768c86c40.webpack.hot-update.json 404 in 9ms
+ GET / 200 in 13ms
+ GET / 200 in 12ms
+ ⚠ Found a change in next.config.js. Restarting the server to apply the changes...
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3003
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1213ms
+ ✓ Compiled / in 460ms (311 modules)
+ GET /_next/static/webpack/d510326768c86c40.webpack.hot-update.json 404 in 551ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 575ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 29ms
+ GET /_next/static/webpack/d510326768c86c40.webpack.hot-update.json 404 in 19ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 10ms
+ ✓ Compiled in 124ms (309 modules)
+ ✓ Compiled in 94ms (309 modules)
