@@ -155,12 +155,14 @@ scoring AS (
     -- ================================================================
     -- 4️⃣ КРИТЕРИЙ "SIZE_MISMATCH" (0 или 50 баллов) 📐
     -- Несоответствие площади между объявлением и DLD
-    -- Apartment/Office: сравнение area с tp_propertySize
-    -- Villa/Townhouse: сравнение area с built_up_area_dld или tp_propertySize
+    -- Apartment/Office: сравнение area с tp_propertySize (если НЕ NULL)
+    -- Villa/Townhouse: сравнение area с built_up_area_dld или tp_propertySize (если НЕ NULL)
+    -- ВАЖНО: Если tp_propertySize = NULL, то критерий НЕ применяется (0 баллов)
     -- ================================================================
     CASE
-      -- Для квартир и офисов: простое сравнение с tp_propertySize
+      -- Для квартир и офисов: простое сравнение с tp_propertySize (ТОЛЬКО если НЕ NULL)
       WHEN p.category_name IN ('Apartment', 'Office')
+        AND p.tp_propertySize IS NOT NULL
         AND p.tp_propertySize > 0
         AND p.area IS NOT NULL
         AND ABS(p.area - p.tp_propertySize) / p.tp_propertySize > 0.01
@@ -169,14 +171,14 @@ scoring AS (
       -- Для вилл и таунхаусов: сложная логика с BUA и Plot
       WHEN p.category_name IN ('Villa', 'Townhouse') THEN
         CASE
-          -- Сравнение с built_up_area_dld (площадь дома)
+          -- Сравнение с built_up_area_dld (площадь дома) - если есть
           WHEN p.built_up_area_dld IS NOT NULL
             AND p.area IS NOT NULL
             AND p.built_up_area_dld > 0
             AND ABS(p.area - p.built_up_area_dld) / p.built_up_area_dld > 0.01
           THEN 50
           
-          -- Сравнение с tp_propertySize (площадь участка)
+          -- Сравнение с tp_propertySize (площадь участка) - ТОЛЬКО если НЕ NULL
           WHEN p.area IS NOT NULL
             AND p.tp_propertySize IS NOT NULL
             AND p.tp_propertySize > 0
