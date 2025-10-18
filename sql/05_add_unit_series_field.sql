@@ -12,6 +12,7 @@
 --
 -- Пример: unit_number = "1205", tp_FloorNumber = "12" → unit_series = "05"
 -- Пример: unit_number = "C2701", tp_FloorNumber = "27" → unit_series = "01"
+-- Пример: unit_number = "C 2701", tp_FloorNumber = "27" → unit_series = "01"
 -- ====================================================================
 
 CREATE OR REPLACE TABLE `dev.all_transactions_combined` AS
@@ -27,14 +28,14 @@ SELECT
       AND eu.unit_number IS NOT NULL 
       AND eu.tp_FloorNumber IS NOT NULL
     THEN
-      -- Удалить номер этажа из начала unit_number, затем убрать все буквы
+      -- 1. Убрать все не-цифры, затем 2. Удалить номер этажа из начала
       REGEXP_REPLACE(
         REGEXP_REPLACE(
           CAST(eu.unit_number AS STRING),
-          CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+          r'[^0-9]',
           ''
         ),
-        r'[^0-9]',
+        CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
         ''
       )
     
@@ -43,14 +44,14 @@ SELECT
       AND t.unit_number IS NOT NULL 
       AND t.tp_FloorNumber IS NOT NULL
     THEN
-      -- Удалить номер этажа из начала unit_number, затем убрать все буквы
+      -- 1. Убрать все не-цифры, затем 2. Удалить номер этажа из начала
       REGEXP_REPLACE(
         REGEXP_REPLACE(
           CAST(t.unit_number AS STRING),
-          CONCAT('^', CAST(t.tp_FloorNumber AS STRING)),
+          r'[^0-9]',
           ''
         ),
-        r'[^0-9]',
+        CONCAT('^', CAST(t.tp_FloorNumber AS STRING)),
         ''
       )
     
@@ -61,13 +62,14 @@ SELECT
       AND eu.unit_number IS NOT NULL
       AND eu.tp_FloorNumber IS NOT NULL
     THEN
+      -- 1. Убрать все не-цифры, затем 2. Удалить номер этажа из начала
       REGEXP_REPLACE(
         REGEXP_REPLACE(
           CAST(eu.unit_number AS STRING),
-          CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+          r'[^0-9]',
           ''
         ),
-        r'[^0-9]',
+        CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
         ''
       )
     
