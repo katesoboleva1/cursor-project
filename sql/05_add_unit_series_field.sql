@@ -11,6 +11,7 @@
 -- 4. Применяется для типа "Unit" (property_type_en = 'Unit')
 --
 -- Пример: unit_number = "1205", tp_FloorNumber = "12" → unit_series = "05"
+-- Пример: unit_number = "C2701", tp_FloorNumber = "27" → unit_series = "01"
 -- ====================================================================
 
 CREATE OR REPLACE TABLE `dev.all_transactions_combined` AS
@@ -26,10 +27,14 @@ SELECT
       AND eu.unit_number IS NOT NULL 
       AND eu.tp_FloorNumber IS NOT NULL
     THEN
-      -- Удалить номер этажа из начала unit_number
+      -- Удалить номер этажа из начала unit_number, затем убрать все буквы
       REGEXP_REPLACE(
-        CAST(eu.unit_number AS STRING),
-        CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+        REGEXP_REPLACE(
+          CAST(eu.unit_number AS STRING),
+          CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+          ''
+        ),
+        r'[^0-9]',
         ''
       )
     
@@ -38,10 +43,14 @@ SELECT
       AND t.unit_number IS NOT NULL 
       AND t.tp_FloorNumber IS NOT NULL
     THEN
-      -- Удалить номер этажа из начала unit_number
+      -- Удалить номер этажа из начала unit_number, затем убрать все буквы
       REGEXP_REPLACE(
-        CAST(t.unit_number AS STRING),
-        CONCAT('^', CAST(t.tp_FloorNumber AS STRING)),
+        REGEXP_REPLACE(
+          CAST(t.unit_number AS STRING),
+          CONCAT('^', CAST(t.tp_FloorNumber AS STRING)),
+          ''
+        ),
+        r'[^0-9]',
         ''
       )
     
@@ -53,8 +62,12 @@ SELECT
       AND eu.tp_FloorNumber IS NOT NULL
     THEN
       REGEXP_REPLACE(
-        CAST(eu.unit_number AS STRING),
-        CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+        REGEXP_REPLACE(
+          CAST(eu.unit_number AS STRING),
+          CONCAT('^', CAST(eu.tp_FloorNumber AS STRING)),
+          ''
+        ),
+        r'[^0-9]',
         ''
       )
     
