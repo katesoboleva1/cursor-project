@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Источники трафика - Быстрая справка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #14b8a6 0%, #f43f5e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px;
+        }
+        .category {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #14b8a6;
+        }
+        .category h2 {
+            color: #14b8a6;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .source-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 3px solid #667eea;
+            transition: transform 0.2s;
+        }
+        .source-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .source-card h3 {
+            color: #667eea;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        .source-card ul {
+            list-style: none;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .source-card li {
+            padding: 3px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .source-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #14b8a6;
+        }
+        .priority-high {
+            border-left-color: #ef4444;
+        }
+        .priority-high h3 {
+            color: #ef4444;
+        }
+        .priority-medium {
+            border-left-color: #f59e0b;
+        }
+        .priority-medium h3 {
+            color: #f59e0b;
+        }
+        .priority-low {
+            border-left-color: #6b7280;
+        }
+        .priority-low h3 {
+            color: #6b7280;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Источники трафика</h1>
+            <p>Полный справочник для Refty</p>
+        </div>
+        
+        <div class="content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Всего категорий</h3>
+                    <div class="value">20</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Источников</h3>
+                    <div class="value">150+</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Приоритетных</h3>
+                    <div class="value">10</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>🔍 1. Поисковые системы</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>Google</h3>
+                        <ul>
+                            <li>Organic SEO</li>
+                            <li>Google My Business</li>
+                            <li>Google Maps</li>
+                            <li>Google Images</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-medium">
+                        <h3>Другие</h3>
+                        <ul>
+                            <li>Bing</li>
+                            <li>Yandex</li>
+                            <li>YouTube Search</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>💰 2. Платная реклама</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>Google Ads</h3>
+                        <ul>
+                            <li>Search Ads</li>
+                            <li>Display Ads</li>
+                            <li>Video Ads (YouTube)</li>
+                            <li>Shopping Ads</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-high">
+                        <h3>Facebook/Instagram</h3>
+                        <ul>
+                            <li>Facebook Ads</li>
+                            <li>Instagram Ads</li>
+                            <li>Stories Ads</li>
+                            <li>Reels Ads</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-high">
+                        <h3>LinkedIn</h3>
+                        <ul>
+                            <li>LinkedIn Ads</li>
+                            <li>B2B Targeting</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-medium">
+                        <h3>Другие</h3>
+                        <ul>
+                            <li>Twitter/X Ads</li>
+                            <li>TikTok Ads</li>
+                            <li>Telegram Ads</li>
+                            <li>Pinterest Ads</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>📱 3. Социальные сети</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>Основные</h3>
+                        <ul>
+                            <li>Facebook</li>
+                            <li>Instagram</li>
+                            <li>LinkedIn</li>
+                            <li>YouTube</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-medium">
+                        <h3>Дополнительные</h3>
+                        <ul>
+                            <li>Twitter/X</li>
+                            <li>TikTok</li>
+                            <li>Telegram</li>
+                            <li>Pinterest</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>🏠 4. Порталы недвижимости (Refty)</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>ОАЭ</h3>
+                        <ul>
+                            <li>Dubizzle</li>
+                            <li>Property Finder</li>
+                            <li>Bayut</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-medium">
+                        <h3>Международные</h3>
+                        <ul>
+                            <li>Rightmove</li>
+                            <li>Zillow</li>
+                            <li>Realtor.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>📧 5. Email маркетинг</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>Типы рассылок</h3>
+                        <ul>
+                            <li>Newsletter</li>
+                            <li>Welcome series</li>
+                            <li>Abandoned cart</li>
+                            <li>Re-engagement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>📰 6. Контент маркетинг</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-medium">
+                        <h3>Контент</h3>
+                        <ul>
+                            <li>Блог</li>
+                            <li>YouTube канал</li>
+                            <li>Подкасты</li>
+                            <li>Webinars</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>🔄 7. Ретаргетинг</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>Платформы</h3>
+                        <ul>
+                            <li>Google Remarketing</li>
+                            <li>Facebook Pixel</li>
+                            <li>LinkedIn Retargeting</li>
+                            <li>AdRoll</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>🤝 8. Партнерский маркетинг</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-medium">
+                        <h3>Типы</h3>
+                        <ul>
+                            <li>Affiliate programs</li>
+                            <li>Influencer partnerships</li>
+                            <li>Referral programs</li>
+                            <li>Co-marketing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>📊 Приоритизация для Refty</h2>
+                <div class="sources-grid">
+                    <div class="source-card priority-high">
+                        <h3>🔥 Высокий приоритет</h3>
+                        <ul>
+                            <li>Google Ads</li>
+                            <li>Facebook/Instagram Ads</li>
+                            <li>Property portals</li>
+                            <li>YouTube Ads</li>
+                            <li>SEO</li>
+                            <li>LinkedIn Ads</li>
+                            <li>Telegram Ads</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-medium">
+                        <h3>⚡ Средний приоритет</h3>
+                        <ul>
+                            <li>Retargeting</li>
+                            <li>Email marketing</li>
+                            <li>Content marketing</li>
+                            <li>Influencer partnerships</li>
+                            <li>Webinars</li>
+                        </ul>
+                    </div>
+                    <div class="source-card priority-low">
+                        <h3>🧪 Экспериментальные</h3>
+                        <ul>
+                            <li>TikTok Ads</li>
+                            <li>Snapchat Ads</li>
+                            <li>Reddit Ads</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>📈 Метрики для отслеживания</h2>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 5px;">📊 <strong>Traffic volume</strong> - Объем трафика</li>
+                    <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 5px;">🎯 <strong>Conversion rate</strong> - Конверсия</li>
+                    <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 5px;">💰 <strong>CPA</strong> - Стоимость привлечения</li>
+                    <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 5px;">📈 <strong>ROAS</strong> - Возврат инвестиций</li>
+                    <li style="padding: 10px; background: white; margin: 5px 0; border-radius: 5px;">💎 <strong>LTV</strong> - Пожизненная ценность</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
