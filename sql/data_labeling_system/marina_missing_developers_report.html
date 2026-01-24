@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проекты без застройщика - Dubai Marina</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #14b8a6;
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        .info {
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Проекты без застройщика - Dubai Marina</h1>
+        
+        <div class="info">
+            <strong>Цель:</strong> Найти все проекты в Dubai Marina, у которых отсутствует developer_name_en
+        </div>
+        
+        <h2>SQL Запрос</h2>
+        <div class="code-block">SELECT DISTINCT 
+  building,
+  developer_name_en,
+  project_name_en,
+  project_id,
+  district,
+  COUNT(*) as properties_count,
+  MIN(price) as min_price,
+  MAX(price) as max_price,
+  AVG(price) as avg_price
+FROM `refty-409711.refty_looker_dashboard.unified_properties_table_full_light`
+WHERE 1=1
+  AND city = 'Dubai'
+  AND isActive = true
+  AND district = 'Dubai Marina'
+  AND developer_name_en IS NULL
+  AND project_id IS NOT NULL
+  AND project_name_en IS NOT NULL
+GROUP BY 
+  building,
+  developer_name_en,
+  project_name_en,
+  project_id,
+  district
+ORDER BY properties_count DESC;</div>
+        
+        <h2>📋 Что делать дальше</h2>
+        <ol>
+            <li>Выполните SQL запрос в BigQuery Console</li>
+            <li>Экспортируйте результаты в CSV или JSON</li>
+            <li>Заполните базу знаний (labeling_knowledge_base.json)</li>
+            <li>Или используйте таблицу project_developer_labeling для разметки</li>
+        </ol>
+        
+        <h2>📁 Файлы системы разметки</h2>
+        <ul>
+            <li><code>01_identify_missing_developers.sql</code> - Общий запрос</li>
+            <li><code>01_identify_missing_developers_marina.sql</code> - Для Dubai Marina</li>
+            <li><code>02_labeling_template.sql</code> - Шаблон разметки</li>
+            <li><code>03_apply_labels.sql</code> - Применение разметки</li>
+        </ul>
+    </div>
+</body>
+</html>

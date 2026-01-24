@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created_at": "2026-01-20",
+    "description": "База знаний для разметки застройщиков проектов",
+    "total_projects": 0,
+    "last_updated": "2026-01-20"
+  },
+  "projects": {
+    "example_project_id": {
+      "project_name_en": "Example Project",
+      "district": "Dubai Marina",
+      "building": "Apartment",
+      "developer_name_en": null,
+      "developer_id": null,
+      "confidence": "LOW",
+      "method": "MANUAL",
+      "labeled_by": null,
+      "labeled_at": null,
+      "notes": "Требуется разметка",
+      "source": null
+    }
+  },
+  "statistics": {
+    "total_projects": 0,
+    "labeled_projects": 0,
+    "high_confidence": 0,
+    "medium_confidence": 0,
+    "low_confidence": 0,
+    "by_method": {
+      "MANUAL": 0,
+      "AUTOMATED": 0,
+      "MATCHED": 0
+    }
+  }
+}
+
