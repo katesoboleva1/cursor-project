@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета для партнера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #ec4899;
+        }
+        .section h2 {
+            color: #ec4899;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .question label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .question textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            resize: vertical;
+            min-height: 60px;
+        }
+        .question select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+        .question input[type="text"],
+        .question input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        .warning-box {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #f59e0b;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3b82f6;
+            margin: 20px 0;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💕 Анкета для партнера</h1>
+            <p>Откровенные вопросы для лучшего понимания</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>ℹ️ Важно:</strong> Эта анкета предназначена для взаимного согласия между взрослыми людьми. Все ответы должны быть добровольными и честными.
+            </div>
+
+            <form id="questionnaireForm">
+                <!-- Базовая информация -->
+                <div class="section">
+                    <h2>📋 Базовая информация</h2>
+                    
+                    <div class="question">
+                        <label>Возраст:</label>
+                        <input type="number" name="age" min="18" required>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт в отношениях:</label>
+                        <select name="relationship_experience" required>
+                            <option value="">Выберите...</option>
+                            <option value="minimal">Минимальный</option>
+                            <option value="moderate">Умеренный</option>
+                            <option value="extensive">Обширный</option>
+                            <option value="very_extensive">Очень обширный</option>
+                        </select>
+                    </div>
+
+                    <div class="question">
+                        <label>Тип отношений, которые вы ищете:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="relationship_type" value="casual" id="type1">
+                                <label for="type1">Несерьезные</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="relationship_type" value="serious" id="type2">
+                                <label for="type2">Серьезные</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="relationship_type" value="open" id="type3">
+                                <label for="type3">Открытые отношения</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="relationship_type" value="poly" id="type4">
+                                <label for="type4">Полиамория</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Сексуальные предпочтения -->
+                <div class="section">
+                    <h2>🔥 Сексуальные предпочтения и опыт</h2>
+                    
+                    <div class="question">
+                        <label>Ваши сексуальные предпочтения:</label>
+                        <textarea name="sexual_preferences" placeholder="Опишите ваши предпочтения, фетиши, интересы..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт с групповым сексом:</label>
+                        <select name="group_sex_experience">
+                            <option value="">Выберите...</option>
+                            <option value="none">Нет опыта</option>
+                            <option value="interested">Интересуюсь, но не пробовала</option>
+                            <option value="some">Некоторый опыт</option>
+                            <option value="extensive">Обширный опыт</option>
+                        </select>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт с другими женщинами:</label>
+                        <select name="women_experience">
+                            <option value="">Выберите...</option>
+                            <option value="none">Нет опыта</option>
+                            <option value="curious">Любопытство, но не пробовала</option>
+                            <option value="some">Некоторый опыт</option>
+                            <option value="extensive">Обширный опыт</option>
+                        </select>
+                    </div>
+
+                    <div class="question">
+                        <label>Были ли у вас опыты с участием подруг или знакомых?</label>
+                        <textarea name="friends_experience" placeholder="Опишите ваш опыт (если был)..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Готовность к экспериментам:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="bdsm" id="exp1">
+                                <label for="exp1">BDSM</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="threesome" id="exp2">
+                                <label for="exp2">Троички</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="swinging" id="exp3">
+                                <label for="exp3">Свинг</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="orgy" id="exp4">
+                                <label for="exp4">Оргии</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="public" id="exp5">
+                                <label for="exp5">Публичные места</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="experiments" value="recording" id="exp6">
+                                <label for="exp6">Видеосъемка</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт с OnlyFans или подобными платформами:</label>
+                        <select name="onlyfans_experience">
+                            <option value="">Выберите...</option>
+                            <option value="none">Нет опыта</option>
+                            <option value="interested">Интересуюсь</option>
+                            <option value="some">Есть опыт</option>
+                            <option value="active">Активно занимаюсь</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Границы и согласие -->
+                <div class="section">
+                    <h2>🛡️ Границы и согласие</h2>
+                    
+                    <div class="question">
+                        <label>Ваши жесткие границы (что категорически неприемлемо):</label>
+                        <textarea name="hard_limits" placeholder="Опишите то, что вы никогда не будете делать..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Ваши мягкие границы (может быть, но с осторожностью):</label>
+                        <textarea name="soft_limits" placeholder="Опишите то, что вы готовы попробовать, но с условиями..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Как вы относитесь к согласию и безопасности?</label>
+                        <textarea name="consent_attitude" placeholder="Ваше отношение к согласию, безопасным словам, проверкам здоровья..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Регулярность проверок здоровья:</label>
+                        <select name="health_checks">
+                            <option value="">Выберите...</option>
+                            <option value="regular">Регулярно (каждые 3-6 месяцев)</option>
+                            <option value="occasional">Периодически</option>
+                            <option value="rarely">Редко</option>
+                            <option value="never">Никогда</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Отношения с другими -->
+                <div class="section">
+                    <h2>👥 Отношения с другими людьми</h2>
+                    
+                    <div class="question">
+                        <label>Ваше отношение к открытым отношениям:</label>
+                        <select name="open_relationship_attitude">
+                            <option value="">Выберите...</option>
+                            <option value="very_positive">Очень положительное</option>
+                            <option value="positive">Положительное</option>
+                            <option value="neutral">Нейтральное</option>
+                            <option value="negative">Отрицательное</option>
+                            <option value="very_negative">Очень отрицательное</option>
+                        </select>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт вовлечения других людей в вашу сексуальную жизнь:</label>
+                        <textarea name="involving_others" placeholder="Опишите ваш опыт (если был) с участием друзей, знакомых, подруг..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Готовность к групповым встречам:</label>
+                        <select name="group_meetings">
+                            <option value="">Выберите...</option>
+                            <option value="very_willing">Очень готова</option>
+                            <option value="willing">Готова</option>
+                            <option value="maybe">Может быть</option>
+                            <option value="unwilling">Не готова</option>
+                            <option value="never">Никогда</option>
+                        </select>
+                    </div>
+
+                    <div class="question">
+                        <label>Опыт с парными встречами (свинг):</label>
+                        <select name="swinging_experience">
+                            <option value="">Выберите...</option>
+                            <option value="none">Нет опыта</option>
+                            <option value="interested">Интересуюсь</option>
+                            <option value="some">Некоторый опыт</option>
+                            <option value="extensive">Обширный опыт</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Личные качества -->
+                <div class="section">
+                    <h2>💭 Личные качества и предпочтения</h2>
+                    
+                    <div class="question">
+                        <label>Ваша сексуальная ориентация:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="orientation" value="straight" id="or1">
+                                <label for="or1">Гетеро</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="orientation" value="bi" id="or2">
+                                <label for="or2">Бисексуальная</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="orientation" value="lesbian" id="or3">
+                                <label for="or3">Лесбиянка</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="orientation" value="pan" id="or4">
+                                <label for="or4">Пансексуальная</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="orientation" value="other" id="or5">
+                                <label for="or5">Другое</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label>Ваше отношение к ревности:</label>
+                        <textarea name="jealousy_attitude" placeholder="Как вы справляетесь с ревностью? Есть ли она у вас?"></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Ваше отношение к честности и открытости:</label>
+                        <textarea name="honesty_attitude" placeholder="Насколько важна для вас честность в отношениях?"></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label>Дополнительная информация о себе:</label>
+                        <textarea name="additional_info" rows="5" placeholder="Любая дополнительная информация, которую вы хотите сообщить..."></textarea>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Важно:</strong> Все ответы должны быть честными и добровольными. Помните о важности согласия, безопасности и уважения к границам всех участников.
+                </div>
+
+                <button type="submit" class="submit-btn">Отправить анкету</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            console.log('Анкета заполнена:', data);
+            alert('Анкета отправлена! (В реальном приложении данные были бы отправлены на сервер)');
+        });
+    </script>
+</body>
+</html>
+
