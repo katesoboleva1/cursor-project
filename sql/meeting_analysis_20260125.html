@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ встречи 25 января 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #14b8a6 0%, #f43f5e 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #14b8a6;
+        }
+        .section-title {
+            color: #14b8a6;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #14b8a6;
+        }
+        .subsection {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .subsection h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .positive {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .negative {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .warning {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .info {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .positive li:before {
+            content: "✅ ";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .negative li:before {
+            content: "⚠️ ";
+            position: absolute;
+            left: 0;
+            color: #f44336;
+            font-weight: bold;
+        }
+        .warning li:before {
+            content: "🔶 ";
+            position: absolute;
+            left: 0;
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .info li:before {
+            content: "ℹ️ ";
+            position: absolute;
+            left: 0;
+            color: #2196f3;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        thead {
+            background: linear-gradient(135deg, #14b8a6 0%, #f43f5e 100%);
+            color: white;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .stat-card h3 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .action-item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #14b8a6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .action-item h4 {
+            color: #14b8a6;
+            margin-bottom: 10px;
+        }
+        .priority-high {
+            border-left-color: #f44336;
+        }
+        .priority-high h4 {
+            color: #f44336;
+        }
+        .priority-medium {
+            border-left-color: #ff9800;
+        }
+        .priority-medium h4 {
+            color: #ff9800;
+        }
+        .priority-low {
+            border-left-color: #2196f3;
+        }
+        .priority-low h4 {
+            color: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Анализ встречи 25 января 2026</h1>
+            <p>Длительность: ~3 часа 45 минут | Участники: Алексей Глазков, Александра Радионова</p>
+        </div>
+
+        <!-- Общая статистика -->
+        <div class="section">
+            <h2 class="section-title">📈 Общая статистика встречи</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Длительность</h3>
+                    <div class="value">3:45</div>
+                    <p>часов</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Участников</h3>
+                    <div class="value">2</div>
+                    <p>человека</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Тем обсуждено</h3>
+                    <div class="value">10+</div>
+                    <p>основных</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Решений</h3>
+                    <div class="value">15+</div>
+                    <p>принято</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Участники -->
+        <div class="section">
+            <h2 class="section-title">👥 Участники встречи</h2>
+            <div class="subsection">
+                <h3>Алексей Глазков (CEO)</h3>
+                <p><strong>Роль:</strong> Основатель, отвечает за маркетинг, стратегию, поиск новой выручки</p>
+                <p><strong>Фокус встречи:</strong> Структура компании, маркетинговая стратегия, контент-план, оптимизация расходов, процессы найма</p>
+            </div>
+            <div class="subsection">
+                <h3>Александра Радионова (COO)</h3>
+                <p><strong>Роль:</strong> Операционный директор, управление процессами, оптимизация расходов</p>
+                <p><strong>Фокус встречи:</strong> Структура компании, задачи в Asana, оптимизация расходов, процессы разработки, управление сотрудниками</p>
+            </div>
+        </div>
+
+        <!-- Основные темы -->
+        <div class="section">
+            <h2 class="section-title">🎯 Основные темы встречи</h2>
+            
+            <div class="subsection">
+                <h3>1. Технические проблемы (начало встречи)</h3>
+                <div class="warning">
+                    <ul>
+                        <li>Zoom хранилище заполнено (184 GB из 215 GB занято)</li>
+                        <li>Проблемы с записью в облако</li>
+                        <li>Решение: докупить 1 TB за $10 для временного решения</li>
+                        <li>Дальше нужно решать вопрос с хранением записей (возможно, альтернатива Zoom)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>2. Структура компании и сотрудники</h3>
+                <div class="info">
+                    <p><strong>Текущая структура:</strong></p>
+                    <ul>
+                        <li><strong>Всего в системе:</strong> 33 человека</li>
+                        <li><strong>Ключевые позиции:</strong> 3 человека (Алексей, Александра, Ходорковский)</li>
+                        <li><strong>Остальные:</strong> 29 человек</li>
+                        <li><strong>Фактически работает:</strong> ~9 человек</li>
+                    </ul>
+                </div>
+                <div class="info">
+                    <p><strong>Департаменты:</strong></p>
+                    <ul>
+                        <li><strong>Sales & Retention:</strong> Саша Грошева (Head)</li>
+                        <li><strong>Marketing:</strong> Алексей Глазков (Head)</li>
+                        <li><strong>Development:</strong> Коля (Head), появляется Ксюша</li>
+                        <li><strong>Content:</strong> Даня (единственный в контенте)</li>
+                    </ul>
+                </div>
+                <div class="negative">
+                    <p><strong>Изменения в команде:</strong></p>
+                    <ul>
+                        <li>Алиса уходит (с понедельника)</li>
+                        <li>Два стажера минус (Ниса и Фиданы)</li>
+                        <li>Сетевой Ваня - частный орг (на гастролях)</li>
+                        <li>Оля - part-time, эксперт</li>
+                        <li>Артем - джунгли стайл</li>
+                        <li>Василий - джунгли физ мидл (быстро научился, год назад не умел программировать)</li>
+                        <li>Егор - передан Софии на линкет</li>
+                        <li>Ксюша - убрана в спорт</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>3. Маркетинг и реклама</h3>
+                <div class="info">
+                    <p><strong>Цели отдела маркетинга на 2026:</strong></p>
+                    <ul>
+                        <li>Регулярный контент: 7 постов в неделю (текстовые)</li>
+                        <li>Подключить 2 платных канала: Telegram + Facebook</li>
+                        <li>Положительная юнит-экономика в рамках 1 месяца</li>
+                        <li>Бюджет: $10,000 (из них $7-8K на платные источники, остальное на канал)</li>
+                    </ul>
+                </div>
+                <div class="negative">
+                    <p><strong>Проблемы с маркетингом:</strong></p>
+                    <ul>
+                        <li>Маркетолог не взял в работу написанную стратегию</li>
+                        <li>Нет понимания, кто должен заниматься маркетингом</li>
+                        <li>Алексей вынужден сам заниматься маркетингом, хотя должен отойти</li>
+                    </ul>
+                </div>
+                <div class="warning">
+                    <p><strong>Требования к маркетологу:</strong></p>
+                    <ul>
+                        <li>Должен быть технарь</li>
+                        <li>Понимать поисковую выдачу и Google</li>
+                        <li>Понимать SEO, кластеризацию запросов</li>
+                        <li>Понимать закупку ссылок и доменов</li>
+                        <li>Понимать Telegram, LinkedIn</li>
+                        <li>В дальнейшем нужен SEO-специалист для ручной работы</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>4. Контент-стратегия и видео</h3>
+                <div class="positive">
+                    <p><strong>План по контенту:</strong></p>
+                    <ul>
+                        <li><strong>90 часовых роликов</strong> разбитых на 4-5 плейлистов</li>
+                        <li>Плейлисты по сегментам: Брокеры, Инвесторы, Агентства</li>
+                        <li>Примеры тем: "Как клиент обратился и решил проблему", "Как мы помогаем брокерам зарабатывать"</li>
+                        <li>Съемка каждую неделю (2 раза в месяц по 3 часа)</li>
+                        <li>Планировалось 6 лонгридов в месяц, будет 8 (с запасом на пропуски)</li>
+                    </ul>
+                </div>
+                <div class="info">
+                    <p><strong>Технические детали:</strong></p>
+                    <ul>
+                        <li>Использование OBS для записи (скринкаст + камера)</li>
+                        <li>Разделение на файлы по темам</li>
+                        <li>Даня делает фул описание (400 объектов), пока на русском (чтобы не тратить кредиты на перевод)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>5. Разработка и задачи</h3>
+                <div class="warning">
+                    <p><strong>Текущая ситуация:</strong></p>
+                    <ul>
+                        <li><strong>Расходы на разработку:</strong> $7,200 в декабре, $9,200 в январе</li>
+                        <li><strong>Задачи в Asana:</strong> ~80 задач на Александра и Алексея</li>
+                        <li><strong>Проблема:</strong> Нет разделения бюджетов, работают над ненужными фичами</li>
+                        <li><strong>Решение:</strong> Переход на спринты с фиксированным бэклогом</li>
+                    </ul>
+                </div>
+                <div class="info">
+                    <p><strong>Процесс разработки:</strong></p>
+                    <ul>
+                        <li>Сейчас: бэклог на месяц, который постоянно меняется</li>
+                        <li>Нужно: фиксированный спринт, изменения только через процесс управления изменениями</li>
+                        <li>Фокус: 60% битуси, 40% битуби (так как уперлись в потолок брокеров)</li>
+                        <li>Нужно считать не по количеству задач, а по ценности</li>
+                    </ul>
+                </div>
+                <div class="negative">
+                    <p><strong>Проблемы:</strong></p>
+                    <ul>
+                        <li>Очень сильный разфокус, смена приоритетов</li>
+                        <li>Нужно фокусировать команду на 10 задачах</li>
+                        <li>Постоянно появляются новые задачи без приоритизации</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>6. Финансы и оптимизация расходов</h3>
+                <div class="warning">
+                    <p><strong>Обсуждаемые расходы:</strong></p>
+                    <ul>
+                        <li><strong>Zoom:</strong> 80 GB cloud storage, $35/месяц за 8 юзеров</li>
+                        <li><strong>Google Workspace:</strong> $17/юзер, 50 юзеров = $850/месяц</li>
+                        <li><strong>Проблема:</strong> Много неактивных аккаунтов</li>
+                        <li><strong>Решение:</strong> Удалить неиспользуемые аккаунты, оптимизировать до 30-40 юзеров</li>
+                    </ul>
+                </div>
+                <div class="info">
+                    <p><strong>Потенциальная экономия:</strong></p>
+                    <ul>
+                        <li>Google Workspace: ~$110-170/месяц (удаление неактивных аккаунтов)</li>
+                        <li>Zoom: рассмотреть альтернативы для хранения</li>
+                        <li>WhatsApp интеграция: $50/месяц (нельзя уменьшить)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>7. Продажи и конверсия</h3>
+                <div class="negative">
+                    <p><strong>Критическая проблема:</strong></p>
+                    <ul>
+                        <li><strong>Конверсия упала:</strong> Было 20% (11 месяцев подряд), сейчас 4%</li>
+                        <li><strong>Проблема с клузерами:</strong> 2 клузера не могут довести клиентов до продажи</li>
+                        <li><strong>Из 300 суммов:</strong> Только 3 продажи (1% конверсия)</li>
+                    </ul>
+                </div>
+                <div class="warning">
+                    <p><strong>Решения:</strong></p>
+                    <ul>
+                        <li>Автоматизация онбординга на Intercom (7 дней бесплатно, потом кнопка оплатить)</li>
+                        <li>Обучить клузеров или найти новых</li>
+                        <li>Если не справляются - отключить от работы, собрать хроп</li>
+                    </ul>
+                </div>
+                <div class="info">
+                    <p><strong>Юнит-экономика продажи:</strong></p>
+                    <ul>
+                        <li>Одна продажа: $10,000</li>
+                        <li>Расход не должен быть дороже $800</li>
+                        <li>COGS: $3,000 вознаграждение брокеру</li>
+                        <li>Конверсия: 50-60% в рамках первого месяца, 70% в рамках 2 недель</li>
+                        <li>Покупка недвижимости: 2 месяца для 20-25% от тех, кто купил подписку</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>8. Найм и тестирование сотрудников</h3>
+                <div class="negative">
+                    <p><strong>Проблема с наймом:</strong></p>
+                    <ul>
+                        <li><strong>Пример с Наташей:</strong> Уволена, не справилась, потеряно $500 предоплаты</li>
+                        <li><strong>Ошибка:</strong> Внесение предоплаты до тестирования</li>
+                        <li><strong>Потери:</strong> ~20% времени теряется на тестирование неподходящих кандидатов</li>
+                    </ul>
+                </div>
+                <div class="positive">
+                    <p><strong>Новый формат найма:</strong></p>
+                    <ul>
+                        <li><strong>Без предоплаты:</strong> Договориться о конкретной задаче</li>
+                        <li><strong>Максимальный срок:</strong> 1 неделя</li>
+                        <li><strong>Если не справился:</strong> Неделю списываем, не оплачиваем</li>
+                        <li><strong>Если справился:</strong> Оцениваем работу, платим по понятиям</li>
+                        <li><strong>Важно:</strong> Заранее проговаривать условия, фиксировать договоренности</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>9. Мотивация сотрудников (KPI)</h3>
+                <div class="info">
+                    <p><strong>Обсуждаемые KPI:</strong></p>
+                    <ul>
+                        <li><strong>Даня (контент):</strong> Базовый фикс + объем (6 роликов/месяц = $60, или $40-60K)</li>
+                        <li><strong>София:</strong> Фикс $2,000 + KPI по итогам месяца</li>
+                        <li><strong>Ксюша:</strong> Фикс $500 + $10 за качественную заявку</li>
+                        <li><strong>Саша (Sales):</strong> Фикс + бонусы за встречи, объемы, отток < 40%</li>
+                    </ul>
+                </div>
+                <div class="warning">
+                    <p><strong>Проблемы с KPI:</strong></p>
+                    <ul>
+                        <li>София присылает отчетность без понимания, от чего зависит результат</li>
+                        <li>Нужно строить промежуточные метрики</li>
+                        <li>Нужно связывать процессы с результатами</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>10. SEO и контент-стратегия</h3>
+                <div class="info">
+                    <p><strong>План по SEO:</strong></p>
+                    <ul>
+                        <li><strong>Кластеризация запросов:</strong> 1000 бластерных запросов → 90-900 кластеров</li>
+                        <li><strong>Цель:</strong> Максимально охватить темы для органики</li>
+                        <li><strong>Формат:</strong> 1 часовой ролик на кластер, разбитый на короткие видео</li>
+                        <li><strong>Примеры тем:</strong> По районам (Marina Gate), по сегментам (брокеры, инвесторы)</li>
+                    </ul>
+                </div>
+                <div class="warning">
+                    <p><strong>Требования к контенту:</strong></p>
+                    <ul>
+                        <li>Максимально точные ответы на запросы</li>
+                        <li>Глубокие темплейты с историей</li>
+                        <li>Хронометраж для соблюдения тем</li>
+                        <li>Фокус на ценности для пользователя</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Критические проблемы -->
+        <div class="section">
+            <h2 class="section-title">🚨 Критические проблемы</h2>
+            
+            <div class="negative">
+                <h3>1. Падение конверсии (20% → 4%)</h3>
+                <ul>
+                    <li>Было: 20% конверсии 11 месяцев подряд</li>
+                    <li>Сейчас: 4% конверсии</li>
+                    <li>Причина: Появилась конкуренция, продукт не улучшался</li>
+                    <li>Последствия: Низкая эффективность продаж, высокий CAC</li>
+                </ul>
+            </div>
+
+            <div class="negative">
+                <h3>2. Проблемы с клузерами</h3>
+                <ul>
+                    <li>2 клузера не могут довести клиентов до продажи</li>
+                    <li>Из 300 суммов только 3 продажи (1%)</li>
+                    <li>Нужно: обучить или заменить</li>
+                </ul>
+            </div>
+
+            <div class="negative">
+                <h3>3. Отсутствие маркетолога</h3>
+                <ul>
+                    <li>Стратегия написана, но никто не взял в работу</li>
+                    <li>Алексей вынужден сам заниматься маркетингом</li>
+                    <li>Нет понимания, кто должен это делать</li>
+                </ul>
+            </div>
+
+            <div class="negative">
+                <h3>4. Проблемы с наймом</h3>
+                <ul>
+                    <li>Потеря $500 на предоплате Наташе</li>
+                    <li>20% времени теряется на тестирование неподходящих кандидатов</li>
+                    <li>Нужен новый формат найма без предоплаты</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h3>5. Разфокус в разработке</h3>
+                <ul>
+                    <li>Очень сильный разфокус, постоянная смена приоритетов</li>
+                    <li>Работают над ненужными фичами</li>
+                    <li>Нет разделения бюджетов</li>
+                    <li>Нужен переход на спринты с фиксированным бэклогом</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Принятые решения -->
+        <div class="section">
+            <h2 class="section-title">✅ Принятые решения</h2>
+            
+            <div class="action-item priority-high">
+                <h4>🔥 Высокий приоритет</h4>
+                <ul>
+                    <li><strong>Zoom хранилище:</strong> Докупить 1 TB за $10 для временного решения</li>
+                    <li><strong>Новый формат найма:</strong> Без предоплаты, тестирование 1 неделя, оплата только за результат</li>
+                    <li><strong>Оптимизация Google Workspace:</strong> Удалить неактивные аккаунты, оптимизировать до 30-40 юзеров</li>
+                    <li><strong>Автоматизация онбординга:</strong> Intercom с 7 днями бесплатно, потом кнопка оплатить</li>
+                    <li><strong>Переход на спринты:</strong> Фиксированный бэклог, процесс управления изменениями</li>
+                </ul>
+            </div>
+
+            <div class="action-item priority-medium">
+                <h4>⚡ Средний приоритет</h4>
+                <ul>
+                    <li><strong>Контент-план:</strong> 90 часовых роликов, разбитых на 4-5 плейлистов</li>
+                    <li><strong>Съемка:</strong> Каждую неделю, студия забронирована</li>
+                    <li><strong>SEO стратегия:</strong> Кластеризация 1000 запросов, 90-900 кластеров</li>
+                    <li><strong>Asana:</strong> Перенести 80 задач из Google таблицы, раздать доступы</li>
+                    <li><strong>KPI для сотрудников:</strong> Пересмотреть фиксы и бонусы</li>
+                </ul>
+            </div>
+
+            <div class="action-item priority-low">
+                <h4>📋 Низкий приоритет</h4>
+                <ul>
+                    <li><strong>Структура компании:</strong> Зафиксировать в Asana, разделить на департаменты</li>
+                    <li><strong>Маркетолог:</strong> Найти технаря с пониманием SEO, закупки ссылок</li>
+                    <li><strong>Отчетность:</strong> София и Саша должны присылать отчеты с метриками</li>
+                    <li><strong>Процессы:</strong> Описать бизнес-процессы для оптимизации</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Финансовые показатели -->
+        <div class="section">
+            <h2 class="section-title">💰 Финансовые показатели</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Статья</th>
+                        <th>Сумма</th>
+                        <th>Период</th>
+                        <th>Примечание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Разработка</strong></td>
+                        <td>$7,200</td>
+                        <td>Декабрь 2025</td>
+                        <td>Фактические расходы</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Разработка</strong></td>
+                        <td>$9,200</td>
+                        <td>Январь 2026</td>
+                        <td>Планируемые расходы</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Маркетинг (бюджет)</strong></td>
+                        <td>$10,000</td>
+                        <td>Месяц</td>
+                        <td>$7-8K на платные каналы</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zoom</strong></td>
+                        <td>$35</td>
+                        <td>Месяц</td>
+                        <td>8 юзеров + хранилище</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Workspace</strong></td>
+                        <td>$850</td>
+                        <td>Месяц</td>
+                        <td>50 юзеров × $17 (можно оптимизировать до $510-680)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WhatsApp интеграция</strong></td>
+                        <td>$50</td>
+                        <td>Месяц</td>
+                        <td>Нельзя уменьшить</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Потери на найме</strong></td>
+                        <td>$500</td>
+                        <td>Одноразово</td>
+                        <td>Предоплата Наташе (не справилась)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Рекомендации -->
+        <div class="section">
+            <h2 class="section-title">💡 Рекомендации</h2>
+            
+            <div class="subsection">
+                <h3>Немедленные действия (эта неделя)</h3>
+                <div class="action-item priority-high">
+                    <ul>
+                        <li>Докупить Zoom хранилище (1 TB за $10)</li>
+                        <li>Удалить неактивные аккаунты Google Workspace</li>
+                        <li>Перенести задачи из Google таблицы в Asana</li>
+                        <li>Забронировать студию на среду для съемки</li>
+                        <li>Разобраться с клузерами (обучить или заменить)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Краткосрочные (этот месяц)</h3>
+                <div class="action-item priority-medium">
+                    <ul>
+                        <li>Внедрить новый формат найма (без предоплаты)</li>
+                        <li>Найти маркетолога-технаря с пониманием SEO</li>
+                        <li>Внедрить спринты в разработке</li>
+                        <li>Настроить автоматизацию онбординга на Intercom</li>
+                        <li>Пересмотреть KPI для всех сотрудников</li>
+                        <li>Начать съемку контента (90 часовых роликов)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Долгосрочные (3-6 месяцев)</h3>
+                <div class="action-item priority-low">
+                    <ul>
+                        <li>Вернуть конверсию к 20%</li>
+                        <li>Выстроить процессы управления изменениями</li>
+                        <li>Оптимизировать расходы на 10-15%</li>
+                        <li>Построить SEO-стратегию на основе кластеризации</li>
+                        <li>Создать систему отчетности с промежуточными метриками</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Роли и ответственность -->
+        <div class="section">
+            <h2 class="section-title">👤 Распределение ролей</h2>
+            
+            <div class="subsection">
+                <h3>Алексей Глазков</h3>
+                <div class="info">
+                    <ul>
+                        <li><strong>Фокус:</strong> Поиск новой выручки, маркетинговая стратегия</li>
+                        <li><strong>Задачи:</strong> Контент-стратегия, съемка видео, маркетинг (пока нет маркетолога)</li>
+                        <li><strong>Цель:</strong> Отойти от операционки, сфокусироваться на росте</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Александра Радионова</h3>
+                <div class="info">
+                    <ul>
+                        <li><strong>Фокус:</strong> Оптимизация расходов, управление процессами</li>
+                        <li><strong>Задачи:</strong> Оптимизация расходов на 10-15%, управление 4 департаментами, процессы</li>
+                        <li><strong>Цель:</strong> Уменьшить расходную часть, повысить эффективность на 5%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Метрики успеха -->
+        <div class="section">
+            <h2 class="section-title">📊 Ключевые метрики для отслеживания</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Метрика</th>
+                        <th>Текущее значение</th>
+                        <th>Целевое значение</th>
+                        <th>Срок</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Конверсия в продажу</strong></td>
+                        <td>4%</td>
+                        <td>20%</td>
+                        <td>3-6 месяцев</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Расходы на разработку</strong></td>
+                        <td>$9,200/месяц</td>
+                        <td>Оптимизировать</td>
+                        <td>Этот месяц</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Расходы на инфраструктуру</strong></td>
+                        <td>~$935/месяц</td>
+                        <td>~$600-700/месяц</td>
+                        <td>Эта неделя</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Конверсия клузеров</strong></td>
+                        <td>1% (3 из 300)</td>
+                        <td>10%+</td>
+                        <td>Этот месяц</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Контент (видео)</strong></td>
+                        <td>0</td>
+                        <td>90 часовых роликов</td>
+                        <td>3-6 месяцев</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Эффективность найма</strong></td>
+                        <td>20% потерь времени</td>
+                        <td>< 5%</td>
+                        <td>Этот месяц</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Выводы -->
+        <div class="section">
+            <h2 class="section-title">🎯 Ключевые выводы</h2>
+            
+            <div class="positive">
+                <h3>✅ Позитивные моменты</h3>
+                <ul>
+                    <li>Есть четкое понимание проблем и путей решения</li>
+                    <li>Создана контент-стратегия на 90 часовых роликов</li>
+                    <li>Определены требования к маркетологу</li>
+                    <li>Есть план оптимизации расходов</li>
+                    <li>Понимание необходимости процессов и структуры</li>
+                </ul>
+            </div>
+
+            <div class="negative">
+                <h3>⚠️ Критические риски</h3>
+                <ul>
+                    <li>Падение конверсии с 20% до 4% - критично для бизнеса</li>
+                    <li>Отсутствие маркетолога замедляет рост</li>
+                    <li>Высокие расходы на разработку без видимого результата</li>
+                    <li>Проблемы с наймом приводят к потерям времени и денег</li>
+                    <li>Разфокус в разработке - работа над ненужными фичами</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h3>🔶 Важные моменты</h3>
+                <ul>
+                    <li>Алексей должен отойти от операционки и сфокусироваться на росте</li>
+                    <li>Александра должна сфокусироваться на оптимизации расходов (10-15%)</li>
+                    <li>Нужен четкий процесс найма без предоплаты</li>
+                    <li>Необходимы спринты в разработке для фокуса</li>
+                    <li>Важна автоматизация процессов (онбординг, отчетность)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- План действий -->
+        <div class="section">
+            <h2 class="section-title">📅 План действий</h2>
+            
+            <div class="subsection">
+                <h3>Эта неделя (26 января - 1 февраля)</h3>
+                <div class="action-item priority-high">
+                    <ul>
+                        <li>Докупить Zoom хранилище (1 TB)</li>
+                        <li>Оптимизировать Google Workspace (удалить неактивные аккаунты)</li>
+                        <li>Перенести задачи в Asana, раздать доступы</li>
+                        <li>Забронировать студию на среду</li>
+                        <li>Разобраться с клузерами (встреча, обучение или замена)</li>
+                        <li>Настроить автоматизацию онбординга на Intercom</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Этот месяц (февраль)</h3>
+                <div class="action-item priority-medium">
+                    <ul>
+                        <li>Внедрить новый формат найма</li>
+                        <li>Найти маркетолога-технаря</li>
+                        <li>Внедрить спринты в разработке</li>
+                        <li>Начать съемку контента (первые ролики)</li>
+                        <li>Пересмотреть KPI для всех сотрудников</li>
+                        <li>Создать систему отчетности</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Квартал (Q1 2026)</h3>
+                <div class="action-item priority-low">
+                    <ul>
+                        <li>Вернуть конверсию к 15-20%</li>
+                        <li>Снять 90 часовых роликов</li>
+                        <li>Оптимизировать расходы на 10-15%</li>
+                        <li>Выстроить процессы управления изменениями</li>
+                        <li>Построить SEO-стратегию</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p style="text-align: center; color: #666; margin-top: 40px;">
+                <strong>Дата анализа:</strong> 25 января 2026<br>
+                <strong>Источник:</strong> GMT20260125-152509_Recording.transcript.vtt<br>
+                <strong>Длительность встречи:</strong> ~3 часа 45 минут
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
