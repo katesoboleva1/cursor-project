@@ -43,13 +43,9 @@ ssh -T git@github.com
 
 Должно появиться сообщение: `Hi username! You've successfully authenticated...`
 
-## Шаг 6: Инициализация Git репозитория в проекте
+## Шаг 6: Инициализация Git репозитория в проекте ✅ СДЕЛАНО
 
-```bash
-cd "/Users/kate/Cursor project"
-git init
-git branch -M main
-```
+Репозиторий уже инициализирован, первый коммит создан. Осталось только подключить GitHub и отправить код.
 
 ## Шаг 7: Создание репозитория на GitHub
 
