@@ -1,0 +1,45 @@
+============================================
+BD: СКРИПТЫ LINKEDIN — КОПИРУЙ И ПОДСТАВЬ [Имя/Компания]
+============================================
+
+--- СКРИПТ 1: ПРИГЛАШЕНИЕ В СЕТЬ (connection request) ---
+
+A) Стартап (CEO/Founder):
+Hi [Name], I follow [Company]'s progress in [e.g. AI recruiting / dev tools / no-code] and would like to connect. No pitch — just interested in staying in touch with what you're building. Best, [Your name]
+
+B) Фонд / партнёр:
+Hi [Name], I'm building in [SaaS / AI / your vertical] and follow [Fund]'s portfolio. Would be glad to connect and learn from your perspective on [region / stage]. Thanks, [Your name]
+
+C) Короткий:
+Hi [Name], came across [Company] and your work in [sector]. Would like to connect. [Your name]
+
+
+--- СКРИПТ 2: ПЕРВОЕ СООБЩЕНИЕ ПОСЛЕ ПРИНЯТИЯ ---
+
+Hi [Name], thanks for connecting. I've been looking at [Company] — [one specific thing: e.g. the recent round / product name / their take on X]. I'm [your role] and [one sentence: what you do or who you help]. Would you be open to a short call in the next week or two to [exchange ideas / explore if there's a fit for partnership]? [Your name]
+
+Пример (Kodezi):
+Hi Ishraq, thanks for connecting. I've been following Kodezi and the Chronos-1 / Kodezi OS direction — impressive angle on the "AI CTO" space. I'm in BD and work with dev tools companies in [region]. Would you be open to a 15-min call to see if there's a fit for collaboration? [Your name]
+
+
+--- СКРИПТ 3: FOLLOW-UP (нет ответа 3–5 дней) ---
+
+Hi [Name], just bumping this in case it got buried. No pressure — if timing's not right, we can reconnect later. Either way, I'll keep following [Company]. [Your name]
+
+С поводом:
+Hi [Name], saw [recent post / funding news / product update] — congrats. If you ever have 15 min for a quick intro call on [partnerships / BD], I'd be glad to share how we're approaching [topic]. [Your name]
+
+
+--- СКРИПТ 4: ВТОРОЙ FOLLOW-UP (7–10 дней) ---
+
+Hi [Name], one more nudge. [One sentence: new reason — e.g. we just launched X / I'll be in [city] next month]. If a short call ever makes sense, I'm happy to adapt to your calendar. [Your name]
+
+
+============================================
+Ссылки на профили (стартапы):
+HeyMilo CEO:     https://www.linkedin.com/in/sabashanragavan
+Infrastack AI:   https://www.linkedin.com/in/aykutgk
+Kodezi:          https://www.linkedin.com/in/ishraqkhann
+Lovable CEO:     https://www.linkedin.com/in/antonosika
+Lovable Co-f.:   https://www.linkedin.com/in/fabianhedin
+============================================
