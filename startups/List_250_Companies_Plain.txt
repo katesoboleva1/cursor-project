@@ -1,0 +1,260 @@
+# Список 250 компаний (простой список)
+# Копируй названия для поиска в LinkedIn, на сайтах, в job-бордах.
+
+=== ВЕНЧУРНЫЕ ФОНДЫ (1–80) ===
+Point Nine Capital
+Balderton Capital
+Index Ventures
+Accel
+Notion Capital
+Dawn Capital
+Northzone
+LocalGlobe
+Latitude
+Episode 1
+Triple Point Ventures
+DIG Ventures
+Defiant
+Expedition Growth Capital
+Seedcamp
+Cherry Ventures
+Creandum
+Project A
+HV Capital
+Stride.VC
+Mosaic Ventures
+Octopus Ventures
+Forward Partners
+Hoxton Ventures
+MMC Ventures
+Molten Ventures
+Breega
+Partech
+EQT Ventures
+Inventures
+Keen Ventures
+Capnamic
+Btov
+Earlybird
+La Famiglia
+Visionaries Club
+83North
+Felix Capital
+First Minute Capital
+Ada Ventures
+Backed
+Connect Ventures
+Fly Ventures
+Karma Ventures
+Runa Capital
+Target Global
+Atomico
+Kindred
+Passion Capital
+Speedinvest
+Revaia
+360 Capital
+Alven
+Blossom Capital
+Crankstart
+DN Capital
+Fidelity International Strategic Ventures
+Frog Capital
+Guinness Ventures
+Hambro Perks
+IQ Capital
+Lakestar
+Lightspeed Europe
+Nauta Capital
+Omers Ventures
+Outward VC
+PROfounders
+Smedvig Capital
+Talis Capital
+Tencent Europe
+Venrex
+White Star Capital
+Y Combinator
+Andreessen Horowitz
+Greylock
+Sequoia
+Bessemer Venture Partners
+General Catalyst
+NEA
+
+=== UK СТАРТАПЫ / SCALE-UP (81–130) ===
+Revolut
+Wise
+Monzo
+Synthesia
+Flo Health
+Multiverse
+Onfido
+Darktrace
+OakNorth
+Immunocore
+Deliveroo
+Babylon Health
+Checkout.com
+Hopin
+Cazoo
+Starling Bank
+Curve
+Truelayer
+GoCardless
+Improbable
+Graphcore
+BenevolentAI
+Tractable
+Lendable
+Salt Pay
+Zopa
+Marshmallow
+Codat
+Paddle
+Tessian
+Snyk
+Cera
+Gousto
+Bulb
+Farewill
+LendInvest
+Prodigy Finance
+Rapyd
+Healx
+Karma Kitchen
+What3words
+Pusher
+Thread
+Cleo
+Nutmeg
+Tide
+Form3
+Passfort
+ComplyAdvantage
+Citymapper
+Depop
+
+=== US СТАРТАПЫ / SCALE-UP (131–180) ===
+Calendly
+HubSpot
+DocuSign
+Twilio
+Snowflake
+Datadog
+ServiceTitan
+LaunchDarkly
+Toast
+Veeva
+Stripe
+Plaid
+Notion
+Airtable
+Figma
+Canva
+Miro
+Loom
+Gong
+Outreach
+Asana
+Monday.com
+Deel
+Rippling
+Brex
+Mercury
+Linear
+Vercel
+Supabase
+Retool
+Webflow
+Zapier
+Lattice
+Personio
+Remote
+Gusto
+Ramp
+Carta
+AngelList
+Product Hunt
+Faire
+Flexport
+Anduril
+Scale AI
+Anthropic
+OpenAI
+Cohere
+Runway
+Intercom
+Segment
+
+=== EU СТАРТАПЫ / SCALE-UP (181–250) ===
+N26
+Klarna
+Spotify
+iZettle
+Bolt
+Wolt
+Voi
+Trustpilot
+Pleo
+Mollie
+Adyen
+MessageBird
+Elastic
+GitLab
+Celonis
+Contentful
+Sennder
+Tier
+Flix
+Trade Republic
+Qonto
+Spendesk
+Alan
+Doctolib
+BlaBlaCar
+Dataiku
+Aircall
+Swile
+Payfit
+Ledger
+Sorare
+Criteo
+Deezer
+Sigfox
+OVHcloud
+Scaleway
+GetYourGuide
+HelloFresh
+Auto1
+WeFox
+Raisin
+Forto
+Getir
+Flink
+SumUp
+Bitpanda
+GoStudent
+Packlink
+Cabify
+Glovo
+Wallapop
+Typeform
+Factorial
+Holded
+Jobandtalent
+DocPlanner
+Brainly
+Booksy
+Mambu
+Nmbrs
+Taxfix
+Adjust
+Delivery Hero
+Zalando
+SAP
+Siemens Healthineers
+BioNTech
+UiPath
+Choco
+
