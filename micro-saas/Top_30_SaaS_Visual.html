@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Топ 30 SaaS без бюджета · ~$50/мес</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --surface: #1a1a1f;
+      --surface2: #24242b;
+      --text: #e8e6e3;
+      --text-muted: #9b9893;
+      --accent: #7c6ef6;
+      --accent2: #5dd9c8;
+      --border: #2e2e36;
+      --price: #5dd9c8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .sub {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+    }
+    .stat span { color: var(--accent2); font-weight: 500; }
+    .chart-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .chart-wrap h3 {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 48px;
+    }
+    .bar {
+      flex: 1;
+      min-width: 0;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent2) 100%);
+      border-radius: 6px 6px 0 0;
+      opacity: 0.85;
+    }
+    .bar:nth-child(3n) { opacity: 1; }
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.35rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .card-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      background: var(--surface2);
+      color: var(--accent2);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+    .card h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .card .price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--price);
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent2); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Топ 30 SaaS без бюджета</h1>
+      <p class="sub">Запуск с нуля · чек ~$50/мес</p>
+      <div class="stats">
+        <div class="stat"><span>30</span> идей</div>
+        <div class="stat"><span>$19–59</span> /мес</div>
+        <div class="stat"><span>0</span> бюджет на старт</div>
+      </div>
+    </header>
+
+    <div class="chart-wrap">
+      <h3>Распределение по ценовому диапазону</h3>
+      <div class="bars">
+        <div class="bar" style="height: 35%"></div>
+        <div class="bar" style="height: 70%"></div>
+        <div class="bar" style="height: 90%"></div>
+        <div class="bar" style="height: 60%"></div>
+        <div class="bar" style="height: 45%"></div>
+        <div class="bar" style="height: 80%"></div>
+        <div class="bar" style="height: 55%"></div>
+        <div class="bar" style="height: 75%"></div>
+        <div class="bar" style="height: 50%"></div>
+        <div class="bar" style="height: 95%"></div>
+        <div class="bar" style="height: 40%"></div>
+        <div class="bar" style="height: 65%"></div>
+      </div>
+      <div class="bar-labels">
+        <span>$9–19</span>
+        <span>$19–29</span>
+        <span>$29–49</span>
+        <span>$49+</span>
+      </div>
+    </div>
+
+    <div class="grid" id="cards"></div>
+
+    <footer>
+      Черновик · <a href="Top_30_SaaS_No_Budget_50_USD_Month_Draft.md">Markdown-документ</a>
+    </footer>
+  </div>
+
+  <script>
+    const items = [
+      { title: "Напоминания и follow-up по email/SMS", desc: "Врачи, тренеры, салоны — шаблоны сообщений.", price: "$29–49/мес" },
+      { title: "Генератор контрактов и NDA", desc: "Шаблоны под нишу, кастомизация полей, PDF.", price: "$19–39/мес" },
+      { title: "Чек-листы и онбординг для команд", desc: "Ревью, спринты, шаринг по ссылке.", price: "$29–49/мес" },
+      { title: "Агрегатор скидок по нише", desc: "Один сайт со скидками, партнёрские ссылки.", price: "~$50/мес с трафика" },
+      { title: "Калькулятор смет и гонораров", desc: "Одна профессия, сохранение, экспорт в PDF.", price: "$19–39/мес" },
+      { title: "Опросы и мини-формы для событий", desc: "Вебинары, митапы — экспорт в CSV.", price: "$29–49/мес" },
+      { title: "Трекер подписок и платежей", desc: "Куда уходят деньги, напоминания о продлении.", price: "$9–19/мес" },
+      { title: "Генератор контента под платформу", desc: "LinkedIn, Twitter, Telegram — шаблоны и хештеги.", price: "$19–39/мес" },
+      { title: "Бронирование слотов (календарь)", desc: "Консультанты, репетиторы — одна ссылка.", price: "$29–49/мес" },
+      { title: "Мини-CRM: лиды → сделка", desc: "Одна воронка для соло и микрокоманд.", price: "$39–59/мес" },
+      { title: "Хранение и шаринг паролей", desc: "До 5–10 человек, шифрование, ссылки с истечением.", price: "$29–49/мес" },
+      { title: "Генератор отчётов из таблиц", desc: "CSV/Excel → один тип отчёта → PDF.", price: "$19–39/мес" },
+      { title: "Найди дубли в списке", desc: "Email, телефоны, домены — дедупликация.", price: "$29–49/мес" },
+      { title: "Лендинг + форма под одну услугу", desc: "Шаблон, форма, уведомление в Telegram.", price: "$19–29/мес" },
+      { title: "Трекер привычек и целей", desc: "Напоминания, простые графики, PWA.", price: "$9–19/мес" },
+      { title: "NPS и опросы удовлетворённости", desc: "Виджет на сайт, дашборд статистики.", price: "$29–49/мес" },
+      { title: "Генератор сертификатов", desc: "Список имён + шаблон → PDF, отправка на email.", price: "$19–39/мес" },
+      { title: "Кто открыл письмо", desc: "Трекинг открытий и кликов, малый объём.", price: "$29–49/мес" },
+      { title: "База шаблонов документов", desc: "Одна отрасль — договоры, письма, инструкции.", price: "$19–29/мес" },
+      { title: "Калькулятор ROI по нише", desc: "Окупаемость, сценарии, экспорт.", price: "$29–49/мес" },
+      { title: "Напоминания о днях рождения", desc: "B2B, клубы — база контактов и дат.", price: "$29–39/мес" },
+      { title: "Агрегатор дедлайнов", desc: "Гранты, конкурсы, подписка на уведомления.", price: "$9–19/мес" },
+      { title: "Мини-складской учёт", desc: "Один тип товара — остатки, приход/расход.", price: "$39–49/мес" },
+      { title: "Визитка в одну ссылку", desc: "Контакты, vCard, счётчик переходов.", price: "$9–19/мес" },
+      { title: "Генератор тестов и квизов", desc: "Обучение, онбординг — авто-проверка.", price: "$29–49/мес" },
+      { title: "Очередь и талоны", desc: "Одна точка — клиника, сервис, офис.", price: "$29–39/мес" },
+      { title: "Трекер расходов по проектам", desc: "Фриланс — проекты, категории, лимиты.", price: "$19–29/мес" },
+      { title: "Отзыв за бонус", desc: "Ссылка клиенту, бонус после отзыва.", price: "$39–49/мес" },
+      { title: "Генератор КП и прайсов", desc: "Шаблоны под нишу, PDF на выходе.", price: "$29–39/мес" },
+      { title: "Дашборд подписок в одном месте", desc: "Метрики из 2–3 сервисов, простые графики.", price: "$19–29/мес" }
+    ];
+    const grid = document.getElementById('cards');
+    items.forEach((item, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-num">${i + 1}</div>
+        <h2>${item.title}</h2>
+        <p>${item.desc}</p>
+        <span class="price">${item.price}</span>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
