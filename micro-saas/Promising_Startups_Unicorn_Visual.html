@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Перспективные стартапы · Unicorn Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --unicorn-pink: #ff9fdc;
+      --unicorn-violet: #c4b5fd;
+      --unicorn-blue: #93c5fd;
+      --unicorn-mint: #99f6e4;
+      --unicorn-peach: #fecaca;
+      --unicorn-cream: #fef7f0;
+      --unicorn-dark: #2d2640;
+      --glow: rgba(255, 159, 220, 0.4);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(165deg, #1a1625 0%, #2d2640 35%, #1e1b2e 70%, #251f35 100%);
+      color: #f5f0fa;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .sparkle {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .sparkle::before, .sparkle::after {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.25;
+    }
+    .sparkle::before {
+      background: var(--unicorn-pink);
+      top: -100px;
+      right: -100px;
+    }
+    .sparkle::after {
+      background: var(--unicorn-blue);
+      bottom: -100px;
+      left: -100px;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .horn {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 0 20px var(--glow));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff9fdc 0%, #c4b5fd 40%, #93c5fd 70%, #99f6e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    .year-badge {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.35rem 0.9rem;
+      background: linear-gradient(135deg, rgba(255,159,220,0.2), rgba(196,181,253,0.2));
+      border: 1px solid rgba(255,159,220,0.4);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--unicorn-pink);
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--unicorn-mint);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(153,246,228,0.5), transparent);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 24px 24px 0 0;
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 24px 48px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,159,220,0.15);
+      border-color: rgba(255,159,220,0.2);
+    }
+    .card.ai::before { background: linear-gradient(90deg, #a78bfa, #c084fc); }
+    .card.robotics::before { background: linear-gradient(90deg, #93c5fd, #60a5fa); }
+    .card.energy::before { background: linear-gradient(90deg, #99f6e4, #2dd4bf); }
+    .card.health::before { background: linear-gradient(90deg, #f9a8d4, #f472b6); }
+    .card.fintech::before { background: linear-gradient(90deg, #fcd34d, #fbbf24); }
+    .card.enterprise::before { background: linear-gradient(90deg, #c4b5fd, #a78bfa); }
+    .card.micro::before { background: linear-gradient(90deg, #ff9fdc, #f472b6); }
+    .card.space::before { background: linear-gradient(90deg, #818cf8, #6366f1); }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+    .card .meta {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .card .meta strong { color: var(--unicorn-mint); }
+    .rainbow-bar {
+      height: 6px;
+      border-radius: 999px;
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(90deg, #ff9fdc, #c4b5fd, #93c5fd, #99f6e4, #fecaca);
+      opacity: 0.8;
+    }
+    .cta-box {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(145deg, rgba(196,181,253,0.12), rgba(147,197,253,0.08));
+      border: 1px solid rgba(196,181,253,0.25);
+      border-radius: 24px;
+      margin-top: 2rem;
+    }
+    .cta-box p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .cta-box a {
+      color: var(--unicorn-pink);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .cta-box a:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkle"></div>
+  <div class="wrap">
+    <header>
+      <div class="horn">🦄</div>
+      <h1>Перспективные стартапы</h1>
+      <p class="sub">Куда смотрят VC и куда можно зайти без бюджета</p>
+      <span class="year-badge">2025 · тренды</span>
+    </header>
+
+    <div class="rainbow-bar"></div>
+
+    <p class="section-title">Топ-направления по объёму и трендам</p>
+    <div class="grid">
+      <div class="card ai">
+        <div class="card-icon">✨</div>
+        <h2>AI & инфраструктура</h2>
+        <p>~48% всего VC в 2025. Модели, инфраструктура, AI-инструменты для вертикалей. Мега-раунды у OpenAI, Anthropic, xAI.</p>
+        <div class="meta"><strong>Объём:</strong> $226B+ в 2025 · Крупные: OpenAI, Anthropic, xAI</div>
+      </div>
+      <div class="card robotics">
+        <div class="card-icon">🤖</div>
+        <h2>Робототехника</h2>
+        <p>Сильный рост ранних раундов. FieldAI $314M Series A — один из крупнейших. Логистика, производство, сервис.</p>
+        <div class="meta"><strong>Тренд:</strong> 50+ early-stage сделок (авг 2025)</div>
+      </div>
+      <div class="card energy">
+        <div class="card-icon">⚡</div>
+        <h2>Энергия и hard tech</h2>
+        <p>Фьюжн, квант, энергоинфраструктура под дата-центры. $500B+ разрыв под питание AI — окно для новых игроков.</p>
+        <div class="meta"><strong>Ниши:</strong> Fusion, quantum, grid</div>
+      </div>
+      <div class="card space">
+        <div class="card-icon">🚀</div>
+        <h2>Космос и производство</h2>
+        <p>Сервисы и производство в космосе. 9+ сделок в одном месяце — сектор на радаре у инвесторов.</p>
+        <div class="meta"><strong>Тренд:</strong> Space services & manufacturing</div>
+      </div>
+      <div class="card health">
+        <div class="card-icon">🩺</div>
+        <h2>Healthcare & Life Sciences</h2>
+        <p>Один из лидеров по числу ранних сделок. AI-enabled диагностика, цифровое здоровье, биотех.</p>
+        <div class="meta"><strong>Роль:</strong> Лидер early-stage по активности</div>
+      </div>
+      <div class="card fintech">
+        <div class="card-icon">💳</div>
+        <h2>Fintech и финсервисы</h2>
+        <p>Платёжные системы, банкинг для малого бизнеса, embedded finance. Регуляции стимулируют инновации.</p>
+        <div class="meta"><strong>Контекст:</strong> Топ по early-stage вместе с enterprise</div>
+      </div>
+      <div class="card enterprise">
+        <div class="card-icon">🏢</div>
+        <h2>Enterprise software</h2>
+        <p>Корпоративный софт с AI. >30% ранних стартапов делают AI-enabled продукты. Интеграции, автоматизация, безопасность.</p>
+        <div class="meta"><strong>Тренд:</strong> AI внутри enterprise-решений</div>
+      </div>
+      <div class="card micro">
+        <div class="card-icon">🦄</div>
+        <h2>Micro-SaaS без бюджета</h2>
+        <p>Нишевые инструменты за $19–49/мес: контракты под нишу, чек-листы, калькуляторы, отчёты, агрегаторы. Запуск на $0.</p>
+        <div class="meta"><strong>Для кого:</strong> Соло и микрокоманды · см. Top 30 SaaS</div>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <p>Конкретные идеи и приоритеты для теста — в материалах по Top 30 SaaS.</p>
+      <a href="Top_30_SaaS_Market_Competitors_Test_Priority.md">Market & Test Priority →</a> · <a href="Top_30_SaaS_Visual.html">Визуализация топ-30 →</a>
+    </div>
+
+    <footer>
+      Данные: CB Insights, McKinsey, отраслевые отчёты 2025 · визуализация в стиле unicorn
+    </footer>
+  </div>
+</body>
+</html>
