@@ -1,5 +1,9 @@
 # План: выход на $5k/мес + релокация
 
+**Goal:** $5k/month—at least $3k from a job with relocation option; the rest from an English blog and/or micro-SaaS. **Assets:** Tg Lab, Swipy experience (fundraising, growth), PM/BD, English C1, cold outreach, content (YouTube plan, LinkedIn).
+
+---
+
 **Цель:** $5k/мес, из них минимум $3k — работа с возможностью релокации. Остальное — блог (англ) и/или микро-SaaS.
 
 **Текущие активы:** Tg Lab, опыт Swipy (fundraising, growth), PM/BD, английский C1, холодный outreach, контент (YouTube план, LinkedIn посты).
