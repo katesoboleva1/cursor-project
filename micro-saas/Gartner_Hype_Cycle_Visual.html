@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кривая хайпа Гартнера · Gartner Hype Cycle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #0f172a;
+    }
+    .sub {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+    .chart-container {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .chart-container svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .axis-label {
+      font-size: 0.8rem;
+      fill: #64748b;
+    }
+    .phase-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      fill: #0f172a;
+    }
+    .phase-desc {
+      font-size: 0.7rem;
+      fill: #64748b;
+    }
+    .curve {
+      fill: none;
+      stroke: #3b82f6;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .curve-glow {
+      fill: none;
+      stroke: #3b82f6;
+      stroke-width: 8;
+      opacity: 0.15;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .points circle { stroke: #1e40af; stroke-width: 2; fill: #fff; }
+    .points circle.active { fill: #3b82f6; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #475569;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+    .legend-dot.peak { background: #f59e0b; }
+    .legend-dot.trough { background: #64748b; }
+    .legend-dot.slope { background: #10b981; }
+    .legend-dot.plateau { background: #06b6d4; }
+    .footer {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+    }
+    .footer a { color: #3b82f6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Кривая хайпа Гартнера</h1>
+    <p class="sub">Gartner Hype Cycle — зрелость и внедрение технологии во времени</p>
+
+    <div class="chart-container">
+      <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid -->
+        <defs>
+          <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3b82f6" />
+            <stop offset="25%" stop-color="#f59e0b" />
+            <stop offset="50%" stop-color="#64748b" />
+            <stop offset="75%" stop-color="#10b981" />
+            <stop offset="100%" stop-color="#06b6d4" />
+          </linearGradient>
+        </defs>
+        <!-- Axis -->
+        <line x1="80" y1="360" x2="720" y2="360" stroke="#e2e8f0" stroke-width="1" />
+        <line x1="80" y1="60" x2="80" y2="360" stroke="#e2e8f0" stroke-width="1" />
+        <text x="400" y="395" class="axis-label" text-anchor="middle">Время →</text>
+        <text x="45" y="210" class="axis-label" text-anchor="middle" transform="rotate(-90, 45, 210)">Ожидания / Видимость</text>
+
+        <!-- Hype curve: Trigger -> Peak -> Trough -> Slope -> Plateau -->
+        <path class="curve-glow" stroke="url(#curveGrad)" d="M 90 300 C 120 280 160 100 200 70 C 240 40 280 180 320 280 C 360 320 480 220 600 160 L 720 150" />
+        <path class="curve" stroke="url(#curveGrad)" d="M 90 300 C 120 280 160 100 200 70 C 240 40 280 180 320 280 C 360 320 480 220 600 160 L 720 150" />
+
+        <!-- Phase points -->
+        <g class="points">
+          <circle cx="90" cy="300" r="6" />
+          <circle cx="200" cy="70" r="6" class="active" />
+          <circle cx="320" cy="280" r="6" />
+          <circle cx="500" cy="200" r="6" />
+          <circle cx="720" cy="150" r="6" />
+        </g>
+
+        <!-- Phase labels -->
+        <g class="phase-label">
+          <text x="90" y="325" text-anchor="middle">1. Technology Trigger</text>
+          <text x="200" y="48" text-anchor="middle">2. Peak of Inflated Expectations</text>
+          <text x="320" y="305" text-anchor="middle">3. Trough of Disillusionment</text>
+          <text x="500" y="218" text-anchor="middle">4. Slope of Enlightenment</text>
+          <text x="720" y="168" text-anchor="middle">5. Plateau of Productivity</text>
+        </g>
+        <g class="phase-desc">
+          <text x="90" y="338" text-anchor="middle">Триггер технологии</text>
+          <text x="200" y="61" text-anchor="middle">Пик завышенных ожиданий</text>
+          <text x="320" y="318" text-anchor="middle">Каньон разочарования</text>
+          <text x="500" y="231" text-anchor="middle">Подъём просвещения</text>
+          <text x="720" y="181" text-anchor="middle">Плато продуктивности</text>
+        </g>
+      </svg>
+
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot"></span> Триггер — появление технологии</span>
+        <span class="legend-item"><span class="legend-dot peak"></span> Пик — максимум хайпа</span>
+        <span class="legend-item"><span class="legend-dot trough"></span> Каньон — спад интереса</span>
+        <span class="legend-item"><span class="legend-dot slope"></span> Подъём — понимание пользы</span>
+        <span class="legend-item"><span class="legend-dot plateau"></span> Плато — массовое внедрение</span>
+      </div>
+    </div>
+
+    <p class="footer">Подробнее: <a href="Gartner_Hype_Cycle_Principles.md">Принципы кривой Гартнера</a> · Gartner Research Methodologies</p>
+  </div>
+</body>
+</html>
