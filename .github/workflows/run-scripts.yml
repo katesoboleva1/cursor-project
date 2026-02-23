@@ -1,0 +1,51 @@
+# Run scripts in the repo on push to main or manually.
+# In GitHub: Actions tab → "Run scripts" → "Run workflow".
+
+name: Run scripts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'startups/*.py'
+      - 'startups/*.html'
+  workflow_dispatch:  # Run at once from GitHub Actions tab
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: startups
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run export_founders_for_outreach.py
+        continue-on-error: true
+        run: |
+          if [ -f "List_50_Companies_Russian_Founders_International.html" ]; then
+            python3 export_founders_for_outreach.py
+          else
+            echo "Skipping: HTML file not present"
+          fi
+
+      - name: Run yc_hiring_1_50_founders.py
+        continue-on-error: true
+        run: |
+          if [ -f "yc_hiring_1_50_founders.py" ]; then
+            python3 yc_hiring_1_50_founders.py || true
+          fi
+
+      - name: Upload generated artifacts (optional)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: startups-outputs
+          path: startups/*.csv
+          if-no-files-found: ignore

@@ -15,3 +15,13 @@ python3 -m http.server 8765
 ```
 
 Открыть в браузере: http://localhost:8765/
+
+## Запуск скриптов на GitHub
+
+Скрипты из `startups/` (например, `export_founders_for_outreach.py`) можно **запускать автоматически на GitHub** при пуше или вручную:
+
+1. В репозитории на GitHub открой вкладку **Actions**.
+2. Выбери workflow **Run scripts**.
+3. Нажми **Run workflow** → **Run workflow** (запуск всех настроенных скриптов в одном запуске).
+
+Workflow срабатывает также при пуше в `main`, если менялись файлы `startups/*.py` или `startups/*.html`. Результаты (например, сгенерированные CSV) можно скачать в разделе Artifacts у завершённого запуска.
