@@ -81,6 +81,7 @@
 | Комьюнити PM/BD | Community | $30/мес |
 | Флагманский курс | Course | $150–300 |
 | Agent 1→10 | Tool / micro-SaaS | $25–40/мес |
+| Focus & sleep slots (Brain Readiness) | App / subscription | $5–15/мес |
 | EU Startup Visa Blueprint | PDF $97 | 4 ч |
 | No-Code Pitch Deck Templates | PDF $97 | 3 ч |
 | AI Startup Idea Validator | PDF $97 | 3 ч |
@@ -99,13 +100,18 @@
 - **No-code / MVP** — No-Code Pitch Deck, No-Code MVP Builder Checklist.
 - **AI / UX** — AI Startup Idea Validator.
 - **Content / audience** — Agent 1→10; LinkedIn Growth Playbook for Founders.
+- **Brain / focus / health** — Focus & sleep slots (Brain Readiness): слоты на фокус, сон, восстановление по данным с устройств.
 - **Other** — Bootstrap SaaS Revenue Calculator, Crypto Mining Setup Guide, Wellness Brand Launch Kit.
 
 ---
 
 ## 4. Raw ideas (добавлять сюда новые)
 
-- *(новые идеи — одна строка или короткий блок)*
+### Focus & sleep slots — «когда лучше фокусироваться, когда спать»
+**Что:** Продукт собирает данные (Apple Watch, сон, активность, опционально самоотчёт) и выдаёт **слоты на день**: лучшее время для фокуса, лучшее время для сна, окна для глубокой работы, когда восстанавливаться. Один скоринг (например, Brain Readiness) + 2–3 конкретных рекомендации в день — чтобы улучшить фокус и рабочее время, а не просто смотреть дашборды.  
+**Аудитория:** Оптимизаторы 28–45 с умными часами; knowledge workers, фаундеры, кто хочет один протокол вместо кучи приложений.  
+**Чек:** $5–15/мес. **Дифференциация:** не «трекер здоровья», а «когда тебе лучше думать и работать сегодня» + слоты под сон и восстановление.  
+**См. также:** `Single_Product_Idea_Health_Tracking_Plus.md`.
 
 ---
 
