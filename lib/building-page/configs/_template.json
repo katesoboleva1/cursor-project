@@ -1,0 +1,41 @@
+{
+  "$schema_note": "Скопируйте в {slug}.json, заполните building.name как в ClickHouse (refty.unified_properties_table.building). Затем: npm run building-page -- --config lib/building-page/configs/{slug}.json",
+  "version": "1.0.0",
+  "building": {
+    "name": "Exact Building Name From ClickHouse",
+    "slug": null,
+    "district_hint": "Dubai",
+    "comment": "slug=null → авто из name (a-z0-9_). Имя должно совпадать с column building."
+  },
+  "dld_match": {
+    "mode": "auto",
+    "comment": "auto = точное building + ILIKE для DLD sale/rent. Для Tower A/B см. generate_building_page.js sqlDldSaleMatch."
+  },
+  "product_ui": {
+    "invite_url": "https://refty.ai/invite?ref=YOUR_REF",
+    "early_access_slots": 4,
+    "early_unlock_minutes": [0, 30, 60, 90],
+    "ask_client_after_minutes": 120,
+    "queue_mode": "round_robin",
+    "room_chat": {
+      "enabled": true,
+      "focus_rooms": "1",
+      "invite_brokers_with_rooms_only": true
+    }
+  },
+  "outputs": {
+    "page_json": "public/building_{slug}_page.json",
+    "html_split": "public/building_{slug}_b_split.html",
+    "html_elevator": "public/building_{slug}_a_elevator.html",
+    "html_gallery": "public/building_{slug}_c_gallery.html",
+    "html_dld": "public/building_{slug}_dld.html",
+    "html_index": "public/building_{slug}_templates.html"
+  },
+  "sql": {
+    "dir": "sql/building_split_desk",
+    "listings_table": "refty.unified_properties_table",
+    "sale_deals_table": "refty.all_transactions_combined",
+    "rent_deals_table": "refty.all_rent_combined",
+    "buildings_table": "refty.all_buildings"
+  }
+}

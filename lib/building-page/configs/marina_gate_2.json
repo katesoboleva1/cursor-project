@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-07-19",
+  "building": {
+    "name": "Marina Gate 2",
+    "slug": "marina_gate_2",
+    "district_hint": "Dubai Marina",
+    "developer_display_override": "Select Group"
+  },
+  "dld_match": {
+    "mode": "auto"
+  },
+  "product_ui": {
+    "invite_url": "https://refty.ai/invite?ref=24WNXAJP",
+    "early_access_slots": 4,
+    "early_unlock_minutes": [0, 30, 60, 90],
+    "ask_client_after_minutes": 120,
+    "queue_mode": "round_robin",
+    "room_chat": {
+      "enabled": true,
+      "focus_rooms": "1",
+      "invite_brokers_with_rooms_only": true
+    }
+  },
+  "outputs": {
+    "page_json": "public/building_marina_gate_2_page.json",
+    "html_split": "public/building_marina_gate_2_b_split.html",
+    "entry_url": "/building_marina_gate_2_b_split.html"
+  },
+  "sql": {
+    "dir": "sql/building_split_desk",
+    "listings_table": "refty.unified_properties_table",
+    "sale_deals_table": "refty.all_transactions_combined",
+    "rent_deals_table": "refty.all_rent_combined",
+    "buildings_table": "refty.all_buildings"
+  },
+  "quickstart": [
+    "npm run building-page:marina-gate-2",
+    "npm run building-page:serve",
+    "open http://localhost:8080/building_marina_gate_2_b_split.html"
+  ]
+}

@@ -1,0 +1,3416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DLD · Marina Gate 2 · Refty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#07131a; --card:#0d1c24; --elev:#132830; --line:#1c3340;
+      --text:#eef6f4; --muted:#8aa3ad; --sand:#d8c3a5; --sea:#3ecfcf; --bad:#ff7a7a; --good:#5ee4a8;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font:14px/1.45 Manrope,system-ui,sans-serif; background:var(--bg); color:var(--text); }
+    
+    .hero {
+      position:relative; display:block; overflow:visible;
+      background:#041018 center/cover no-repeat;
+    }
+    .hero-inner { padding:28px 20px 22px; max-width:1400px; width:100%; margin:0 auto; }
+    .kicker { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--sand); font-weight:800; }
+    .hero h1 { margin:6px 0 0; font-family:Fraunces,serif; font-size:clamp(1.85rem,4.5vw,3rem); letter-spacing:-.03em; font-weight:800; }
+    .hero .sub { margin-top:8px; color:var(--muted); max-width:52ch; }
+    .trust-strip {
+      display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:12px;
+    }
+    .google-rating {
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:inherit;
+      padding:6px 12px; border-radius:999px; border:1px solid rgba(251,188,5,.35);
+      background:rgba(251,188,5,.1);
+    }
+    .google-rating .g-stars { color:#fbbc05; letter-spacing:1px; font-size:13px; }
+    .google-rating .g-score { font-size:12px; font-weight:750; color:var(--sand); }
+    .trust-bits {
+      display:inline-flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:12px; color:var(--muted); font-weight:650;
+    }
+    .trust-bits i { font-style:normal; opacity:.5; }
+    .trust-bits span { color:var(--sand); }
+    .metrics {
+      display:flex; flex-wrap:wrap; align-items:stretch; justify-content:flex-start;
+      gap:12px; margin-top:14px; max-width:1480px;
+    }
+    .metrics .pps, .metrics .stat {
+      flex:0 1 300px; width:300px; max-width:calc(100vw - 28px);
+      background:rgba(13,28,36,.78); border:1px solid var(--line); border-radius:12px; padding:10px 12px; backdrop-filter:blur(10px);
+    }
+    .metrics .pps.pps-flip {
+      cursor:pointer; padding:0; background:transparent; border:0; perspective:900px;
+      min-height:220px;
+    }
+    .pps-flip-inner {
+      position:relative; width:100%; height:100%; min-height:220px;
+      transition: transform .55s cubic-bezier(.2,.8,.2,1);
+      transform-style: preserve-3d;
+    }
+    .pps-flip.is-flipped .pps-flip-inner { transform: rotateY(180deg); }
+    .pps-face {
+      position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+      border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+      background:rgba(13,28,36,.88); display:flex; flex-direction:column;
+    }
+    .pps-face--back { transform: rotateY(180deg); border-color:rgba(62,207,207,.35); }
+    .pps-flip-hint {
+      margin-top:auto; padding-top:8px; font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--muted); font-weight:700; opacity:.75;
+    }
+    .pps-deals-chart { flex:1; display:flex; align-items:flex-end; margin-top:8px; min-height:72px; }
+    .pps-deals-bars {
+      display:flex; align-items:flex-end; gap:3px; width:100%; height:72px;
+    }
+    .pps-deals-bars i {
+      flex:1 1 0; min-width:0; border-radius:3px 3px 1px 1px;
+      background:linear-gradient(180deg, var(--sea), rgba(62,207,207,.35));
+      display:block;
+    }
+    .pps { color:var(--sea); }
+    .pps.pps--ask {
+      color:#f0a0a0;
+      border-color:rgba(255,122,122,.4);
+      background:rgba(255,122,122,.08);
+    }
+    .pps.pps--ask .pps-l { color:#f5b4b4; }
+    .pps.pps--compare {
+      flex:1 1 520px; width:520px; max-width:calc(100vw - 28px);
+      border:1px solid rgba(216,195,165,.28);
+      background:linear-gradient(135deg, rgba(255,122,122,.07), rgba(94,228,168,.07));
+    }
+    .pps.pps--compare .pps-face--front {
+      border-color:rgba(255,122,122,.35);
+      background:rgba(255,122,122,.06);
+    }
+    .pps.pps--compare .pps-face--back {
+      border-color:rgba(94,228,168,.35);
+      background:rgba(94,228,168,.06);
+    }
+    .pps-v--split {
+      display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+      font-size:1.25em;
+    }
+    .pps-v--split .pps-ask { color:#f0a0a0; font-weight:800; }
+    .pps-v--split .pps-dld { color:#7ddeb8; font-weight:800; }
+    .pps-v--split em {
+      font-style:normal; font-size:10px; font-weight:700; color:var(--muted); margin-left:4px;
+      display:inline-block; max-width:9em; line-height:1.15;
+    }
+    .pps-legend {
+      display:flex; gap:14px; margin-top:6px; font-size:10px; font-weight:700;
+      letter-spacing:.04em; text-transform:uppercase; color:var(--muted);
+    }
+    .pps-legend i {
+      display:inline-block; width:10px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle;
+    }
+    .pps-legend .lg-ask { color:#f0a0a0; }
+    .pps-legend .lg-ask i { background:#f0a0a0; }
+    .pps-legend .lg-dld { color:#7ddeb8; }
+    .pps-legend .lg-dld i { background:#7ddeb8; }
+    .pps-dld-go {
+      margin-left:auto; font-size:10px; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+      color:var(--sea); text-decoration:none; padding:4px 8px; border-radius:999px;
+      border:1px solid rgba(62,207,207,.35); background:rgba(62,207,207,.1);
+    }
+    .pps-dld-go:hover { background:rgba(62,207,207,.2); color:#dffcff; }
+    .pps-legend { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+    .pps-chart--dual svg { height:140px; }
+    .pps.pps--fact { color:#7ddeb8; }
+    .pps.pps--fact .pps-face--front,
+    .pps.pps--fact .pps-face--back {
+      border-color:rgba(94,228,168,.4);
+      background:rgba(94,228,168,.08);
+    }
+    .pps.pps--fact .pps-l { color:#9eebc8; }
+    .pps-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:2px; }
+    .pps-l,.stat-l { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+    .pps-drop-big {
+      font-size:15px; font-weight:900; font-variant-numeric:tabular-nums; line-height:1;
+      color:var(--sand); white-space:nowrap;
+    }
+    .pps-drop-big.pps-drop { color:var(--bad); }
+    .pps-drop-big.pps-up { color:var(--good); }
+    .pps-v,.stat-v { font-weight:800; font-variant-numeric:tabular-nums; font-size:1.45em; line-height:1.15; }
+    .pps-vs { font-size:11px; color:var(--muted); margin-top:2px; font-weight:650; line-height:1.25; }
+    .pps-chart { position:relative; margin-top:10px; flex:1 1 auto; min-height:110px; }
+    .pps-chart svg { display:block; width:100%; height:110px; overflow:visible; }
+    .pps-dates {
+      display:flex; justify-content:space-between; gap:0; margin-top:6px;
+      font-size:9px; line-height:1.1; color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600;
+    }
+    .pps-dates span { flex:1 1 0; text-align:center; overflow:hidden; white-space:nowrap; min-height:10px; }
+    .pps-dates span.is-hide { visibility:hidden; }
+    .stat-note { font-size:11px; color:var(--muted); margin-top:4px; }
+    .dld-full {
+      display:block; width:100%; margin:0; padding:0; position:relative; z-index:6;
+      border:0; border-bottom:1px solid var(--line); overflow:hidden; background:#031016;
+      cursor:pointer; font:inherit; color:inherit; text-align:left; text-decoration:none;
+    }
+    .dld-full:hover { outline:1px solid rgba(216,195,165,.35); outline-offset:-1px; }
+    .dld-full--under { border-top:1px solid var(--line); }
+    .dld-full .dld-ticker { border:0; min-height:44px; width:100%; background:#031016; pointer-events:none; }
+    
+    .dld-ticker {
+      display:flex; align-items:stretch; gap:0; flex:0 0 auto;
+      border-bottom:1px solid var(--line); background:rgba(3,16,22,.96);
+      overflow:hidden; min-height:34px;
+    }
+    .dld-ticker--rent { border-bottom:1px solid var(--line); border-top:0; margin-top:0; }
+    .dld-ticker-label {
+      flex:0 0 220px; width:220px; min-width:220px; max-width:220px; padding:0 14px; display:flex; align-items:center; justify-content:center;
+      font-size:11px; letter-spacing:.06em; text-transform:uppercase; font-weight:800;
+      color:#1a1208; background:var(--sand); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .dld-ticker--rent .dld-ticker-label { background:var(--sea); color:#031016; }
+    .dld-ticker-label--down { background:#ff7a7a !important; color:#1a0808 !important; }
+    .dld-ticker-label--up { background:#5ee4a8 !important; color:#031016 !important; }
+    .dld-ticker-viewport { flex:1; overflow:hidden; mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent); }
+    .dld-ticker-track {
+      display:inline-flex; align-items:center; gap:0; white-space:nowrap;
+      padding:8px 0; width:max-content; will-change:transform;
+    }
+    .dld-ticker--sale .dld-ticker-track { animation: dld-left 330s linear infinite; }
+    .dld-ticker--rent .dld-ticker-track { animation: dld-right 360s linear infinite; }
+    .tick-item { font-size:12px; color:var(--text); padding:0 6px; font-variant-numeric:tabular-nums; }
+    .tick-item b { color:var(--sand); font-weight:800; }
+    .dld-ticker--rent .tick-item b { color:var(--sea); }
+    .tick-vs { font-weight:800; font-size:11px; padding:2px 6px; border-radius:999px; }
+    .tick-vs--down { color:#ffb4b4; background:rgba(255,122,122,.18); }
+    .tick-vs--up { color:#9af0c8; background:rgba(94,228,168,.16); }
+    .tick-vs--flat { color:var(--muted); background:rgba(255,255,255,.06); }
+    .tick-sep { color:var(--muted); padding:0 14px; opacity:.55; font-size:10px; }
+    @keyframes dld-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes dld-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      .dld-ticker-track { animation:none !important; }
+    }
+  
+    @media (max-width:900px) {
+      .metrics .pps, .metrics .stat { flex-basis:300px; width:300px; }
+      .pps-chart svg { height:72px; }
+    }
+    @media (max-width:640px) {
+      .metrics { max-width:100%; }
+      .metrics .pps, .metrics .stat { flex:1 1 100%; width:100%; max-width:100%; }
+      .metrics .pps.pps-flip, .pps-flip-inner { min-height:240px; }
+      .pps-chart svg { height:88px; }
+      .hero-inner { padding:20px 14px 16px; }
+    }
+  
+    .wrap { max-width:1200px; margin:0 auto; padding:20px 16px 40px; }
+    .page-title { margin:0 0 4px; font-family:Fraunces,serif; font-size:clamp(1.35rem,2.5vw,1.75rem); }
+    .sub { color:var(--muted); margin:0 0 12px; }
+    .nav { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
+    .nav a, .nav button {
+      min-height:40px; padding:0 14px; border-radius:999px; border:1px solid var(--line);
+      background:var(--card); color:var(--muted); font:inherit; font-weight:700; cursor:pointer; text-decoration:none;
+      display:inline-flex; align-items:center;
+    }
+    .nav .is-on { background:var(--sand); color:#1a1208; border-color:var(--sand); }
+    .nav .is-on.rent { background:var(--sea); color:#031016; border-color:var(--sea); }
+    .panel { display:none; }
+    .panel.is-on { display:block; }
+    .chart-card {
+      margin:0 0 14px; padding:14px 16px 12px; border-radius:16px; border:1px solid var(--line);
+      background:var(--card);
+    }
+    .chart-head { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; margin-bottom:8px; }
+    .chart-k { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:800; }
+    .chart-v { font-size:1.45rem; font-weight:800; font-variant-numeric:tabular-nums; margin-top:2px; }
+    .chart-v em { font-style:normal; font-size:12px; color:var(--muted); font-weight:700; margin-left:4px; }
+    .chart-delta { font-weight:800; font-size:14px; text-align:right; }
+    .chart-delta span { display:block; font-size:11px; color:var(--muted); font-weight:650; }
+    .chart-delta--up { color:var(--good); }
+    .chart-delta--down { color:var(--bad); }
+    .chart-delta--flat { color:var(--muted); }
+    .chart-card svg { display:block; width:100%; height:auto; }
+    .chart-tip { margin-top:6px; font-size:12px; color:var(--muted); }
+    .chart-empty { padding:28px 12px; text-align:center; color:var(--muted); border:1px dashed var(--line); border-radius:14px; margin-bottom:14px; }
+    .table-wrap {
+      border:1px solid var(--line); border-radius:16px; overflow:auto; max-height:70vh;
+      background:var(--card);
+    }
+    table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap; }
+    th { position:sticky; top:0; background:#102028; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+    tr:hover td { background:var(--elev); }
+    .num { font-weight:750; }
+    .vs--down { color:var(--bad); font-weight:800; }
+    .vs--up { color:var(--good); font-weight:800; }
+    .muted { color:var(--muted); }
+    .note { margin-top:10px; font-size:12px; color:var(--muted); }
+    .dld-search {
+      margin:14px 0 12px; padding:12px 14px; border-radius:14px; border:1px solid var(--line);
+      background:var(--card); display:grid; gap:8px;
+    }
+    .dld-search-l { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:800; }
+    .dld-search-input {
+      width:100%; box-sizing:border-box; min-height:44px; padding:10px 14px; border-radius:12px;
+      border:1px solid var(--line); background:#0a141a; color:var(--text); font:inherit; font-size:14px; font-weight:650;
+    }
+    .dld-search-input:focus { outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(62,207,207,.15); }
+    .dld-search-input::placeholder { color:#5f7380; }
+    .dld-search-meta { font-size:12px; color:var(--muted); font-weight:650; }
+    .table-wrap tr.is-hide { display:none; }
+  </style>
+</head>
+<body>
+  
+  <a class="dld-full" id="dld-sale" href="#sale" title="DLD Sale">
+    <div class="dld-ticker dld-ticker--sale" aria-label="DLD sale ticker">
+    <div class="dld-ticker-label dld-ticker-label--down">DLD SALE ↓-27.9%</div>
+    <div class="dld-ticker-viewport">
+      <div class="dld-ticker-track"><span class="tick-item"><b>DLD SALE</b> · 2026-07-07 · 2BR · 3.10M AED · 2,522/sqft · <span class="tick-vs tick-vs--down">↓ -27.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-07-06 · 1BR · 3.50M AED · 4,145/sqft · <span class="tick-vs tick-vs--up">↑ +18.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-26 · 2BR · 3.10M AED · 2,576/sqft · <span class="tick-vs tick-vs--down">↓ -26.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-05 · 1BR · fl 12 · 2.08M AED · 3,358/sqft · <span class="tick-vs tick-vs--down">↓ -3.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-03 · 2BR · fl 29 · 3.55M AED · 2,883/sqft · <span class="tick-vs tick-vs--down">↓ -17.5% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-05-12 · 1BR · fl 10 · 1.55M AED · 2,508/sqft · <span class="tick-vs tick-vs--down">↓ -28.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-03-10 · 1BR · fl 16 · 2.60M AED · 3,142/sqft · <span class="tick-vs tick-vs--down">↓ -10.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-25 · 3BR · 5.65M AED · 3,453/sqft · <span class="tick-vs tick-vs--down">↓ -1.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-18 · 1BR · 3.15M AED · 4,089/sqft · <span class="tick-vs tick-vs--up">↑ +17% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-18 · 1BR · 2.44M AED · 2,938/sqft · <span class="tick-vs tick-vs--down">↓ -16% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-02-12 · 2BR · fl 11 · #1108 · 3.20M AED · 2,803/sqft · <span class="tick-vs tick-vs--down">↓ -19.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-28 · 2BR · fl 42 · #4210 · 3.67M AED · 3,496/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-15 · 2BR · fl 39 · #3910 · 3.60M AED · 3,424/sqft · <span class="tick-vs tick-vs--down">↓ -2.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-06 · 1BR · fl 56 · #5608 · 2.15M AED · 2,999/sqft · <span class="tick-vs tick-vs--down">↓ -14.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-06 · 1BR · 29,966 AED · 39/sqft · <span class="tick-vs tick-vs--down">↓ -98.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-26 · 1BR · fl 59 · #5902 · 3.15M AED · 4,842/sqft · <span class="tick-vs tick-vs--up">↑ +38.5% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-19 · 3BR · fl 46 · #4601 · 7.10M AED · 3,564/sqft · <span class="tick-vs tick-vs--up">↑ +1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-16 · 3BR · fl 15 · #1501 · 7.58M AED · 4,036/sqft · <span class="tick-vs tick-vs--up">↑ +15.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-15 · 3BR · fl 31 · #3102 · 5.70M AED · 4,121/sqft · <span class="tick-vs tick-vs--up">↑ +17.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-11-13 · 1BR · fl 17 · #1705 · 2.45M AED · 3,403/sqft · <span class="tick-vs tick-vs--down">↓ -2.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-11-12 · 1BR · fl 17 · #1711 · 2.77M AED · 3,881/sqft · <span class="tick-vs tick-vs--up">↑ +11% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-10-30 · 3BR · fl 11 · #1103 · 5.00M AED · 2,659/sqft · <span class="tick-vs tick-vs--down">↓ -23.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-10-09 · 1BR · fl 37 · #3702 · 3.00M AED · 4,609/sqft · <span class="tick-vs tick-vs--up">↑ +31.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-29 · 3BR · fl 11 · #1103 · 7.30M AED · 3,882/sqft · <span class="tick-vs tick-vs--up">↑ +11% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-17 · 1BR · fl 19 · #1904 · 2.60M AED · 3,636/sqft · <span class="tick-vs tick-vs--up">↑ +4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-16 · 2BR · fl 48 · #4810 · 2.60M AED · 2,476/sqft · <span class="tick-vs tick-vs--down">↓ -29.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-16 · 2BR · fl 42 · #4210 · 2.60M AED · 2,473/sqft · <span class="tick-vs tick-vs--down">↓ -29.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-15 · 3BR · fl 11 · #1101 · 7.40M AED · 3,943/sqft · <span class="tick-vs tick-vs--up">↑ +12.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-26 · 2BR · fl 29 · #2901 · 4.15M AED · 3,623/sqft · <span class="tick-vs tick-vs--up">↑ +3.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-20 · 1BR · fl 35 · #3503 · 2.50M AED · 3,842/sqft · <span class="tick-vs tick-vs--up">↑ +9.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-20 · 1BR · fl 35 · #3502 · 2.45M AED · 3,764/sqft · <span class="tick-vs tick-vs--up">↑ +7.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-21 · 2BR · fl 56 · #5606 · 3.40M AED · 2,983/sqft · <span class="tick-vs tick-vs--down">↓ -14.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-21 · 1BR · fl 25 · #2505 · 2.52M AED · 3,490/sqft · <span class="tick-vs tick-vs--down">↓ -0.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-14 · 3BR · fl 47 · #4704 · 6.55M AED · 4,105/sqft · <span class="tick-vs tick-vs--up">↑ +17.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-09 · 1BR · fl 32 · #3211 · 2.75M AED · 3,811/sqft · <span class="tick-vs tick-vs--up">↑ +9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-04 · 1BR · 56,337 AED · 74/sqft · <span class="tick-vs tick-vs--down">↓ -97.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-01 · 3BR · fl 21 · #2101 · 10.20M AED · 5,127/sqft · <span class="tick-vs tick-vs--up">↑ +46.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-01 · 3BR · fl 50 · #5004 · 5.97M AED · 3,749/sqft · <span class="tick-vs tick-vs--up">↑ +7.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-16 · 3BR · fl 53 · #5301 · 6.80M AED · 4,269/sqft · <span class="tick-vs tick-vs--up">↑ +22.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-03 · 2BR · fl 20 · #2006 · 3.25M AED · 2,846/sqft · <span class="tick-vs tick-vs--down">↓ -18.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-02 · 3BR · fl 26 · #2602 · 5.50M AED · 3,976/sqft · <span class="tick-vs tick-vs--up">↑ +13.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-29 · 1BR · fl 60 · #6002 · 3.10M AED · 4,774/sqft · <span class="tick-vs tick-vs--up">↑ +36.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-28 · 2BR · fl 40 · #4005 · 3.48M AED · 3,317/sqft · <span class="tick-vs tick-vs--down">↓ -5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-21 · 1BR · fl 32 · #3208 · 2.00M AED · 2,782/sqft · <span class="tick-vs tick-vs--down">↓ -20.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-12 · 1BR · fl 17 · #1707 · 1.93M AED · 3,366/sqft · <span class="tick-vs tick-vs--down">↓ -3.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-24 · 3BR · fl 38 · #3804 · 6.75M AED · 4,230/sqft · <span class="tick-vs tick-vs--up">↑ +21% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-24 · 2BR · fl 19 · #1903 · 4.10M AED · 3,543/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-21 · 1BR · fl 48 · #4807 · 2.30M AED · 3,205/sqft · <span class="tick-vs tick-vs--down">↓ -8.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-07-07 · 2BR · 3.10M AED · 2,522/sqft · <span class="tick-vs tick-vs--down">↓ -27.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-07-06 · 1BR · 3.50M AED · 4,145/sqft · <span class="tick-vs tick-vs--up">↑ +18.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-26 · 2BR · 3.10M AED · 2,576/sqft · <span class="tick-vs tick-vs--down">↓ -26.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-05 · 1BR · fl 12 · 2.08M AED · 3,358/sqft · <span class="tick-vs tick-vs--down">↓ -3.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-06-03 · 2BR · fl 29 · 3.55M AED · 2,883/sqft · <span class="tick-vs tick-vs--down">↓ -17.5% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-05-12 · 1BR · fl 10 · 1.55M AED · 2,508/sqft · <span class="tick-vs tick-vs--down">↓ -28.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-03-10 · 1BR · fl 16 · 2.60M AED · 3,142/sqft · <span class="tick-vs tick-vs--down">↓ -10.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-25 · 3BR · 5.65M AED · 3,453/sqft · <span class="tick-vs tick-vs--down">↓ -1.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-18 · 1BR · 3.15M AED · 4,089/sqft · <span class="tick-vs tick-vs--up">↑ +17% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SALE</b> · 2026-02-18 · 1BR · 2.44M AED · 2,938/sqft · <span class="tick-vs tick-vs--down">↓ -16% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-02-12 · 2BR · fl 11 · #1108 · 3.20M AED · 2,803/sqft · <span class="tick-vs tick-vs--down">↓ -19.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-28 · 2BR · fl 42 · #4210 · 3.67M AED · 3,496/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-15 · 2BR · fl 39 · #3910 · 3.60M AED · 3,424/sqft · <span class="tick-vs tick-vs--down">↓ -2.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-06 · 1BR · fl 56 · #5608 · 2.15M AED · 2,999/sqft · <span class="tick-vs tick-vs--down">↓ -14.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2026-01-06 · 1BR · 29,966 AED · 39/sqft · <span class="tick-vs tick-vs--down">↓ -98.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-26 · 1BR · fl 59 · #5902 · 3.15M AED · 4,842/sqft · <span class="tick-vs tick-vs--up">↑ +38.5% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-19 · 3BR · fl 46 · #4601 · 7.10M AED · 3,564/sqft · <span class="tick-vs tick-vs--up">↑ +1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-16 · 3BR · fl 15 · #1501 · 7.58M AED · 4,036/sqft · <span class="tick-vs tick-vs--up">↑ +15.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-12-15 · 3BR · fl 31 · #3102 · 5.70M AED · 4,121/sqft · <span class="tick-vs tick-vs--up">↑ +17.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-11-13 · 1BR · fl 17 · #1705 · 2.45M AED · 3,403/sqft · <span class="tick-vs tick-vs--down">↓ -2.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-11-12 · 1BR · fl 17 · #1711 · 2.77M AED · 3,881/sqft · <span class="tick-vs tick-vs--up">↑ +11% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-10-30 · 3BR · fl 11 · #1103 · 5.00M AED · 2,659/sqft · <span class="tick-vs tick-vs--down">↓ -23.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-10-09 · 1BR · fl 37 · #3702 · 3.00M AED · 4,609/sqft · <span class="tick-vs tick-vs--up">↑ +31.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-29 · 3BR · fl 11 · #1103 · 7.30M AED · 3,882/sqft · <span class="tick-vs tick-vs--up">↑ +11% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-17 · 1BR · fl 19 · #1904 · 2.60M AED · 3,636/sqft · <span class="tick-vs tick-vs--up">↑ +4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-16 · 2BR · fl 48 · #4810 · 2.60M AED · 2,476/sqft · <span class="tick-vs tick-vs--down">↓ -29.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-16 · 2BR · fl 42 · #4210 · 2.60M AED · 2,473/sqft · <span class="tick-vs tick-vs--down">↓ -29.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-09-15 · 3BR · fl 11 · #1101 · 7.40M AED · 3,943/sqft · <span class="tick-vs tick-vs--up">↑ +12.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-26 · 2BR · fl 29 · #2901 · 4.15M AED · 3,623/sqft · <span class="tick-vs tick-vs--up">↑ +3.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-20 · 1BR · fl 35 · #3503 · 2.50M AED · 3,842/sqft · <span class="tick-vs tick-vs--up">↑ +9.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-08-20 · 1BR · fl 35 · #3502 · 2.45M AED · 3,764/sqft · <span class="tick-vs tick-vs--up">↑ +7.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-21 · 2BR · fl 56 · #5606 · 3.40M AED · 2,983/sqft · <span class="tick-vs tick-vs--down">↓ -14.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-21 · 1BR · fl 25 · #2505 · 2.52M AED · 3,490/sqft · <span class="tick-vs tick-vs--down">↓ -0.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-14 · 3BR · fl 47 · #4704 · 6.55M AED · 4,105/sqft · <span class="tick-vs tick-vs--up">↑ +17.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-09 · 1BR · fl 32 · #3211 · 2.75M AED · 3,811/sqft · <span class="tick-vs tick-vs--up">↑ +9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-04 · 1BR · 56,337 AED · 74/sqft · <span class="tick-vs tick-vs--down">↓ -97.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-01 · 3BR · fl 21 · #2101 · 10.20M AED · 5,127/sqft · <span class="tick-vs tick-vs--up">↑ +46.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-07-01 · 3BR · fl 50 · #5004 · 5.97M AED · 3,749/sqft · <span class="tick-vs tick-vs--up">↑ +7.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-16 · 3BR · fl 53 · #5301 · 6.80M AED · 4,269/sqft · <span class="tick-vs tick-vs--up">↑ +22.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-03 · 2BR · fl 20 · #2006 · 3.25M AED · 2,846/sqft · <span class="tick-vs tick-vs--down">↓ -18.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-06-02 · 3BR · fl 26 · #2602 · 5.50M AED · 3,976/sqft · <span class="tick-vs tick-vs--up">↑ +13.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-29 · 1BR · fl 60 · #6002 · 3.10M AED · 4,774/sqft · <span class="tick-vs tick-vs--up">↑ +36.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-28 · 2BR · fl 40 · #4005 · 3.48M AED · 3,317/sqft · <span class="tick-vs tick-vs--down">↓ -5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-21 · 1BR · fl 32 · #3208 · 2.00M AED · 2,782/sqft · <span class="tick-vs tick-vs--down">↓ -20.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-05-12 · 1BR · fl 17 · #1707 · 1.93M AED · 3,366/sqft · <span class="tick-vs tick-vs--down">↓ -3.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-24 · 3BR · fl 38 · #3804 · 6.75M AED · 4,230/sqft · <span class="tick-vs tick-vs--up">↑ +21% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-24 · 2BR · fl 19 · #1903 · 4.10M AED · 3,543/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD SELL</b> · 2025-04-21 · 1BR · fl 48 · #4807 · 2.30M AED · 3,205/sqft · <span class="tick-vs tick-vs--down">↓ -8.3% vs med</span></span></div>
+    </div>
+  </div>
+  </a>
+  <header class="hero" style="background-image:linear-gradient(180deg,rgba(7,19,26,.2),rgba(7,19,26,.94) 55%, #07131a),url('https://static.shared.propertyfinder.ae/media/images/listing/01K2ETPMZ0H58XWCXK4NJHKKXW/06a49323-dba7-46eb-b095-e2c51f648ec7/1312x894.jpg');">
+    <div class="hero-inner">
+      <div class="kicker">DLD · Dubai Marina</div>
+      <h1>Marina Gate 2</h1>
+      <div class="trust-strip">
+        <a class="google-rating" href="https://www.google.com/maps/place/Marina+Gate+towers/@25.0867418,55.1478102,17z/data=!3m1!4b1!4m6!3m5!1s0x3e5f6b50eb3b777f:0xba1119c81e489026!8m2!3d25.0867418!4d55.1478102!16s%2Fg%2F11bxg3ddvf" target="_blank" rel="noopener noreferrer" title="Open on Google Maps"><span class="g-stars" aria-hidden="true">★★★★★</span><span class="g-score">4.6 · 254 Google reviews</span></a>
+        <div class="trust-bits"><span>Select Group</span><i>·</i><span>519 units</span><i>·</i><span>~7y</span></div>
+      </div>
+      <div class="metrics">
+        <div class="pps pps-flip pps--compare" data-pps="compare-sale" role="button" tabindex="0" title="Нажми — Ask vs DLD / deals · listings count">
+    <div class="pps-flip-inner">
+      <div class="pps-face pps-face--front">
+        
+      <div class="pps-top">
+        <div class="pps-l">Ask vs DLD · sale · AED/sqft</div>
+        <span class="pps-drop-big pps-up">ask -13.5% vs DLD · DLD выше ask</span>
+      </div>
+      <div class="pps-v pps-v--split">
+        <span class="pps-ask">3,587 <em>ask AED/sqft</em></span>
+        <span class="pps-dld">4,145 <em>DLD AED/sqft</em></span>
+      </div>
+      <div class="pps-vs">цена за фут · 51 listings · 2 DLD deals/mo · 12m 104 deals</div>
+      <div class="pps-legend" aria-hidden="true">
+        <span class="lg-ask"><i></i>Ask listing AED/sqft</span>
+        <span class="lg-dld"><i></i>DLD Fact AED/sqft</span>
+        
+      </div>
+      <div class="pps-chart pps-chart--dual">
+        <svg viewBox="0 0 420 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-label="sale ask vs DLD AED/sqft">
+        <defs><linearGradient id="dualAsk-sale" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0a0a0" stop-opacity=".3"/><stop offset="100%" stop-color="#f0a0a0" stop-opacity="0"/></linearGradient><linearGradient id="dualDld-sale" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7ddeb8" stop-opacity=".3"/><stop offset="100%" stop-color="#7ddeb8" stop-opacity="0"/></linearGradient></defs><line x1="2" y1="81.0" x2="376.0" y2="81.0" stroke="rgba(216,195,165,.55)" stroke-width="1" stroke-dasharray="3 3" /><text x="378.0" y="83.5" fill="#d8c3a5" font-size="7" font-weight="700">med 3.76k</text><path d="M221.2,140.0 L221.2,86.6 L234.1,60.3 L247.0,73.9 L259.9,70.3 L272.8,80.8 L285.7,69.2 L298.6,65.5 L311.5,76.8 L324.4,71.4 L337.3,91.2 L350.2,80.4 L363.1,87.9 L376.0,87.4 L376.0,140.0 Z" fill="url(#dualAsk-sale)" opacity=".35"/><polyline fill="none" stroke="#f0a0a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="221.2,86.6 234.1,60.3 247.0,73.9 259.9,70.3 272.8,80.8 285.7,69.2 298.6,65.5 311.5,76.8 324.4,71.4 337.3,91.2 350.2,80.4 363.1,87.9 376.0,87.4" /><circle cx="221.2" cy="86.6" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="221.2" y="77.6" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">3.61k</text><circle cx="234.1" cy="60.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="247.0" cy="73.9" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="247.0" y="84.9" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">3.96k</text><circle cx="259.9" cy="70.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="272.8" cy="80.8" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="272.8" y="71.8" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">3.77k</text><circle cx="285.7" cy="69.2" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="298.6" cy="65.5" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="298.6" y="76.5" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">4.19k</text><circle cx="311.5" cy="76.8" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="324.4" cy="71.4" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="324.4" y="82.4" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">4.03k</text><circle cx="337.3" cy="91.2" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="350.2" cy="80.4" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="350.2" y="71.4" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">3.78k</text><circle cx="363.1" cy="87.9" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="376.0" cy="87.4" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="78.4" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">3.59k</text><path d="M2.0,140.0 L2.0,89.0 L14.9,68.1 L27.8,77.5 L40.7,103.1 L53.6,61.6 L66.5,90.1 L79.4,115.5 L92.3,102.8 L105.2,64.3 L118.1,90.9 L131.0,88.1 L143.9,89.7 L156.8,80.9 L169.7,77.5 L182.6,97.9 L195.4,95.4 L208.3,73.3 L221.2,81.5 L234.1,81.0 L247.0,85.6 L259.9,50.5 L272.8,76.8 L285.7,68.1 L298.6,93.3 L311.5,92.2 L324.4,103.5 L350.2,126.4 L363.1,112.8 L376.0,67.2 L376.0,140.0 Z" fill="url(#dualDld-sale)" opacity=".35"/><polyline fill="none" stroke="#7ddeb8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,89.0 14.9,68.1 27.8,77.5 40.7,103.1 53.6,61.6 66.5,90.1 79.4,115.5 92.3,102.8 105.2,64.3 118.1,90.9 131.0,88.1 143.9,89.7 156.8,80.9 169.7,77.5 182.6,97.9 195.4,95.4 208.3,73.3 221.2,81.5 234.1,81.0 247.0,85.6 259.9,50.5 272.8,76.8 285.7,68.1 298.6,93.3 311.5,92.2 324.4,103.5 350.2,126.4 363.1,112.8 376.0,67.2" /><circle cx="2.0" cy="89.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="80.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.54k</text><circle cx="14.9" cy="68.1" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="27.8" cy="77.5" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="27.8" y="68.5" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.86k</text><circle cx="40.7" cy="103.1" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="53.6" cy="61.6" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="53.6" y="72.6" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4.3k</text><circle cx="66.5" cy="90.1" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="79.4" cy="115.5" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="79.4" y="106.5" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">2.81k</text><circle cx="92.3" cy="102.8" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="105.2" cy="64.3" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="105.2" y="75.3" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4.23k</text><circle cx="118.1" cy="90.9" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="131.0" cy="88.1" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="131.0" y="79.1" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.57k</text><circle cx="143.9" cy="89.7" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="156.8" cy="80.9" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="156.8" y="71.9" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.77k</text><circle cx="169.7" cy="77.5" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="182.6" cy="97.9" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="182.6" y="88.9" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.29k</text><circle cx="195.4" cy="95.4" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="208.3" cy="73.3" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="208.3" y="84.3" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.98k</text><circle cx="221.2" cy="81.5" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="234.1" cy="81.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="234.1" y="72.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.76k</text><circle cx="247.0" cy="85.6" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="259.9" cy="50.5" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="259.9" y="61.5" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4.61k</text><circle cx="272.8" cy="76.8" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="285.7" cy="68.1" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="285.7" y="79.1" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4.12k</text><circle cx="298.6" cy="93.3" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="311.5" cy="92.2" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="311.5" y="83.2" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3.45k</text><circle cx="324.4" cy="103.5" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="350.2" cy="126.4" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="350.2" y="117.4" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">2.51k</text><circle cx="363.1" cy="112.8" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="376.0" cy="67.2" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="78.2" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4.14k</text>
+      </svg>
+      </div>
+      <div class="pps-dates" aria-hidden="true"><span class="" title="2024-02">Feb</span><span class="is-hide" title="2024-03"></span><span class="is-hide" title="2024-04"></span><span class="is-hide" title="2024-05"></span><span class="is-hide" title="2024-06"></span><span class="" title="2024-07">Jul</span><span class="is-hide" title="2024-08"></span><span class="is-hide" title="2024-09"></span><span class="is-hide" title="2024-10"></span><span class="is-hide" title="2024-11"></span><span class="" title="2024-12">Dec</span><span class="is-hide" title="2025-01"></span><span class="is-hide" title="2025-02"></span><span class="is-hide" title="2025-03"></span><span class="is-hide" title="2025-04"></span><span class="" title="2025-05">May</span><span class="is-hide" title="2025-06"></span><span class="is-hide" title="2025-07"></span><span class="is-hide" title="2025-08"></span><span class="is-hide" title="2025-09"></span><span class="" title="2025-10">Oct</span><span class="is-hide" title="2025-11"></span><span class="is-hide" title="2025-12"></span><span class="is-hide" title="2026-01"></span><span class="is-hide" title="2026-02"></span><span class="" title="2026-03">Mar</span><span class="is-hide" title="2026-04"></span><span class="is-hide" title="2026-05"></span><span class="is-hide" title="2026-06"></span><span class="" title="2026-07">Jul</span></div>
+        <div class="pps-flip-hint">↻ deals / listings</div>
+      </div>
+      <div class="pps-face pps-face--back">
+        <div class="pps-top">
+          <div class="pps-l">DLD deals / asking sale listing</div>
+          <span class="pps-drop-big">2 / 51</span>
+        </div>
+        <div class="pps-v pps-v--split">
+          <span class="pps-ask">51 <em>сейчас на продажу</em></span>
+          <span class="pps-dld">2 <em>DLD deals/mo</em></span>
+        </div>
+        <div class="pps-vs">51 предложений сейчас · 51 unique permit · 2 DLD/mo · 12m 104 deals · <span style="opacity:.85">график — раздельный масштаб</span></div>
+        <div class="pps-legend" aria-hidden="true">
+          <span class="lg-ask"><i></i>Ask listings (сейчас 51)</span>
+          <span class="lg-dld"><i></i>DLD deals / mo</span>
+          
+        </div>
+        <div class="pps-chart pps-chart--dual">
+          <svg viewBox="0 0 420 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-label="sale DLD deals vs ask listings count">
+        <defs><linearGradient id="dualAskN-sale" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0a0a0" stop-opacity=".3"/><stop offset="100%" stop-color="#f0a0a0" stop-opacity="0"/></linearGradient><linearGradient id="dualFactN-sale" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7ddeb8" stop-opacity=".3"/><stop offset="100%" stop-color="#7ddeb8" stop-opacity="0"/></linearGradient></defs><path d="M2.0,140.0 L2.0,134.4 L33.2,97.2 L64.3,88.9 L95.5,99.1 L126.7,88.9 L157.8,94.5 L189.0,84.2 L220.2,76.8 L251.3,107.5 L282.5,94.5 L313.7,96.3 L344.8,34.0 L376.0,92.6 L376.0,140.0 Z" fill="url(#dualAskN-sale)" opacity=".35"/><polyline fill="none" stroke="#f0a0a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,134.4 33.2,97.2 64.3,88.9 95.5,99.1 126.7,88.9 157.8,94.5 189.0,84.2 220.2,76.8 251.3,107.5 282.5,94.5 313.7,96.3 344.8,34.0 376.0,92.6" /><circle cx="2.0" cy="134.4" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="125.4" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">6</text><circle cx="33.2" cy="97.2" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="64.3" cy="88.9" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="79.9" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">55</text><circle cx="95.5" cy="99.1" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="126.7" cy="88.9" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="79.9" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">55</text><circle cx="157.8" cy="94.5" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="189.0" cy="84.2" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="75.2" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">60</text><circle cx="220.2" cy="76.8" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="251.3" cy="107.5" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="98.5" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">35</text><circle cx="282.5" cy="94.5" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="313.7" cy="96.3" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="87.3" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">47</text><circle cx="344.8" cy="34.0" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="376.0" cy="92.6" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="83.6" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">51</text><path d="M2.0,140.0 L2.0,100.7 L33.2,81.0 L64.3,41.7 L95.5,100.7 L126.7,100.7 L157.8,61.3 L189.0,61.3 L220.2,61.3 L251.3,120.3 L251.3,140.0 Z" fill="url(#dualFactN-sale)" opacity=".35"/><polyline fill="none" stroke="#7ddeb8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,100.7 33.2,81.0 64.3,41.7 95.5,100.7 126.7,100.7 157.8,61.3 189.0,61.3 220.2,61.3 251.3,120.3" /><circle cx="2.0" cy="100.7" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="91.7" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">2</text><circle cx="33.2" cy="81.0" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="64.3" cy="41.7" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="52.7" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">5</text><circle cx="95.5" cy="100.7" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="126.7" cy="100.7" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="91.7" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">2</text><circle cx="157.8" cy="61.3" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="189.0" cy="61.3" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="72.3" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">4</text><circle cx="220.2" cy="61.3" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="251.3" cy="120.3" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="111.3" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">1</text><path d="M313.7,140.0 L313.7,120.3 L344.8,81.0 L376.0,100.7 L376.0,140.0 Z" fill="url(#dualFactN-sale)" opacity=".35"/><polyline fill="none" stroke="#7ddeb8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="313.7,120.3 344.8,81.0 376.0,100.7" /><circle cx="313.7" cy="120.3" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="111.3" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">1</text><circle cx="344.8" cy="81.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="344.8" y="72.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">3</text><circle cx="376.0" cy="100.7" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="91.7" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">2</text>
+      </svg>
+        </div>
+        <div class="pps-dates" aria-hidden="true"><span class="" title="2025-07">Jul</span><span class="is-hide" title="2025-08"></span><span class="is-hide" title="2025-09"></span><span class="" title="2025-10">Oct</span><span class="is-hide" title="2025-11"></span><span class="is-hide" title="2025-12"></span><span class="" title="2026-01">Jan</span><span class="is-hide" title="2026-02"></span><span class="is-hide" title="2026-03"></span><span class="" title="2026-04">Apr</span><span class="is-hide" title="2026-05"></span><span class="is-hide" title="2026-06"></span><span class="" title="2026-07">Jul</span></div>
+        <div class="pps-flip-hint">↻ AED/sqft</div>
+      </div>
+    </div>
+  </div>
+        <div class="pps pps-flip pps--compare" data-pps="compare-rent" role="button" tabindex="0" title="Нажми — Ejari / ask counts · AED/sqft">
+    <div class="pps-flip-inner">
+      <div class="pps-face pps-face--front">
+        <div class="pps-top">
+          <div class="pps-l">Ejari fact deals / asking rent listing</div>
+          <span class="pps-drop-big">15 / 103</span>
+        </div>
+        <div class="pps-v pps-v--split">
+          <span class="pps-ask">103 <em>listings</em></span>
+          <span class="pps-dld">101 <em>permits</em></span>
+        </div>
+        <div class="pps-vs">103 предложений · 101 unique permit_number · 264 long-term contracts · 15 Ejari/mo</div>
+        <div class="pps-legend" aria-hidden="true">
+          <span class="lg-ask"><i></i>Asking rent listing</span>
+          <span class="lg-dld"><i></i>Ejari fact deals</span>
+          
+        </div>
+        <div class="pps-chart pps-chart--dual">
+          <svg viewBox="0 0 420 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-label="Ejari deals vs asking rent listing count">
+        <defs><linearGradient id="dualAskN-rent" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0a0a0" stop-opacity=".3"/><stop offset="100%" stop-color="#f0a0a0" stop-opacity="0"/></linearGradient><linearGradient id="dualFactN-rent" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7ddeb8" stop-opacity=".3"/><stop offset="100%" stop-color="#7ddeb8" stop-opacity="0"/></linearGradient></defs><path d="M2.0,140.0 L2.0,129.0 L33.2,99.8 L64.3,90.9 L95.5,94.0 L126.7,96.7 L157.8,100.3 L189.0,70.0 L220.2,64.3 L251.3,92.0 L282.5,77.9 L313.7,105.0 L344.8,33.5 L376.0,86.2 L376.0,140.0 Z" fill="url(#dualAskN-rent)" opacity=".35"/><polyline fill="none" stroke="#f0a0a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,129.0 33.2,99.8 64.3,90.9 95.5,94.0 126.7,96.7 157.8,100.3 189.0,70.0 220.2,64.3 251.3,92.0 282.5,77.9 313.7,105.0 344.8,33.5 376.0,86.2" /><circle cx="2.0" cy="129.0" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="120.0" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">21</text><circle cx="33.2" cy="99.8" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="64.3" cy="90.9" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="81.9" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">94</text><circle cx="95.5" cy="94.0" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="126.7" cy="96.7" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="87.7" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">83</text><circle cx="157.8" cy="100.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="189.0" cy="70.0" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="81.0" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">134</text><circle cx="220.2" cy="64.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="251.3" cy="92.0" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="83.0" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">92</text><circle cx="282.5" cy="77.9" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="313.7" cy="105.0" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="96.0" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">67</text><circle cx="344.8" cy="33.5" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="376.0" cy="86.2" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="77.2" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">103</text><path d="M2.0,140.0 L2.0,115.0 L33.2,94.6 L64.3,47.0 L95.5,50.4 L126.7,64.0 L157.8,81.0 L189.0,64.0 L220.2,33.4 L251.3,81.0 L282.5,128.6 L313.7,94.6 L344.8,98.0 L376.0,91.2 L376.0,140.0 Z" fill="url(#dualFactN-rent)" opacity=".35"/><polyline fill="none" stroke="#7ddeb8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,115.0 33.2,94.6 64.3,47.0 95.5,50.4 126.7,64.0 157.8,81.0 189.0,64.0 220.2,33.4 251.3,81.0 282.5,128.6 313.7,94.6 344.8,98.0 376.0,91.2" /><circle cx="2.0" cy="115.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="106.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">8</text><circle cx="33.2" cy="94.6" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="64.3" cy="47.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="58.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">28</text><circle cx="95.5" cy="50.4" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="126.7" cy="64.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="75.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">23</text><circle cx="157.8" cy="81.0" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="189.0" cy="64.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="75.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">23</text><circle cx="220.2" cy="33.4" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="251.3" cy="81.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="72.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">18</text><circle cx="282.5" cy="128.6" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="313.7" cy="94.6" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="85.6" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">14</text><circle cx="344.8" cy="98.0" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="376.0" cy="91.2" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="82.2" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">15</text>
+      </svg>
+        </div>
+        <div class="pps-dates" aria-hidden="true"><span class="" title="2025-07">Jul</span><span class="is-hide" title="2025-08"></span><span class="is-hide" title="2025-09"></span><span class="" title="2025-10">Oct</span><span class="is-hide" title="2025-11"></span><span class="is-hide" title="2025-12"></span><span class="" title="2026-01">Jan</span><span class="is-hide" title="2026-02"></span><span class="is-hide" title="2026-03"></span><span class="" title="2026-04">Apr</span><span class="is-hide" title="2026-05"></span><span class="is-hide" title="2026-06"></span><span class="" title="2026-07">Jul</span></div>
+        <div class="pps-flip-hint">↻ AED/sqft</div>
+      </div>
+      <div class="pps-face pps-face--back">
+        
+      <div class="pps-top">
+        <div class="pps-l">Ask vs Ejari · rent · AED/sqft</div>
+        <span class="pps-drop-big pps-drop">ask +27.7% vs Ejari · Ejari ниже ask</span>
+      </div>
+      <div class="pps-v pps-v--split">
+        <span class="pps-ask">180 <em>ask AED/sqft</em></span>
+        <span class="pps-dld">141 <em>Ejari AED/sqft</em></span>
+      </div>
+      <div class="pps-vs">цена за фут · 103 listings · 15 Ejari deals/mo · 12m 215 deals</div>
+      <div class="pps-legend" aria-hidden="true">
+        <span class="lg-ask"><i></i>Ask listing AED/sqft</span>
+        <span class="lg-dld"><i></i>Ejari Fact AED/sqft</span>
+        
+      </div>
+      <div class="pps-chart pps-chart--dual">
+        <svg viewBox="0 0 420 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-label="rent ask vs Ejari AED/sqft">
+        <defs><linearGradient id="dualAsk-rent" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0a0a0" stop-opacity=".3"/><stop offset="100%" stop-color="#f0a0a0" stop-opacity="0"/></linearGradient><linearGradient id="dualDld-rent" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7ddeb8" stop-opacity=".3"/><stop offset="100%" stop-color="#7ddeb8" stop-opacity="0"/></linearGradient></defs><line x1="2" y1="81.0" x2="376.0" y2="81.0" stroke="rgba(216,195,165,.55)" stroke-width="1" stroke-dasharray="3 3" /><text x="378.0" y="83.5" fill="#d8c3a5" font-size="7" font-weight="700">med 185</text><path d="M2.0,140.0 L2.0,51.1 L33.2,52.1 L64.3,51.1 L95.5,57.3 L126.7,47.0 L157.8,56.2 L189.0,63.5 L220.2,56.2 L251.3,66.6 L282.5,70.7 L313.7,96.5 L344.8,91.3 L376.0,92.3 L376.0,140.0 Z" fill="url(#dualAsk-rent)" opacity=".35"/><polyline fill="none" stroke="#f0a0a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="2.0,51.1 33.2,52.1 64.3,51.1 95.5,57.3 126.7,47.0 157.8,56.2 189.0,63.5 220.2,56.2 251.3,66.6 282.5,70.7 313.7,96.5 344.8,91.3 376.0,92.3" /><circle cx="2.0" cy="51.1" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="2.0" y="62.1" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">214</text><circle cx="33.2" cy="52.1" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="64.3" cy="51.1" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="62.1" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">214</text><circle cx="95.5" cy="57.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="126.7" cy="47.0" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="58.0" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">218</text><circle cx="157.8" cy="56.2" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="189.0" cy="63.5" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="74.5" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">202</text><circle cx="220.2" cy="56.2" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="251.3" cy="66.6" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="77.6" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">199</text><circle cx="282.5" cy="70.7" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="313.7" cy="96.5" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="87.5" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">170</text><circle cx="344.8" cy="91.3" r="1.8" fill="#f0a0a0" opacity=".85"/><circle cx="376.0" cy="92.3" r="2.3" fill="#f0a0a0" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="83.3" fill="#f0a0a0" font-size="7" text-anchor="middle" font-weight="700">174</text><path d="M64.3,140.0 L64.3,83.1 L95.5,84.1 L126.7,88.2 L157.8,82.0 L189.0,83.1 L220.2,72.7 L251.3,81.0 L282.5,88.2 L313.7,108.8 L344.8,107.8 L376.0,126.4 L376.0,140.0 Z" fill="url(#dualDld-rent)" opacity=".35"/><polyline fill="none" stroke="#7ddeb8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="64.3,83.1 95.5,84.1 126.7,88.2 157.8,82.0 189.0,83.1 220.2,72.7 251.3,81.0 282.5,88.2 313.7,108.8 344.8,107.8 376.0,126.4" /><circle cx="64.3" cy="83.1" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="64.3" y="74.1" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">183</text><circle cx="95.5" cy="84.1" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="126.7" cy="88.2" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="126.7" y="79.2" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">178</text><circle cx="157.8" cy="82.0" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="189.0" cy="83.1" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="189.0" y="74.1" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">183</text><circle cx="220.2" cy="72.7" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="251.3" cy="81.0" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="251.3" y="72.0" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">185</text><circle cx="282.5" cy="88.2" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="313.7" cy="108.8" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="313.7" y="99.8" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">158</text><circle cx="344.8" cy="107.8" r="1.8" fill="#7ddeb8" opacity=".85"/><circle cx="376.0" cy="126.4" r="2.3" fill="#7ddeb8" stroke="#07131a" stroke-width="0.8"/><text x="376.0" y="117.4" fill="#7ddeb8" font-size="7" text-anchor="middle" font-weight="700">141</text>
+      </svg>
+      </div>
+      <div class="pps-dates" aria-hidden="true"><span class="" title="2025-07">Jul</span><span class="is-hide" title="2025-08"></span><span class="is-hide" title="2025-09"></span><span class="" title="2025-10">Oct</span><span class="is-hide" title="2025-11"></span><span class="is-hide" title="2025-12"></span><span class="" title="2026-01">Jan</span><span class="is-hide" title="2026-02"></span><span class="is-hide" title="2026-03"></span><span class="" title="2026-04">Apr</span><span class="is-hide" title="2026-05"></span><span class="is-hide" title="2026-06"></span><span class="" title="2026-07">Jul</span></div>
+        <div class="pps-vs" style="margin-top:6px">103 ask listings · 101 unique permits · 264 long-term contracts</div>
+        <div class="pps-flip-hint">↻ deals / listings count</div>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </header>
+  <a class="dld-full dld-full--under" id="dld-rent" href="#rent" title="DLD Rent">
+    <div class="dld-ticker dld-ticker--rent" aria-label="DLD rent ticker">
+    <div class="dld-ticker-label dld-ticker-label--down">DLD RENT ↓-1.9%</div>
+    <div class="dld-ticker-viewport">
+      <div class="dld-ticker-track"><span class="tick-item"><b>DLD RENT</b> · 2026-07-13 · 95,000 AED/yr · 155/sqft · <span class="tick-vs tick-vs--down">↓ -1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-12 · 145,000 AED/yr · 190/sqft · <span class="tick-vs tick-vs--up">↑ +20.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-11 · 80,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-11 · 135,000 AED/yr · 177/sqft · <span class="tick-vs tick-vs--up">↑ +12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-10 · 110,000 AED/yr · 133/sqft · <span class="tick-vs tick-vs--down">↓ -15.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 184,642 AED/yr · 141/sqft · <span class="tick-vs tick-vs--down">↓ -10.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 130,000 AED/yr · 157/sqft · <span class="tick-vs tick-vs--down">↓ -0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 250,000 AED/yr · 153/sqft · <span class="tick-vs tick-vs--down">↓ -3.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 136,500 AED/yr · 179/sqft · <span class="tick-vs tick-vs--up">↑ +13.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 90,000 AED/yr · 119/sqft · <span class="tick-vs tick-vs--down">↓ -24.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 175,000 AED/yr · 226/sqft · <span class="tick-vs tick-vs--up">↑ +43% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-03 · 155,000 AED/yr · 125/sqft · <span class="tick-vs tick-vs--down">↓ -20.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 119,008 AED/yr · 52/sqft · <span class="tick-vs tick-vs--down">↓ -67.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 90,000 AED/yr · 118/sqft · <span class="tick-vs tick-vs--down">↓ -25.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 170,000 AED/yr · 139/sqft · <span class="tick-vs tick-vs--down">↓ -12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-30 · 130,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-29 · 140,000 AED/yr · 232/sqft · <span class="tick-vs tick-vs--up">↑ +46.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-29 · 85,000 AED/yr · 139/sqft · <span class="tick-vs tick-vs--down">↓ -12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-27 · 200,000 AED/yr · 122/sqft · <span class="tick-vs tick-vs--down">↓ -22.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-26 · 100,000 AED/yr · 160/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-25 · 135,000 AED/yr · 174/sqft · <span class="tick-vs tick-vs--up">↑ +10.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-25 · 130,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-22 · 210,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-20 · 230,000 AED/yr · 175/sqft · <span class="tick-vs tick-vs--up">↑ +10.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-18 · 100,000 AED/yr · 133/sqft · <span class="tick-vs tick-vs--down">↓ -15.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-16 · 166,500 AED/yr · 135/sqft · <span class="tick-vs tick-vs--down">↓ -14.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-12 · 310,000 AED/yr · 171/sqft · <span class="tick-vs tick-vs--up">↑ +8.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-05 · 120,000 AED/yr · 145/sqft · <span class="tick-vs tick-vs--down">↓ -8.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-31 · 120,750 AED/yr · 158/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-27 · 120,000 AED/yr · 155/sqft · <span class="tick-vs tick-vs--down">↓ -1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-24 · 120,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-21 · 120,000 AED/yr · 157/sqft · <span class="tick-vs tick-vs--down">↓ -0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-20 · 159,844 AED/yr · 134/sqft · <span class="tick-vs tick-vs--down">↓ -15.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-19 · 150,000 AED/yr · 122/sqft · <span class="tick-vs tick-vs--down">↓ -22.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 300,000 AED/yr · 166/sqft · <span class="tick-vs tick-vs--up">↑ +5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 290,000 AED/yr · 178/sqft · <span class="tick-vs tick-vs--up">↑ +12.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 220,000 AED/yr · 168/sqft · <span class="tick-vs tick-vs--up">↑ +6.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-11 · 190,000 AED/yr · 158/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-08 · 159,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-08 · 140,000 AED/yr · 169/sqft · <span class="tick-vs tick-vs--up">↑ +7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-07 · 115,000 AED/yr · 150/sqft · <span class="tick-vs tick-vs--down">↓ -5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-07 · 235,000 AED/yr · 48/sqft · <span class="tick-vs tick-vs--down">↓ -69.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-25 · 125,000 AED/yr · 164/sqft · <span class="tick-vs tick-vs--up">↑ +3.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-22 · 235,000 AED/yr · 178/sqft · <span class="tick-vs tick-vs--up">↑ +12.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-18 · 198,875 AED/yr · 165/sqft · <span class="tick-vs tick-vs--up">↑ +4.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-01 · 220,000 AED/yr · 179/sqft · <span class="tick-vs tick-vs--up">↑ +13.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-03-30 · 2BR · fl 50 · #5010 · 215,000 AED/yr · 204/sqft · <span class="tick-vs tick-vs--up">↑ +29.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-03-26 · 1BR · fl 26 · #2604 · 115,500 AED/yr · 160/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-13 · 95,000 AED/yr · 155/sqft · <span class="tick-vs tick-vs--down">↓ -1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-12 · 145,000 AED/yr · 190/sqft · <span class="tick-vs tick-vs--up">↑ +20.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-11 · 80,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-11 · 135,000 AED/yr · 177/sqft · <span class="tick-vs tick-vs--up">↑ +12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-10 · 110,000 AED/yr · 133/sqft · <span class="tick-vs tick-vs--down">↓ -15.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 184,642 AED/yr · 141/sqft · <span class="tick-vs tick-vs--down">↓ -10.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 130,000 AED/yr · 157/sqft · <span class="tick-vs tick-vs--down">↓ -0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-06 · 250,000 AED/yr · 153/sqft · <span class="tick-vs tick-vs--down">↓ -3.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 136,500 AED/yr · 179/sqft · <span class="tick-vs tick-vs--up">↑ +13.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 90,000 AED/yr · 119/sqft · <span class="tick-vs tick-vs--down">↓ -24.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-04 · 175,000 AED/yr · 226/sqft · <span class="tick-vs tick-vs--up">↑ +43% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-03 · 155,000 AED/yr · 125/sqft · <span class="tick-vs tick-vs--down">↓ -20.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 119,008 AED/yr · 52/sqft · <span class="tick-vs tick-vs--down">↓ -67.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 90,000 AED/yr · 118/sqft · <span class="tick-vs tick-vs--down">↓ -25.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-07-01 · 170,000 AED/yr · 139/sqft · <span class="tick-vs tick-vs--down">↓ -12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-30 · 130,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-29 · 140,000 AED/yr · 232/sqft · <span class="tick-vs tick-vs--up">↑ +46.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-29 · 85,000 AED/yr · 139/sqft · <span class="tick-vs tick-vs--down">↓ -12% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-27 · 200,000 AED/yr · 122/sqft · <span class="tick-vs tick-vs--down">↓ -22.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-26 · 100,000 AED/yr · 160/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-25 · 135,000 AED/yr · 174/sqft · <span class="tick-vs tick-vs--up">↑ +10.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-25 · 130,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-22 · 210,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-20 · 230,000 AED/yr · 175/sqft · <span class="tick-vs tick-vs--up">↑ +10.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-18 · 100,000 AED/yr · 133/sqft · <span class="tick-vs tick-vs--down">↓ -15.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-16 · 166,500 AED/yr · 135/sqft · <span class="tick-vs tick-vs--down">↓ -14.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-12 · 310,000 AED/yr · 171/sqft · <span class="tick-vs tick-vs--up">↑ +8.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-06-05 · 120,000 AED/yr · 145/sqft · <span class="tick-vs tick-vs--down">↓ -8.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-31 · 120,750 AED/yr · 158/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-27 · 120,000 AED/yr · 155/sqft · <span class="tick-vs tick-vs--down">↓ -1.9% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-24 · 120,000 AED/yr · 159/sqft · <span class="tick-vs tick-vs--up">↑ +0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-21 · 120,000 AED/yr · 157/sqft · <span class="tick-vs tick-vs--down">↓ -0.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-20 · 159,844 AED/yr · 134/sqft · <span class="tick-vs tick-vs--down">↓ -15.2% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-19 · 150,000 AED/yr · 122/sqft · <span class="tick-vs tick-vs--down">↓ -22.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 300,000 AED/yr · 166/sqft · <span class="tick-vs tick-vs--up">↑ +5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 290,000 AED/yr · 178/sqft · <span class="tick-vs tick-vs--up">↑ +12.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-15 · 220,000 AED/yr · 168/sqft · <span class="tick-vs tick-vs--up">↑ +6.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-11 · 190,000 AED/yr · 158/sqft · <span class="tick-vs tick-vs--flat">· 0% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-08 · 159,000 AED/yr · 128/sqft · <span class="tick-vs tick-vs--down">↓ -19% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-08 · 140,000 AED/yr · 169/sqft · <span class="tick-vs tick-vs--up">↑ +7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-07 · 115,000 AED/yr · 150/sqft · <span class="tick-vs tick-vs--down">↓ -5.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-05-07 · 235,000 AED/yr · 48/sqft · <span class="tick-vs tick-vs--down">↓ -69.6% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-25 · 125,000 AED/yr · 164/sqft · <span class="tick-vs tick-vs--up">↑ +3.8% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-22 · 235,000 AED/yr · 178/sqft · <span class="tick-vs tick-vs--up">↑ +12.7% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-18 · 198,875 AED/yr · 165/sqft · <span class="tick-vs tick-vs--up">↑ +4.4% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-04-01 · 220,000 AED/yr · 179/sqft · <span class="tick-vs tick-vs--up">↑ +13.3% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-03-30 · 2BR · fl 50 · #5010 · 215,000 AED/yr · 204/sqft · <span class="tick-vs tick-vs--up">↑ +29.1% vs med</span></span><span class="tick-sep">✦</span><span class="tick-item"><b>DLD RENT</b> · 2026-03-26 · 1BR · fl 26 · #2604 · 115,500 AED/yr · 160/sqft · <span class="tick-vs tick-vs--up">↑ +1.3% vs med</span></span></div>
+    </div>
+  </div>
+  </a>
+  <script>
+(function(){
+  function bind(el){
+    if(!el || el.__ppsFlip) return;
+    el.__ppsFlip = true;
+    function flip(e){
+      if (e.target.closest('a.pps-dld-go')) return;
+      e.preventDefault();
+      el.classList.toggle('is-flipped');
+    }
+    el.addEventListener('click', flip);
+    el.addEventListener('keydown', function(e){
+      if(e.key==='Enter' || e.key===' '){ flip(e); }
+    });
+  }
+  document.querySelectorAll('.pps-flip').forEach(bind);
+})();
+</script>
+  <div class="wrap">
+    <h2 class="page-title">DLD transactions · Marina Gate 2</h2>
+    <p class="sub">Dubai Marina · sale 109 · rent 200</p>
+    <div class="nav">
+      <a href="building_marina_gate_2_b_split.html">← Split Desk</a>
+      <button type="button" class="is-on" data-panel="sale">DLD Sale</button>
+      <button type="button" data-panel="rent">DLD Rent</button>
+    </div>
+    <section class="panel is-on" id="panel-sale">
+      <div class="chart-card">
+    <div class="chart-head">
+      <div>
+        <div class="chart-k">Sale · median AED/sqft</div>
+        <div class="chart-v">3,587 <em>AED/sqft</em></div>
+      </div>
+      <div class="chart-delta chart-delta--down">
+        <strong style="font-size:1.35rem;display:block;line-height:1.1">↓ -7.6%</strong>
+        <span>упало от медианы · med 3,880 · period -0.6%</span>
+      </div>
+    </div>
+    <svg viewBox="0 0 720 220" width="100%" height="auto" role="img" aria-label="Sale AED/sqft vs median">
+      <line x1="54" y1="184" x2="702" y2="184" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="187" fill="#8aa3ad" font-size="10" text-anchor="end">3.3k</text><line x1="54" y1="142.5" x2="702" y2="142.5" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="145.5" fill="#8aa3ad" font-size="10" text-anchor="end">3.6k</text><line x1="54" y1="101" x2="702" y2="101" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="104" fill="#8aa3ad" font-size="10" text-anchor="end">3.9k</text><line x1="54" y1="59.5" x2="702" y2="59.5" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="62.5" fill="#8aa3ad" font-size="10" text-anchor="end">4.2k</text><line x1="54" y1="18" x2="702" y2="18" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="21" fill="#8aa3ad" font-size="10" text-anchor="end">4.5k</text>
+      <path d="M54.0,184.0 L54.0,140.4 L108.0,34.6 L162.0,89.4 L216.0,74.8 L270.0,117.0 L324.0,70.3 L378.0,55.5 L432.0,101.0 L486.0,79.4 L540.0,158.7 L594.0,115.5 L648.0,145.8 L702.0,143.6 L702.0,184.0 Z" fill="rgba(216,195,165,.10)"/>
+      
+    <line x1="54" y1="101.0" x2="702" y2="101.0"
+      stroke="rgba(216,195,165,.85)" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <text x="702" y="96.0" fill="#d8c3a5" font-size="10" text-anchor="end" font-weight="700">med 3,880</text>
+    <rect x="598.3" y="101.0" width="103.7" height="42.6" fill="rgba(255,122,122,.38)"/>
+    <line x1="702.0" y1="101.0" x2="702.0" y2="143.6"
+      stroke="#ff7a7a" stroke-width="2.2"/>
+    <circle cx="702.0" cy="101.0" r="2.4" fill="#d8c3a5"/>
+    <circle cx="702.0" cy="143.6" r="4" fill="#ff7a7a" stroke="#07131a" stroke-width="1.4"/>
+    <text x="606.3" y="126.3"
+      fill="#ff7a7a" font-size="15" font-weight="800">↓ -7.6%</text>
+  
+      <path d="M54.0,140.4 L108.0,34.6 L162.0,89.4 L216.0,74.8 L270.0,117.0 L324.0,70.3 L378.0,55.5 L432.0,101.0 L486.0,79.4 L540.0,158.7 L594.0,115.5 L648.0,145.8 L702.0,143.6" fill="none" stroke="#d8c3a5" stroke-width="2.4"/>
+      <circle cx="54.0" cy="140.4" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-07 · 3,609 AED/sqft · n=6</title>
+        </circle><circle cx="108.0" cy="34.6" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-08 · 4,337 AED/sqft · n=46</title>
+        </circle><circle cx="162.0" cy="89.4" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-09 · 3,960 AED/sqft · n=55</title>
+        </circle><circle cx="216.0" cy="74.8" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-10 · 4,060 AED/sqft · n=44</title>
+        </circle><circle cx="270.0" cy="117.0" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-11 · 3,770 AED/sqft · n=55</title>
+        </circle><circle cx="324.0" cy="70.3" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2025-12 · 4,091 AED/sqft · n=49</title>
+        </circle><circle cx="378.0" cy="55.5" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-01 · 4,193 AED/sqft · n=60</title>
+        </circle><circle cx="432.0" cy="101.0" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-02 · 3,880 AED/sqft · n=68</title>
+        </circle><circle cx="486.0" cy="79.4" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-03 · 4,029 AED/sqft · n=35</title>
+        </circle><circle cx="540.0" cy="158.7" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-04 · 3,483 AED/sqft · n=49</title>
+        </circle><circle cx="594.0" cy="115.5" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-05 · 3,780 AED/sqft · n=47</title>
+        </circle><circle cx="648.0" cy="145.8" r="2.8" fill="#d8c3a5" opacity=".85">
+          <title>2026-06 · 3,572 AED/sqft · n=114</title>
+        </circle>
+      <text x="54" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">25-07</text><text x="216" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">25-10</text><text x="378" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-01</text><text x="540" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-04</text><text x="702" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-07</text>
+    </svg>
+    <div class="chart-tip">2025-07 → 2026-07 · 13 мес · последняя точка ↓ -7.6% от медианы периода</div>
+  </div>
+      <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Rooms</th><th>Floor</th><th>Unit</th>
+          <th>Price</th><th>AED/sqft</th><th>vs med</th><th>Type</th>
+        </tr>
+      </thead>
+      <tbody><tr>
+        <td>2026-07-07</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">3.10M AED</td>
+        <td class="num">2,522</td>
+        <td class="vs vs--down">-27%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-07-06</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">3.50M AED</td>
+        <td class="num">4,145</td>
+        <td class="vs vs--up">+20%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-06-26</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">3.10M AED</td>
+        <td class="num">2,576</td>
+        <td class="vs vs--down">-25.4%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-06-05</td>
+        <td>1 BR</td>
+        <td>12</td>
+        <td>—</td>
+        <td class="num">2.08M AED</td>
+        <td class="num">3,358</td>
+        <td class="vs vs--down">-2.8%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-06-03</td>
+        <td>2 BR</td>
+        <td>29</td>
+        <td>—</td>
+        <td class="num">3.55M AED</td>
+        <td class="num">2,883</td>
+        <td class="vs vs--down">-16.5%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-05-12</td>
+        <td>1 BR</td>
+        <td>10</td>
+        <td>—</td>
+        <td class="num">1.55M AED</td>
+        <td class="num">2,508</td>
+        <td class="vs vs--down">-27.4%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-03-10</td>
+        <td>1 BR</td>
+        <td>16</td>
+        <td>—</td>
+        <td class="num">2.60M AED</td>
+        <td class="num">3,142</td>
+        <td class="vs vs--down">-9%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-02-25</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">5.65M AED</td>
+        <td class="num">3,453</td>
+        <td class="vs vs--flat">0%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-02-18</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">3.15M AED</td>
+        <td class="num">4,089</td>
+        <td class="vs vs--up">+18.4%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-02-18</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">2.44M AED</td>
+        <td class="num">2,938</td>
+        <td class="vs vs--down">-14.9%</td>
+        <td class="muted">Sale</td>
+      </tr><tr>
+        <td>2026-02-12</td>
+        <td>2 BR</td>
+        <td>11</td>
+        <td>#1108</td>
+        <td class="num">3.20M AED</td>
+        <td class="num">2,803</td>
+        <td class="vs vs--down">-18.8%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2026-01-28</td>
+        <td>2 BR</td>
+        <td>42</td>
+        <td>#4210</td>
+        <td class="num">3.67M AED</td>
+        <td class="num">3,496</td>
+        <td class="vs vs--up">+1.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2026-01-15</td>
+        <td>2 BR</td>
+        <td>39</td>
+        <td>#3910</td>
+        <td class="num">3.60M AED</td>
+        <td class="num">3,424</td>
+        <td class="vs vs--down">-0.8%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2026-01-06</td>
+        <td>1 BR</td>
+        <td>56</td>
+        <td>#5608</td>
+        <td class="num">2.15M AED</td>
+        <td class="num">2,999</td>
+        <td class="vs vs--down">-13.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2026-01-06</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">29,966 AED</td>
+        <td class="num">39</td>
+        <td class="vs vs--down">-98.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-12-26</td>
+        <td>1 BR</td>
+        <td>59</td>
+        <td>#5902</td>
+        <td class="num">3.15M AED</td>
+        <td class="num">4,842</td>
+        <td class="vs vs--up">+40.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-12-19</td>
+        <td>3 BR</td>
+        <td>46</td>
+        <td>#4601</td>
+        <td class="num">7.10M AED</td>
+        <td class="num">3,564</td>
+        <td class="vs vs--up">+3.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-12-16</td>
+        <td>3 BR</td>
+        <td>15</td>
+        <td>#1501</td>
+        <td class="num">7.58M AED</td>
+        <td class="num">4,036</td>
+        <td class="vs vs--up">+16.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-12-15</td>
+        <td>3 BR</td>
+        <td>31</td>
+        <td>#3102</td>
+        <td class="num">5.70M AED</td>
+        <td class="num">4,121</td>
+        <td class="vs vs--up">+19.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-11-13</td>
+        <td>1 BR</td>
+        <td>17</td>
+        <td>#1705</td>
+        <td class="num">2.45M AED</td>
+        <td class="num">3,403</td>
+        <td class="vs vs--down">-1.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-11-12</td>
+        <td>1 BR</td>
+        <td>17</td>
+        <td>#1711</td>
+        <td class="num">2.77M AED</td>
+        <td class="num">3,881</td>
+        <td class="vs vs--up">+12.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-10-30</td>
+        <td>3 BR</td>
+        <td>11</td>
+        <td>#1103</td>
+        <td class="num">5.00M AED</td>
+        <td class="num">2,659</td>
+        <td class="vs vs--down">-23%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-10-09</td>
+        <td>1 BR</td>
+        <td>37</td>
+        <td>#3702</td>
+        <td class="num">3.00M AED</td>
+        <td class="num">4,609</td>
+        <td class="vs vs--up">+33.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-09-29</td>
+        <td>3 BR</td>
+        <td>11</td>
+        <td>#1103</td>
+        <td class="num">7.30M AED</td>
+        <td class="num">3,882</td>
+        <td class="vs vs--up">+12.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-09-17</td>
+        <td>1 BR</td>
+        <td>19</td>
+        <td>#1904</td>
+        <td class="num">2.60M AED</td>
+        <td class="num">3,636</td>
+        <td class="vs vs--up">+5.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-09-16</td>
+        <td>2 BR</td>
+        <td>48</td>
+        <td>#4810</td>
+        <td class="num">2.60M AED</td>
+        <td class="num">2,476</td>
+        <td class="vs vs--down">-28.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-09-16</td>
+        <td>2 BR</td>
+        <td>42</td>
+        <td>#4210</td>
+        <td class="num">2.60M AED</td>
+        <td class="num">2,473</td>
+        <td class="vs vs--down">-28.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-09-15</td>
+        <td>3 BR</td>
+        <td>11</td>
+        <td>#1101</td>
+        <td class="num">7.40M AED</td>
+        <td class="num">3,943</td>
+        <td class="vs vs--up">+14.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-08-26</td>
+        <td>2 BR</td>
+        <td>29</td>
+        <td>#2901</td>
+        <td class="num">4.15M AED</td>
+        <td class="num">3,623</td>
+        <td class="vs vs--up">+4.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-08-20</td>
+        <td>1 BR</td>
+        <td>35</td>
+        <td>#3503</td>
+        <td class="num">2.50M AED</td>
+        <td class="num">3,842</td>
+        <td class="vs vs--up">+11.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-08-20</td>
+        <td>1 BR</td>
+        <td>35</td>
+        <td>#3502</td>
+        <td class="num">2.45M AED</td>
+        <td class="num">3,764</td>
+        <td class="vs vs--up">+9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-21</td>
+        <td>2 BR</td>
+        <td>56</td>
+        <td>#5606</td>
+        <td class="num">3.40M AED</td>
+        <td class="num">2,983</td>
+        <td class="vs vs--down">-13.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-21</td>
+        <td>1 BR</td>
+        <td>25</td>
+        <td>#2505</td>
+        <td class="num">2.52M AED</td>
+        <td class="num">3,490</td>
+        <td class="vs vs--up">+1.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-14</td>
+        <td>3 BR</td>
+        <td>47</td>
+        <td>#4704</td>
+        <td class="num">6.55M AED</td>
+        <td class="num">4,105</td>
+        <td class="vs vs--up">+18.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-09</td>
+        <td>1 BR</td>
+        <td>32</td>
+        <td>#3211</td>
+        <td class="num">2.75M AED</td>
+        <td class="num">3,811</td>
+        <td class="vs vs--up">+10.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-04</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">56,337 AED</td>
+        <td class="num">74</td>
+        <td class="vs vs--down">-97.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-01</td>
+        <td>3 BR</td>
+        <td>21</td>
+        <td>#2101</td>
+        <td class="num">10.20M AED</td>
+        <td class="num">5,127</td>
+        <td class="vs vs--up">+48.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-07-01</td>
+        <td>3 BR</td>
+        <td>50</td>
+        <td>#5004</td>
+        <td class="num">5.97M AED</td>
+        <td class="num">3,749</td>
+        <td class="vs vs--up">+8.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-06-16</td>
+        <td>3 BR</td>
+        <td>53</td>
+        <td>#5301</td>
+        <td class="num">6.80M AED</td>
+        <td class="num">4,269</td>
+        <td class="vs vs--up">+23.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-06-03</td>
+        <td>2 BR</td>
+        <td>20</td>
+        <td>#2006</td>
+        <td class="num">3.25M AED</td>
+        <td class="num">2,846</td>
+        <td class="vs vs--down">-17.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-06-02</td>
+        <td>3 BR</td>
+        <td>26</td>
+        <td>#2602</td>
+        <td class="num">5.50M AED</td>
+        <td class="num">3,976</td>
+        <td class="vs vs--up">+15.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-05-29</td>
+        <td>1 BR</td>
+        <td>60</td>
+        <td>#6002</td>
+        <td class="num">3.10M AED</td>
+        <td class="num">4,774</td>
+        <td class="vs vs--up">+38.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-05-28</td>
+        <td>2 BR</td>
+        <td>40</td>
+        <td>#4005</td>
+        <td class="num">3.48M AED</td>
+        <td class="num">3,317</td>
+        <td class="vs vs--down">-3.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-05-21</td>
+        <td>1 BR</td>
+        <td>32</td>
+        <td>#3208</td>
+        <td class="num">2.00M AED</td>
+        <td class="num">2,782</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-05-12</td>
+        <td>1 BR</td>
+        <td>17</td>
+        <td>#1707</td>
+        <td class="num">1.93M AED</td>
+        <td class="num">3,366</td>
+        <td class="vs vs--down">-2.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-24</td>
+        <td>3 BR</td>
+        <td>38</td>
+        <td>#3804</td>
+        <td class="num">6.75M AED</td>
+        <td class="num">4,230</td>
+        <td class="vs vs--up">+22.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-24</td>
+        <td>2 BR</td>
+        <td>19</td>
+        <td>#1903</td>
+        <td class="num">4.10M AED</td>
+        <td class="num">3,543</td>
+        <td class="vs vs--up">+2.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-21</td>
+        <td>1 BR</td>
+        <td>48</td>
+        <td>#4807</td>
+        <td class="num">2.30M AED</td>
+        <td class="num">3,205</td>
+        <td class="vs vs--down">-7.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-18</td>
+        <td>1 BR</td>
+        <td>37</td>
+        <td>#3708</td>
+        <td class="num">2.37M AED</td>
+        <td class="num">3,295</td>
+        <td class="vs vs--down">-4.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-14</td>
+        <td>1 BR</td>
+        <td>20</td>
+        <td>#2005</td>
+        <td class="num">2.25M AED</td>
+        <td class="num">3,125</td>
+        <td class="vs vs--down">-9.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-04-10</td>
+        <td>1 BR</td>
+        <td>59</td>
+        <td>#5908</td>
+        <td class="num">2.35M AED</td>
+        <td class="num">3,278</td>
+        <td class="vs vs--down">-5.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-03-21</td>
+        <td>3 BR</td>
+        <td>53</td>
+        <td>#5301</td>
+        <td class="num">6.15M AED</td>
+        <td class="num">3,861</td>
+        <td class="vs vs--up">+11.8%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-03-17</td>
+        <td>1 BR</td>
+        <td>40</td>
+        <td>#4008</td>
+        <td class="num">1.93M AED</td>
+        <td class="num">2,689</td>
+        <td class="vs vs--down">-22.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-28</td>
+        <td>1 BR</td>
+        <td>14</td>
+        <td>#1409</td>
+        <td class="num">2.40M AED</td>
+        <td class="num">3,326</td>
+        <td class="vs vs--down">-3.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-25</td>
+        <td>2 BR</td>
+        <td>34</td>
+        <td>#3403</td>
+        <td class="num">4.40M AED</td>
+        <td class="num">3,834</td>
+        <td class="vs vs--up">+11%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-25</td>
+        <td>1 BR</td>
+        <td>54</td>
+        <td>#5408</td>
+        <td class="num">2.20M AED</td>
+        <td class="num">3,069</td>
+        <td class="vs vs--down">-11.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-24</td>
+        <td>1 BR</td>
+        <td>19</td>
+        <td>#1908</td>
+        <td class="num">2.16M AED</td>
+        <td class="num">3,768</td>
+        <td class="vs vs--up">+9.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-18</td>
+        <td>1 BR</td>
+        <td>32</td>
+        <td>#3207</td>
+        <td class="num">2.00M AED</td>
+        <td class="num">2,784</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-17</td>
+        <td>1 BR</td>
+        <td>48</td>
+        <td>#4803</td>
+        <td class="num">3.25M AED</td>
+        <td class="num">4,994</td>
+        <td class="vs vs--up">+44.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-14</td>
+        <td>1 BR</td>
+        <td>12</td>
+        <td>#1206</td>
+        <td class="num">1.78M AED</td>
+        <td class="num">3,105</td>
+        <td class="vs vs--down">-10.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-07</td>
+        <td>1 BR</td>
+        <td>55</td>
+        <td>#5502</td>
+        <td class="num">2.87M AED</td>
+        <td class="num">4,408</td>
+        <td class="vs vs--up">+27.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-04</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">104,313 AED</td>
+        <td class="num">137</td>
+        <td class="vs vs--down">-96%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-02-03</td>
+        <td>3 BR</td>
+        <td>54</td>
+        <td>#5404</td>
+        <td class="num">6.20M AED</td>
+        <td class="num">3,890</td>
+        <td class="vs vs--up">+12.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-01-31</td>
+        <td>3 BR</td>
+        <td>56</td>
+        <td>#5604</td>
+        <td class="num">6.00M AED</td>
+        <td class="num">3,765</td>
+        <td class="vs vs--up">+9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-01-27</td>
+        <td>1 BR</td>
+        <td>17</td>
+        <td>#1704</td>
+        <td class="num">2.50M AED</td>
+        <td class="num">3,497</td>
+        <td class="vs vs--up">+1.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-01-20</td>
+        <td>1 BR</td>
+        <td>36</td>
+        <td>#3607</td>
+        <td class="num">2.00M AED</td>
+        <td class="num">2,782</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2025-01-15</td>
+        <td>1 BR</td>
+        <td>24</td>
+        <td>#2410</td>
+        <td class="num">2.55M AED</td>
+        <td class="num">3,524</td>
+        <td class="vs vs--up">+2.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-30</td>
+        <td>2 BR</td>
+        <td>43</td>
+        <td>#4310</td>
+        <td class="num">3.75M AED</td>
+        <td class="num">3,567</td>
+        <td class="vs vs--up">+3.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-25</td>
+        <td>2 BR</td>
+        <td>57</td>
+        <td>#5706</td>
+        <td class="num">3.80M AED</td>
+        <td class="num">3,334</td>
+        <td class="vs vs--down">-3.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-23</td>
+        <td>2 BR</td>
+        <td>48</td>
+        <td>#4806</td>
+        <td class="num">3.38M AED</td>
+        <td class="num">2,962</td>
+        <td class="vs vs--down">-14.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-18</td>
+        <td>2 BR</td>
+        <td>57</td>
+        <td>#5710</td>
+        <td class="num">3.15M AED</td>
+        <td class="num">2,997</td>
+        <td class="vs vs--down">-13.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-05</td>
+        <td>3 BR</td>
+        <td>24</td>
+        <td>#2402</td>
+        <td class="num">5.80M AED</td>
+        <td class="num">4,193</td>
+        <td class="vs vs--up">+21.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-12-05</td>
+        <td>3 BR</td>
+        <td>41</td>
+        <td>#4101</td>
+        <td class="num">6.00M AED</td>
+        <td class="num">3,764</td>
+        <td class="vs vs--up">+9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-28</td>
+        <td>3 BR</td>
+        <td>52</td>
+        <td>#5201</td>
+        <td class="num">6.60M AED</td>
+        <td class="num">4,143</td>
+        <td class="vs vs--up">+20%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-27</td>
+        <td>3 BR</td>
+        <td>37</td>
+        <td>#3701</td>
+        <td class="num">6.45M AED</td>
+        <td class="num">4,047</td>
+        <td class="vs vs--up">+17.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-20</td>
+        <td>1 BR</td>
+        <td>18</td>
+        <td>#1808</td>
+        <td class="num">2.00M AED</td>
+        <td class="num">3,489</td>
+        <td class="vs vs--up">+1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-13</td>
+        <td>1 BR</td>
+        <td>43</td>
+        <td>#4307</td>
+        <td class="num">2.10M AED</td>
+        <td class="num">2,921</td>
+        <td class="vs vs--down">-15.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-07</td>
+        <td>1 BR</td>
+        <td>54</td>
+        <td>#5407</td>
+        <td class="num">2.08M AED</td>
+        <td class="num">2,897</td>
+        <td class="vs vs--down">-16.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-07</td>
+        <td>1 BR</td>
+        <td>20</td>
+        <td>#2004</td>
+        <td class="num">2.36M AED</td>
+        <td class="num">3,301</td>
+        <td class="vs vs--down">-4.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-11-04</td>
+        <td>3 BR</td>
+        <td>50</td>
+        <td>#5001</td>
+        <td class="num">6.35M AED</td>
+        <td class="num">3,986</td>
+        <td class="vs vs--up">+15.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-10-21</td>
+        <td>1 BR</td>
+        <td>41</td>
+        <td>#4103</td>
+        <td class="num">2.75M AED</td>
+        <td class="num">4,227</td>
+        <td class="vs vs--up">+22.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-10-01</td>
+        <td>1 BR</td>
+        <td>23</td>
+        <td>#2305</td>
+        <td class="num">2.45M AED</td>
+        <td class="num">3,386</td>
+        <td class="vs vs--down">-1.9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-09-27</td>
+        <td>1 BR</td>
+        <td>55</td>
+        <td>#5507</td>
+        <td class="num">1.95M AED</td>
+        <td class="num">2,716</td>
+        <td class="vs vs--down">-21.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-09-26</td>
+        <td>2 BR</td>
+        <td>12</td>
+        <td>#1205</td>
+        <td class="num">4.05M AED</td>
+        <td class="num">3,546</td>
+        <td class="vs vs--up">+2.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-09-12</td>
+        <td>2 BR</td>
+        <td>48</td>
+        <td>#4806</td>
+        <td class="num">3.60M AED</td>
+        <td class="num">3,160</td>
+        <td class="vs vs--down">-8.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-08-28</td>
+        <td>1 BR</td>
+        <td>36</td>
+        <td>#3608</td>
+        <td class="num">1.85M AED</td>
+        <td class="num">2,578</td>
+        <td class="vs vs--down">-25.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-08-19</td>
+        <td>2 BR</td>
+        <td>54</td>
+        <td>#5406</td>
+        <td class="num">3.20M AED</td>
+        <td class="num">2,808</td>
+        <td class="vs vs--down">-18.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-08-14</td>
+        <td>1 BR</td>
+        <td>23</td>
+        <td>#2307</td>
+        <td class="num">1.95M AED</td>
+        <td class="num">2,715</td>
+        <td class="vs vs--down">-21.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-08-14</td>
+        <td>2 BR</td>
+        <td>37</td>
+        <td>#3706</td>
+        <td class="num">3.40M AED</td>
+        <td class="num">2,988</td>
+        <td class="vs vs--down">-13.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-08-07</td>
+        <td>1 BR</td>
+        <td>48</td>
+        <td>#4802</td>
+        <td class="num">2.70M AED</td>
+        <td class="num">4,149</td>
+        <td class="vs vs--up">+20.2%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-07-22</td>
+        <td>1 BR</td>
+        <td>37</td>
+        <td>#3707</td>
+        <td class="num">2.25M AED</td>
+        <td class="num">3,130</td>
+        <td class="vs vs--down">-9.4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-07-22</td>
+        <td>3 BR</td>
+        <td>56</td>
+        <td>#5601</td>
+        <td class="num">6.00M AED</td>
+        <td class="num">3,766</td>
+        <td class="vs vs--up">+9.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-07-22</td>
+        <td>3 BR</td>
+        <td>42</td>
+        <td>#4201</td>
+        <td class="num">6.00M AED</td>
+        <td class="num">3,764</td>
+        <td class="vs vs--up">+9%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-07-22</td>
+        <td>1 BR</td>
+        <td>28</td>
+        <td>#2805</td>
+        <td class="num">2.40M AED</td>
+        <td class="num">3,316</td>
+        <td class="vs vs--down">-4%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-07-10</td>
+        <td>3 BR</td>
+        <td>48</td>
+        <td>#4804</td>
+        <td class="num">5.60M AED</td>
+        <td class="num">3,511</td>
+        <td class="vs vs--up">+1.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-06-12</td>
+        <td>1 BR</td>
+        <td>57</td>
+        <td>#5707</td>
+        <td class="num">2.05M AED</td>
+        <td class="num">2,856</td>
+        <td class="vs vs--down">-17.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-06-06</td>
+        <td>1 BR</td>
+        <td>41</td>
+        <td>#4102</td>
+        <td class="num">2.80M AED</td>
+        <td class="num">4,302</td>
+        <td class="vs vs--up">+24.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-05-21</td>
+        <td>3 BR</td>
+        <td>14</td>
+        <td>#1401</td>
+        <td class="num">6.47M AED</td>
+        <td class="num">3,450</td>
+        <td class="vs vs--down">-0.1%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-05-14</td>
+        <td>2 BR</td>
+        <td>18</td>
+        <td>#1806</td>
+        <td class="num">3.60M AED</td>
+        <td class="num">3,152</td>
+        <td class="vs vs--down">-8.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-05-10</td>
+        <td>2 BR</td>
+        <td>30</td>
+        <td>#3006</td>
+        <td class="num">3.20M AED</td>
+        <td class="num">2,807</td>
+        <td class="vs vs--down">-18.7%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-05-09</td>
+        <td>1 BR</td>
+        <td>29</td>
+        <td>#2907</td>
+        <td class="num">2.01M AED</td>
+        <td class="num">2,798</td>
+        <td class="vs vs--down">-19%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-04-24</td>
+        <td>2 BR</td>
+        <td>53</td>
+        <td>#5310</td>
+        <td class="num">3.17M AED</td>
+        <td class="num">3,021</td>
+        <td class="vs vs--down">-12.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-04-22</td>
+        <td>1 BR</td>
+        <td>56</td>
+        <td>#5603</td>
+        <td class="num">2.77M AED</td>
+        <td class="num">4,263</td>
+        <td class="vs vs--up">+23.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-04-22</td>
+        <td>1 BR</td>
+        <td>45</td>
+        <td>#4502</td>
+        <td class="num">2.80M AED</td>
+        <td class="num">3,860</td>
+        <td class="vs vs--up">+11.8%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-03-21</td>
+        <td>3 BR</td>
+        <td>29</td>
+        <td>#2902</td>
+        <td class="num">5.70M AED</td>
+        <td class="num">4,121</td>
+        <td class="vs vs--up">+19.3%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-03-18</td>
+        <td>3 BR</td>
+        <td>38</td>
+        <td>#3801</td>
+        <td class="num">5.55M AED</td>
+        <td class="num">3,482</td>
+        <td class="vs vs--up">+0.8%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-02-14</td>
+        <td>1 BR</td>
+        <td>43</td>
+        <td>#4307</td>
+        <td class="num">1.68M AED</td>
+        <td class="num">2,330</td>
+        <td class="vs vs--down">-32.5%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-02-07</td>
+        <td>2 BR</td>
+        <td>17</td>
+        <td>#1703</td>
+        <td class="num">4.10M AED</td>
+        <td class="num">3,543</td>
+        <td class="vs vs--up">+2.6%</td>
+        <td class="muted">Sell</td>
+      </tr><tr>
+        <td>2024-02-06</td>
+        <td>3 BR</td>
+        <td>60</td>
+        <td>#6004</td>
+        <td class="num">6.24M AED</td>
+        <td class="num">3,918</td>
+        <td class="vs vs--up">+13.5%</td>
+        <td class="muted">Sell</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <p class="note">median AED/sqft = 3,453 · rows 109</p>
+    </section>
+    <section class="panel" id="panel-rent">
+      <div class="chart-card">
+    <div class="chart-head">
+      <div>
+        <div class="chart-k">Rent · median AED/sqft</div>
+        <div class="chart-v">174 <em>AED/sqft</em></div>
+      </div>
+      <div class="chart-delta chart-delta--down">
+        <strong style="font-size:1.35rem;display:block;line-height:1.1">↓ -16.3%</strong>
+        <span>упало от медианы · med 208 · period -18.7%</span>
+      </div>
+    </div>
+    <svg viewBox="0 0 720 220" width="100%" height="auto" role="img" aria-label="Rent AED/sqft vs median">
+      <line x1="54" y1="184" x2="702" y2="184" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="187" fill="#8aa3ad" font-size="10" text-anchor="end">161</text><line x1="54" y1="142.5" x2="702" y2="142.5" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="145.5" fill="#8aa3ad" font-size="10" text-anchor="end">184</text><line x1="54" y1="101" x2="702" y2="101" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="104" fill="#8aa3ad" font-size="10" text-anchor="end">208</text><line x1="54" y1="59.5" x2="702" y2="59.5" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="62.5" fill="#8aa3ad" font-size="10" text-anchor="end">232</text><line x1="54" y1="18" x2="702" y2="18" stroke="rgba(255,255,255,.07)"/>
+      <text x="46" y="21" fill="#8aa3ad" font-size="10" text-anchor="end">256</text>
+      <path d="M54.0,184.0 L54.0,90.5 L108.0,92.3 L162.0,90.5 L216.0,101.0 L270.0,83.5 L324.0,99.3 L378.0,111.5 L432.0,99.3 L486.0,116.7 L540.0,123.7 L594.0,167.4 L648.0,158.7 L702.0,160.4 L702.0,184.0 Z" fill="rgba(62,207,207,.10)"/>
+      
+    <line x1="54" y1="101.0" x2="702" y2="101.0"
+      stroke="rgba(216,195,165,.85)" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <text x="702" y="96.0" fill="#d8c3a5" font-size="10" text-anchor="end" font-weight="700">med 208</text>
+    <rect x="598.3" y="101.0" width="103.7" height="59.4" fill="rgba(255,122,122,.38)"/>
+    <line x1="702.0" y1="101.0" x2="702.0" y2="160.4"
+      stroke="#ff7a7a" stroke-width="2.2"/>
+    <circle cx="702.0" cy="101.0" r="2.4" fill="#d8c3a5"/>
+    <circle cx="702.0" cy="160.4" r="4" fill="#ff7a7a" stroke="#07131a" stroke-width="1.4"/>
+    <text x="606.3" y="134.7"
+      fill="#ff7a7a" font-size="15" font-weight="800">↓ -16.3%</text>
+  
+      <path d="M54.0,90.5 L108.0,92.3 L162.0,90.5 L216.0,101.0 L270.0,83.5 L324.0,99.3 L378.0,111.5 L432.0,99.3 L486.0,116.7 L540.0,123.7 L594.0,167.4 L648.0,158.7 L702.0,160.4" fill="none" stroke="#3ecfcf" stroke-width="2.4"/>
+      <circle cx="54.0" cy="90.5" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-07 · 214 AED/sqft · n=21</title>
+        </circle><circle cx="108.0" cy="92.3" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-08 · 213 AED/sqft · n=77</title>
+        </circle><circle cx="162.0" cy="90.5" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-09 · 214 AED/sqft · n=94</title>
+        </circle><circle cx="216.0" cy="101.0" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-10 · 208 AED/sqft · n=88</title>
+        </circle><circle cx="270.0" cy="83.5" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-11 · 218 AED/sqft · n=83</title>
+        </circle><circle cx="324.0" cy="99.3" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2025-12 · 209 AED/sqft · n=76</title>
+        </circle><circle cx="378.0" cy="111.5" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-01 · 202 AED/sqft · n=134</title>
+        </circle><circle cx="432.0" cy="99.3" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-02 · 209 AED/sqft · n=145</title>
+        </circle><circle cx="486.0" cy="116.7" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-03 · 199 AED/sqft · n=92</title>
+        </circle><circle cx="540.0" cy="123.7" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-04 · 195 AED/sqft · n=119</title>
+        </circle><circle cx="594.0" cy="167.4" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-05 · 170 AED/sqft · n=67</title>
+        </circle><circle cx="648.0" cy="158.7" r="2.8" fill="#3ecfcf" opacity=".85">
+          <title>2026-06 · 175 AED/sqft · n=204</title>
+        </circle>
+      <text x="54" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">25-07</text><text x="216" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">25-10</text><text x="378" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-01</text><text x="540" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-04</text><text x="702" y="210" fill="#8aa3ad" font-size="10" text-anchor="middle">26-07</text>
+    </svg>
+    <div class="chart-tip">2025-07 → 2026-07 · 13 мес · последняя точка ↓ -16.3% от медианы периода</div>
+  </div>
+      <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Rooms</th><th>Floor</th><th>Unit</th>
+          <th>Price</th><th>AED/sqft</th><th>vs med</th><th>Type</th>
+        </tr>
+      </thead>
+      <tbody><tr>
+        <td>2026-07-13</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">95,000 AED/yr</td>
+        <td class="num">155</td>
+        <td class="vs vs--down">-11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-12</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">145,000 AED/yr</td>
+        <td class="num">190</td>
+        <td class="vs vs--up">+8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-11</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">80,000 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-11</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">135,000 AED/yr</td>
+        <td class="num">177</td>
+        <td class="vs vs--up">+1.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-10</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">110,000 AED/yr</td>
+        <td class="num">133</td>
+        <td class="vs vs--down">-24%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-06</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">184,642 AED/yr</td>
+        <td class="num">141</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-06</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-06</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">250,000 AED/yr</td>
+        <td class="num">153</td>
+        <td class="vs vs--down">-12.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-04</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">136,500 AED/yr</td>
+        <td class="num">179</td>
+        <td class="vs vs--up">+2.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-04</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">90,000 AED/yr</td>
+        <td class="num">119</td>
+        <td class="vs vs--down">-32%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-04</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">175,000 AED/yr</td>
+        <td class="num">226</td>
+        <td class="vs vs--up">+29.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-03</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">155,000 AED/yr</td>
+        <td class="num">125</td>
+        <td class="vs vs--down">-28.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">119,008 AED/yr</td>
+        <td class="num">52</td>
+        <td class="vs vs--down">-70.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">90,000 AED/yr</td>
+        <td class="num">118</td>
+        <td class="vs vs--down">-32.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-07-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">170,000 AED/yr</td>
+        <td class="num">139</td>
+        <td class="vs vs--down">-20.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-30</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">159</td>
+        <td class="vs vs--down">-9.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-29</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">232</td>
+        <td class="vs vs--up">+32.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-29</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">85,000 AED/yr</td>
+        <td class="num">139</td>
+        <td class="vs vs--down">-20.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-27</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">200,000 AED/yr</td>
+        <td class="num">122</td>
+        <td class="vs vs--down">-30.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-26</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">100,000 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-25</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">135,000 AED/yr</td>
+        <td class="num">174</td>
+        <td class="vs vs--down">-0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-25</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">159</td>
+        <td class="vs vs--down">-9.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-22</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-20</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">230,000 AED/yr</td>
+        <td class="num">175</td>
+        <td class="vs vs--flat">0%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-18</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">100,000 AED/yr</td>
+        <td class="num">133</td>
+        <td class="vs vs--down">-24%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-16</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">166,500 AED/yr</td>
+        <td class="num">135</td>
+        <td class="vs vs--down">-22.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-12</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">310,000 AED/yr</td>
+        <td class="num">171</td>
+        <td class="vs vs--down">-2.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-06-05</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">145</td>
+        <td class="vs vs--down">-17.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-31</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,750 AED/yr</td>
+        <td class="num">158</td>
+        <td class="vs vs--down">-9.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-27</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">155</td>
+        <td class="vs vs--down">-11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-24</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">159</td>
+        <td class="vs vs--down">-9.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-21</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-20</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">159,844 AED/yr</td>
+        <td class="num">134</td>
+        <td class="vs vs--down">-23.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-19</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">122</td>
+        <td class="vs vs--down">-30.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-15</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">300,000 AED/yr</td>
+        <td class="num">166</td>
+        <td class="vs vs--down">-5.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-15</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">290,000 AED/yr</td>
+        <td class="num">178</td>
+        <td class="vs vs--up">+1.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-15</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">168</td>
+        <td class="vs vs--down">-4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-11</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">190,000 AED/yr</td>
+        <td class="num">158</td>
+        <td class="vs vs--down">-9.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-08</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">159,000 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-08</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">169</td>
+        <td class="vs vs--down">-3.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-07</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">115,000 AED/yr</td>
+        <td class="num">150</td>
+        <td class="vs vs--down">-14.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-05-07</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">235,000 AED/yr</td>
+        <td class="num">48</td>
+        <td class="vs vs--down">-72.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-04-25</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">125,000 AED/yr</td>
+        <td class="num">164</td>
+        <td class="vs vs--down">-6.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-04-22</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">235,000 AED/yr</td>
+        <td class="num">178</td>
+        <td class="vs vs--up">+1.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-04-18</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">198,875 AED/yr</td>
+        <td class="num">165</td>
+        <td class="vs vs--down">-5.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-04-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">179</td>
+        <td class="vs vs--up">+2.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-30</td>
+        <td>2 BR</td>
+        <td>50</td>
+        <td>#5010</td>
+        <td class="num">215,000 AED/yr</td>
+        <td class="num">204</td>
+        <td class="vs vs--up">+16.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-26</td>
+        <td>1 BR</td>
+        <td>26</td>
+        <td>#2604</td>
+        <td class="num">115,500 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-18</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">179</td>
+        <td class="vs vs--up">+2.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-15</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">170,000 AED/yr</td>
+        <td class="num">202</td>
+        <td class="vs vs--up">+15.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-14</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">190,000 AED/yr</td>
+        <td class="num">155</td>
+        <td class="vs vs--down">-11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-14</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">191</td>
+        <td class="vs vs--up">+9.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-10</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">169</td>
+        <td class="vs vs--down">-3.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-10</td>
+        <td>1 BR</td>
+        <td>41</td>
+        <td>#4108</td>
+        <td class="num">154,140 AED/yr</td>
+        <td class="num">214</td>
+        <td class="vs vs--up">+22.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-10</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">154,140 AED/yr</td>
+        <td class="num">202</td>
+        <td class="vs vs--up">+15.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-10</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">218,000 AED/yr</td>
+        <td class="num">178</td>
+        <td class="vs vs--up">+1.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-06</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">250,000 AED/yr</td>
+        <td class="num">190</td>
+        <td class="vs vs--up">+8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-05</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">133,000 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-02</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">130</td>
+        <td class="vs vs--down">-25.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-02</td>
+        <td>2 BR</td>
+        <td>32</td>
+        <td>#3209,3206</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">141</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">171</td>
+        <td class="vs vs--down">-2.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">350,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-01</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">215,000 AED/yr</td>
+        <td class="num">350</td>
+        <td class="vs vs--up">+100%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-03-01</td>
+        <td>2 BR</td>
+        <td>26</td>
+        <td>#2606,2609</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">185</td>
+        <td class="vs vs--up">+5.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-28</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">110,000 AED/yr</td>
+        <td class="num">176</td>
+        <td class="vs vs--up">+0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-28</td>
+        <td>1 BR</td>
+        <td>51</td>
+        <td>#5108</td>
+        <td class="num">154,140 AED/yr</td>
+        <td class="num">214</td>
+        <td class="vs vs--up">+22.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-28</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">154,140 AED/yr</td>
+        <td class="num">202</td>
+        <td class="vs vs--up">+15.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-27</td>
+        <td>2 BR</td>
+        <td>29</td>
+        <td>#2909,2906</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">141</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-27</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">130</td>
+        <td class="vs vs--down">-25.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-25</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-24</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">193</td>
+        <td class="vs vs--up">+10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-24</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">235,000 AED/yr</td>
+        <td class="num">195</td>
+        <td class="vs vs--up">+11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-23</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">348</td>
+        <td class="vs vs--up">+98.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-21</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">168,000 AED/yr</td>
+        <td class="num">217</td>
+        <td class="vs vs--up">+24%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-20</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">320,000 AED/yr</td>
+        <td class="num">196</td>
+        <td class="vs vs--up">+12%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-19</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">138,000 AED/yr</td>
+        <td class="num">181</td>
+        <td class="vs vs--up">+3.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-16</td>
+        <td>2 BR</td>
+        <td>54</td>
+        <td>#5409</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">185</td>
+        <td class="vs vs--up">+5.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-15</td>
+        <td>3 BR</td>
+        <td>23</td>
+        <td>#2302</td>
+        <td class="num">315,000 AED/yr</td>
+        <td class="num">227</td>
+        <td class="vs vs--up">+29.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-14</td>
+        <td>1 BR</td>
+        <td>29</td>
+        <td>#2911</td>
+        <td class="num">156,000 AED/yr</td>
+        <td class="num">216</td>
+        <td class="vs vs--up">+23.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-10</td>
+        <td>2 BR</td>
+        <td>27</td>
+        <td>#2706,2709</td>
+        <td class="num">165,000 AED/yr</td>
+        <td class="num">145</td>
+        <td class="vs vs--down">-17.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-09</td>
+        <td>2 BR</td>
+        <td>40</td>
+        <td>#4006</td>
+        <td class="num">162,750 AED/yr</td>
+        <td class="num">143</td>
+        <td class="vs vs--down">-18.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-09</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">155,000 AED/yr</td>
+        <td class="num">126</td>
+        <td class="vs vs--down">-28%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-08</td>
+        <td>2 BR</td>
+        <td>11</td>
+        <td>#1105</td>
+        <td class="num">200,000 AED/yr</td>
+        <td class="num">174</td>
+        <td class="vs vs--down">-0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-03</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">138,082 AED/yr</td>
+        <td class="num">70</td>
+        <td class="vs vs--down">-60%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-03</td>
+        <td>1 BR</td>
+        <td>56</td>
+        <td>#5607</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">195</td>
+        <td class="vs vs--up">+11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>2 BR</td>
+        <td>18</td>
+        <td>#1801</td>
+        <td class="num">270,000 AED/yr</td>
+        <td class="num">233</td>
+        <td class="vs vs--up">+33.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>1 BR</td>
+        <td>36</td>
+        <td>#3607</td>
+        <td class="num">131,000 AED/yr</td>
+        <td class="num">182</td>
+        <td class="vs vs--up">+4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">240,000 AED/yr</td>
+        <td class="num">181</td>
+        <td class="vs vs--up">+3.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>1 BR</td>
+        <td>33</td>
+        <td>#3304</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>2 BR</td>
+        <td>32</td>
+        <td>#3201</td>
+        <td class="num">250,000 AED/yr</td>
+        <td class="num">218</td>
+        <td class="vs vs--up">+24.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-02</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-01</td>
+        <td>1 BR</td>
+        <td>13</td>
+        <td>#1309</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">208</td>
+        <td class="vs vs--up">+18.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-01</td>
+        <td>3 BR</td>
+        <td>39</td>
+        <td>#3904</td>
+        <td class="num">289,974 AED/yr</td>
+        <td class="num">72</td>
+        <td class="vs vs--down">-58.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-01</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">320,000 AED/yr</td>
+        <td class="num">196</td>
+        <td class="vs vs--up">+12%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-01</td>
+        <td>2 BR</td>
+        <td>25</td>
+        <td>#2506,2509</td>
+        <td class="num">200,000 AED/yr</td>
+        <td class="num">176</td>
+        <td class="vs vs--up">+0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-02-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">145,000 AED/yr</td>
+        <td class="num">175</td>
+        <td class="vs vs--flat">0%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-30</td>
+        <td>1 BR</td>
+        <td>31</td>
+        <td>#3111</td>
+        <td class="num">170,000 AED/yr</td>
+        <td class="num">235</td>
+        <td class="vs vs--up">+34.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-29</td>
+        <td>2 BR</td>
+        <td>43</td>
+        <td>#4306</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">141</td>
+        <td class="vs vs--down">-19.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-22</td>
+        <td>1 BR</td>
+        <td>58</td>
+        <td>#5803</td>
+        <td class="num">170,000 AED/yr</td>
+        <td class="num">259</td>
+        <td class="vs vs--up">+48%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-18</td>
+        <td>1 BR</td>
+        <td>52</td>
+        <td>#5203</td>
+        <td class="num">147,000 AED/yr</td>
+        <td class="num">224</td>
+        <td class="vs vs--up">+28%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-16</td>
+        <td>2 BR</td>
+        <td>24</td>
+        <td>#2406,2409</td>
+        <td class="num">189,000 AED/yr</td>
+        <td class="num">166</td>
+        <td class="vs vs--down">-5.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-16</td>
+        <td>2 BR</td>
+        <td>41</td>
+        <td>#4106</td>
+        <td class="num">145,200 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-15</td>
+        <td>1 BR</td>
+        <td>31</td>
+        <td>#3105,3110</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-15</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">173,494 AED/yr</td>
+        <td class="num">61</td>
+        <td class="vs vs--down">-65.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-13</td>
+        <td>1 BR</td>
+        <td>13</td>
+        <td>#1304</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">166</td>
+        <td class="vs vs--down">-5.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-12</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">125,000 AED/yr</td>
+        <td class="num">151</td>
+        <td class="vs vs--down">-13.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-10</td>
+        <td>1 BR</td>
+        <td>20</td>
+        <td>#2011</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">183</td>
+        <td class="vs vs--up">+4.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-10</td>
+        <td>1 BR</td>
+        <td>17</td>
+        <td>#1705</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">208</td>
+        <td class="vs vs--up">+18.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-10</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">174</td>
+        <td class="vs vs--down">-0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-09</td>
+        <td>1 BR</td>
+        <td>13</td>
+        <td>#1306</td>
+        <td class="num">110,000 AED/yr</td>
+        <td class="num">193</td>
+        <td class="vs vs--up">+10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-07</td>
+        <td>2 BR</td>
+        <td>31</td>
+        <td>#3101</td>
+        <td class="num">252,000 AED/yr</td>
+        <td class="num">219</td>
+        <td class="vs vs--up">+25.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-05</td>
+        <td>2 BR</td>
+        <td>19</td>
+        <td>#1901</td>
+        <td class="num">255,000 AED/yr</td>
+        <td class="num">220</td>
+        <td class="vs vs--up">+25.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-05</td>
+        <td>2 BR</td>
+        <td>42</td>
+        <td>#4205</td>
+        <td class="num">210,000 AED/yr</td>
+        <td class="num">201</td>
+        <td class="vs vs--up">+14.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-05</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-01</td>
+        <td>1 BR</td>
+        <td>23</td>
+        <td>#2304,2311</td>
+        <td class="num">138,000 AED/yr</td>
+        <td class="num">191</td>
+        <td class="vs vs--up">+9.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-01</td>
+        <td>1 BR</td>
+        <td>39</td>
+        <td>#3908</td>
+        <td class="num">115,000 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-01</td>
+        <td>2 BR</td>
+        <td>49</td>
+        <td>#4906</td>
+        <td class="num">117,700 AED/yr</td>
+        <td class="num">104</td>
+        <td class="vs vs--down">-40.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-01</td>
+        <td>3 BR</td>
+        <td>55</td>
+        <td>#5504</td>
+        <td class="num">300,000 AED/yr</td>
+        <td class="num">565</td>
+        <td class="vs vs--up">+222.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2026-01-01</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">400,000 AED/yr</td>
+        <td class="num">177</td>
+        <td class="vs vs--up">+1.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-29</td>
+        <td>3 BR</td>
+        <td>10</td>
+        <td>#1002</td>
+        <td class="num">298,000 AED/yr</td>
+        <td class="num">215</td>
+        <td class="vs vs--up">+22.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-29</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">125,733 AED/yr</td>
+        <td class="num">136</td>
+        <td class="vs vs--down">-22.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-26</td>
+        <td>1 BR</td>
+        <td>14</td>
+        <td>#1404</td>
+        <td class="num">148,000 AED/yr</td>
+        <td class="num">205</td>
+        <td class="vs vs--up">+17.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-25</td>
+        <td>1 BR</td>
+        <td>49</td>
+        <td>#4908</td>
+        <td class="num">132,120 AED/yr</td>
+        <td class="num">184</td>
+        <td class="vs vs--up">+5.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-23</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">190,000 AED/yr</td>
+        <td class="num">158</td>
+        <td class="vs vs--down">-9.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-19</td>
+        <td>3 BR</td>
+        <td>11</td>
+        <td>#1102</td>
+        <td class="num">290,000 AED/yr</td>
+        <td class="num">209</td>
+        <td class="vs vs--up">+19.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-18</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">175,000 AED/yr</td>
+        <td class="num">211</td>
+        <td class="vs vs--up">+20.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-13</td>
+        <td>2 BR</td>
+        <td>47</td>
+        <td>#4706</td>
+        <td class="num">170,000 AED/yr</td>
+        <td class="num">150</td>
+        <td class="vs vs--down">-14.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-13</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">350,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-12</td>
+        <td>2 BR</td>
+        <td>47</td>
+        <td>#4709</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-12</td>
+        <td>1 BR</td>
+        <td>14</td>
+        <td>#1407</td>
+        <td class="num">114,500 AED/yr</td>
+        <td class="num">198</td>
+        <td class="vs vs--up">+13.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-12</td>
+        <td>2 BR</td>
+        <td>26</td>
+        <td>#2601</td>
+        <td class="num">250,000 AED/yr</td>
+        <td class="num">218</td>
+        <td class="vs vs--up">+24.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-04</td>
+        <td>2 BR</td>
+        <td>29</td>
+        <td>#2906,2909</td>
+        <td class="num">145,200 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-03</td>
+        <td>1 BR</td>
+        <td>26</td>
+        <td>#2608</td>
+        <td class="num">115,000 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">181</td>
+        <td class="vs vs--up">+3.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-01</td>
+        <td>2 BR</td>
+        <td>20</td>
+        <td>#2006</td>
+        <td class="num">185,000 AED/yr</td>
+        <td class="num">161</td>
+        <td class="vs vs--down">-8%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">135,000 AED/yr</td>
+        <td class="num">163</td>
+        <td class="vs vs--down">-6.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-12-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">125,000 AED/yr</td>
+        <td class="num">164</td>
+        <td class="vs vs--down">-6.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-30</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">149,500 AED/yr</td>
+        <td class="num">10</td>
+        <td class="vs vs--down">-94.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-28</td>
+        <td>2 BR</td>
+        <td>36</td>
+        <td>#3606</td>
+        <td class="num">145,200 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-26</td>
+        <td>2 BR</td>
+        <td>23</td>
+        <td>#2309,2306</td>
+        <td class="num">144,900 AED/yr</td>
+        <td class="num">126</td>
+        <td class="vs vs--down">-28%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-26</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-24</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">215,000 AED/yr</td>
+        <td class="num">178</td>
+        <td class="vs vs--up">+1.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-21</td>
+        <td>1 BR</td>
+        <td>56</td>
+        <td>#5602</td>
+        <td class="num">149,758 AED/yr</td>
+        <td class="num">254</td>
+        <td class="vs vs--up">+45.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-15</td>
+        <td>2 BR</td>
+        <td>56</td>
+        <td>#5606</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-14</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">165,000 AED/yr</td>
+        <td class="num">199</td>
+        <td class="vs vs--up">+13.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-13</td>
+        <td>2 BR</td>
+        <td>33</td>
+        <td>#3306,3309</td>
+        <td class="num">280,000 AED/yr</td>
+        <td class="num">247</td>
+        <td class="vs vs--up">+41.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-11</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">208</td>
+        <td class="vs vs--up">+18.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-10</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">180,000 AED/yr</td>
+        <td class="num">39</td>
+        <td class="vs vs--down">-77.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-09</td>
+        <td>1 BR</td>
+        <td>48</td>
+        <td>#4808</td>
+        <td class="num">125,000 AED/yr</td>
+        <td class="num">174</td>
+        <td class="vs vs--down">-0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-07</td>
+        <td>3 BR</td>
+        <td>16</td>
+        <td>#1603</td>
+        <td class="num">293,644 AED/yr</td>
+        <td class="num">156</td>
+        <td class="vs vs--down">-10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-07</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">130,000 AED/yr</td>
+        <td class="num">208</td>
+        <td class="vs vs--up">+18.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-06</td>
+        <td>1 BR</td>
+        <td>19</td>
+        <td>#1904</td>
+        <td class="num">142,400 AED/yr</td>
+        <td class="num">200</td>
+        <td class="vs vs--up">+14.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-04</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">115,000 AED/yr</td>
+        <td class="num">187</td>
+        <td class="vs vs--up">+6.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-03</td>
+        <td>2 BR</td>
+        <td>19</td>
+        <td>#1906</td>
+        <td class="num">145,200 AED/yr</td>
+        <td class="num">127</td>
+        <td class="vs vs--down">-27.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>2 BR</td>
+        <td>17</td>
+        <td>#1706</td>
+        <td class="num">180,000 AED/yr</td>
+        <td class="num">157</td>
+        <td class="vs vs--down">-10.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>1 BR</td>
+        <td>32</td>
+        <td>#3204</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">221</td>
+        <td class="vs vs--up">+26.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">200,000 AED/yr</td>
+        <td class="num">166</td>
+        <td class="vs vs--down">-5.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>1 BR</td>
+        <td>25</td>
+        <td>#2508</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">195</td>
+        <td class="vs vs--up">+11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">185,000 AED/yr</td>
+        <td class="num">153</td>
+        <td class="vs vs--down">-12.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-11-01</td>
+        <td>1 BR</td>
+        <td>12</td>
+        <td>#1204</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-31</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">350,000 AED/yr</td>
+        <td class="num">91</td>
+        <td class="vs vs--down">-48%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-25</td>
+        <td>2 BR</td>
+        <td>20</td>
+        <td>#2009</td>
+        <td class="num">220,000 AED/yr</td>
+        <td class="num">192</td>
+        <td class="vs vs--up">+9.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-24</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">350,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-22</td>
+        <td>1 BR</td>
+        <td>53</td>
+        <td>#5302</td>
+        <td class="num">160,000 AED/yr</td>
+        <td class="num">244</td>
+        <td class="vs vs--up">+39.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-22</td>
+        <td>1 BR</td>
+        <td>16</td>
+        <td>#1606</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">211</td>
+        <td class="vs vs--up">+20.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-21</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">215,368 AED/yr</td>
+        <td class="num">108</td>
+        <td class="vs vs--down">-38.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-19</td>
+        <td>2 BR</td>
+        <td>24</td>
+        <td>#2403</td>
+        <td class="num">250,000 AED/yr</td>
+        <td class="num">218</td>
+        <td class="vs vs--up">+24.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-19</td>
+        <td>2 BR</td>
+        <td>36</td>
+        <td>#3609</td>
+        <td class="num">200,000 AED/yr</td>
+        <td class="num">176</td>
+        <td class="vs vs--up">+0.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-17</td>
+        <td>2 BR</td>
+        <td>31</td>
+        <td>#3106,3109</td>
+        <td class="num">178,039 AED/yr</td>
+        <td class="num">137</td>
+        <td class="vs vs--down">-21.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-15</td>
+        <td>1 BR</td>
+        <td>15</td>
+        <td>#1507</td>
+        <td class="num">115,000 AED/yr</td>
+        <td class="num">198</td>
+        <td class="vs vs--up">+13.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-15</td>
+        <td>1 BR</td>
+        <td>35</td>
+        <td>#3502</td>
+        <td class="num">104,310 AED/yr</td>
+        <td class="num">110</td>
+        <td class="vs vs--down">-37.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-11</td>
+        <td>1 BR</td>
+        <td>29</td>
+        <td>#2908</td>
+        <td class="num">120,000 AED/yr</td>
+        <td class="num">167</td>
+        <td class="vs vs--down">-4.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-10</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">190,000 AED/yr</td>
+        <td class="num">155</td>
+        <td class="vs vs--down">-11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-07</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">190,000 AED/yr</td>
+        <td class="num">158</td>
+        <td class="vs vs--down">-9.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-06</td>
+        <td>3 BR</td>
+        <td>58</td>
+        <td>#5804</td>
+        <td class="num">340,000 AED/yr</td>
+        <td class="num">214</td>
+        <td class="vs vs--up">+22.3%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-04</td>
+        <td>1 BR</td>
+        <td>59</td>
+        <td>#5903</td>
+        <td class="num">166,000 AED/yr</td>
+        <td class="num">253</td>
+        <td class="vs vs--up">+44.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-03</td>
+        <td>2 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">225,000 AED/yr</td>
+        <td class="num">182</td>
+        <td class="vs vs--up">+4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-02</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">350,000 AED/yr</td>
+        <td class="num">155</td>
+        <td class="vs vs--down">-11.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-02</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">157,000 AED/yr</td>
+        <td class="num">189</td>
+        <td class="vs vs--up">+8%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-02</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">295,000 AED/yr</td>
+        <td class="num">180</td>
+        <td class="vs vs--up">+2.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">122,500 AED/yr</td>
+        <td class="num">148</td>
+        <td class="vs vs--down">-15.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">139,000 AED/yr</td>
+        <td class="num">182</td>
+        <td class="vs vs--up">+4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>3 BR</td>
+        <td>38</td>
+        <td>#3804</td>
+        <td class="num">335,000 AED/yr</td>
+        <td class="num">210</td>
+        <td class="vs vs--up">+20%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>1 BR</td>
+        <td>28</td>
+        <td>#2808</td>
+        <td class="num">106,000 AED/yr</td>
+        <td class="num">147</td>
+        <td class="vs vs--down">-16%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>1 BR</td>
+        <td>46</td>
+        <td>#4602</td>
+        <td class="num">155,000 AED/yr</td>
+        <td class="num">212</td>
+        <td class="vs vs--up">+21.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>2 BR</td>
+        <td>48</td>
+        <td>#4809</td>
+        <td class="num">232,500 AED/yr</td>
+        <td class="num">205</td>
+        <td class="vs vs--up">+17.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-10-01</td>
+        <td>2 BR</td>
+        <td>52</td>
+        <td>#5205</td>
+        <td class="num">154,001 AED/yr</td>
+        <td class="num">85</td>
+        <td class="vs vs--down">-51.4%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-28</td>
+        <td>1 BR</td>
+        <td>43</td>
+        <td>#4303</td>
+        <td class="num">150,000 AED/yr</td>
+        <td class="num">229</td>
+        <td class="vs vs--up">+30.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-28</td>
+        <td>3 BR</td>
+        <td>58</td>
+        <td>#5801</td>
+        <td class="num">372,000 AED/yr</td>
+        <td class="num">234</td>
+        <td class="vs vs--up">+33.7%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-26</td>
+        <td>2 BR</td>
+        <td>39</td>
+        <td>#3909</td>
+        <td class="num">208,000 AED/yr</td>
+        <td class="num">183</td>
+        <td class="vs vs--up">+4.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-26</td>
+        <td>1 BR</td>
+        <td>42</td>
+        <td>#4203</td>
+        <td class="num">185,000 AED/yr</td>
+        <td class="num">282</td>
+        <td class="vs vs--up">+61.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-25</td>
+        <td>1 BR</td>
+        <td>36</td>
+        <td>#3607</td>
+        <td class="num">142,500 AED/yr</td>
+        <td class="num">198</td>
+        <td class="vs vs--up">+13.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-23</td>
+        <td>1 BR</td>
+        <td>29</td>
+        <td>#2905,2910</td>
+        <td class="num">140,000 AED/yr</td>
+        <td class="num">194</td>
+        <td class="vs vs--up">+10.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-22</td>
+        <td>1 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">136,000 AED/yr</td>
+        <td class="num">175</td>
+        <td class="vs vs--flat">0%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-22</td>
+        <td>1 BR</td>
+        <td>18</td>
+        <td>#1804</td>
+        <td class="num">135,000 AED/yr</td>
+        <td class="num">190</td>
+        <td class="vs vs--up">+8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-20</td>
+        <td>1 BR</td>
+        <td>41</td>
+        <td>#4107</td>
+        <td class="num">110,000 AED/yr</td>
+        <td class="num">153</td>
+        <td class="vs vs--down">-12.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-20</td>
+        <td>3 BR</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="num">345,000 AED/yr</td>
+        <td class="num">160</td>
+        <td class="vs vs--down">-8.6%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-20</td>
+        <td>1 BR</td>
+        <td>23</td>
+        <td>#2311,2304</td>
+        <td class="num">125,000 AED/yr</td>
+        <td class="num">173</td>
+        <td class="vs vs--down">-1.1%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-19</td>
+        <td>2 BR</td>
+        <td>24</td>
+        <td>#2409,2406</td>
+        <td class="num">145,200 AED/yr</td>
+        <td class="num">128</td>
+        <td class="vs vs--down">-26.9%</td>
+        <td class="muted">rent</td>
+      </tr><tr>
+        <td>2025-09-16</td>
+        <td>2 BR</td>
+        <td>58</td>
+        <td>#5806</td>
+        <td class="num">149,500 AED/yr</td>
+        <td class="num">132</td>
+        <td class="vs vs--down">-24.6%</td>
+        <td class="muted">rent</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <p class="note">median AED/sqft = 175 · rows 200</p>
+      <div class="dld-search" id="rent-search-wrap">
+    <label class="dld-search-l" for="rent-search">Поиск по DLD Rent</label>
+    <input type="search" id="rent-search" class="dld-search-input" placeholder="Дата, rooms, floor, unit, цена, AED/sqft…" autocomplete="off" />
+    <div class="dld-search-meta"><span id="rent-search-count"></span></div>
+  </div>
+    </section>
+  </div>
+  <script>
+  (function(){
+    function show(kind){
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('is-on', p.id==='panel-'+kind); });
+      document.querySelectorAll('.nav button[data-panel]').forEach(function(b){
+        var on = b.getAttribute('data-panel')===kind;
+        b.classList.toggle('is-on', on);
+        b.classList.toggle('rent', on && kind==='rent');
+      });
+      try { history.replaceState(null,'','#'+kind); } catch(e){}
+    }
+    document.querySelectorAll('.nav button[data-panel]').forEach(function(b){
+      b.onclick=function(){ show(b.getAttribute('data-panel')); };
+    });
+    document.querySelectorAll('a.dld-full').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var href = a.getAttribute('href') || '';
+        if (href.charAt(0) === '#') {
+          e.preventDefault();
+          show(href.slice(1) === 'rent' ? 'rent' : 'sale');
+          var wrap = document.querySelector('.wrap');
+          if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+    var h=(location.hash||'').replace('#','');
+    show(h==='rent'?'rent':'sale');
+
+    var rentInput = document.getElementById('rent-search');
+    var rentCount = document.getElementById('rent-search-count');
+    function filterRent(){
+      var panel = document.getElementById('panel-rent');
+      if (!panel || !rentInput) return;
+      var q = String(rentInput.value || '').trim().toLowerCase();
+      var rows = panel.querySelectorAll('.table-wrap tbody tr');
+      var shown = 0;
+      rows.forEach(function(tr){
+        if (tr.querySelector('td[colspan]')) { tr.classList.remove('is-hide'); return; }
+        var hay = (tr.textContent || '').toLowerCase().replace(/\s+/g, ' ');
+        var ok = !q || hay.indexOf(q) !== -1;
+        tr.classList.toggle('is-hide', !ok);
+        if (ok) shown++;
+      });
+      if (rentCount) {
+        rentCount.textContent = q
+          ? ('Найдено ' + shown + ' из ' + rows.length)
+          : (rows.length + ' транзакций');
+      }
+    }
+    if (rentInput) {
+      rentInput.addEventListener('input', filterRent);
+      filterRent();
+    }
+  })();
+  </script>
+</body>
+</html>

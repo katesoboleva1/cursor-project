@@ -1,0 +1,109 @@
+{
+  "$schema_note": "Рабочий deploy для Marina Gate 2. Секреты — в .env. Для другого сервера скопируйте example и поменяйте paths/serve.",
+  "version": "1.0.0",
+  "updated": "2026-07-16",
+  "product": {
+    "id": "building_page",
+    "name": "Building Split Desk",
+    "description": "Страница здания: этажи · лоты · DLD/Ejari · Разговорчики · чат 1 BR"
+  },
+
+  "building": {
+    "name": "Marina Gate 2",
+    "district_hint": "Dubai Marina"
+  },
+
+  "product_ui": {
+    "invite_url": "https://refty.ai/invite?ref=24WNXAJP",
+    "early_access_slots": 4,
+    "early_unlock_minutes": [0, 30, 60, 90],
+    "ask_client_after_minutes": 120,
+    "queue_mode": "round_robin",
+    "room_chat": {
+      "enabled": true,
+      "focus_rooms": "1",
+      "invite_brokers_with_rooms_only": true
+    }
+  },
+
+  "environment": {
+    "file": ".env",
+    "example": ".env.example",
+    "required": ["CLICKHOUSE_HOST", "CLICKHOUSE_USER", "CLICKHOUSE_PASSWORD"],
+    "defaults": {
+      "CLICKHOUSE_PORT": "8443",
+      "CLICKHOUSE_DATABASE": "refty",
+      "CLICKHOUSE_USER": "default"
+    }
+  },
+
+  "sql": {
+    "database": "refty",
+    "dialect": "clickhouse",
+    "tables": {
+      "listings": "refty.unified_properties_table",
+      "sale_deals": "refty.all_transactions_matched",
+      "rent_deals": "refty.all_rent_combined"
+    },
+    "filters": {
+      "building_column": "building",
+      "purpose_sale": "for-sale",
+      "purpose_rent": "for-rent"
+    }
+  },
+
+  "paths": {
+    "repo_root": ".",
+    "node_bin": "node",
+    "env_file": ".env",
+    "generate_page_script": "scripts/generate_building_page.js",
+    "generate_templates_script": "scripts/generate_building_templates.js",
+    "public_dir": "public",
+    "log_dir": "var",
+    "log_file": "var/building_page.log"
+  },
+
+  "pipeline": [
+    {
+      "step": 1,
+      "id": "fetch_sql",
+      "command": "node scripts/generate_building_page.js \"Marina Gate 2\""
+    },
+    {
+      "step": 2,
+      "id": "render_html",
+      "command": "node scripts/generate_building_templates.js \"Marina Gate 2\""
+    },
+    {
+      "step": 3,
+      "id": "serve",
+      "options": ["npx serve public -l 8080"],
+      "entry_url": "/building_marina_gate_2_b_split.html"
+    }
+  ],
+
+  "serve": {
+    "enabled": true,
+    "server_name": "localhost",
+    "static_root": "public",
+    "gzip": true,
+    "cache_html_seconds": 120
+  },
+
+  "schedule": {
+    "enabled": false,
+    "timezone": "Asia/Dubai"
+  },
+
+  "deploy": {
+    "install_node_modules": true,
+    "rsync_enabled": false
+  },
+
+  "quickstart": [
+    "cp .env.example .env && заполнить CLICKHOUSE_*",
+    "node scripts/generate_building_page.js \"Marina Gate 2\"",
+    "node scripts/generate_building_templates.js \"Marina Gate 2\"",
+    "npx serve public -l 8080"
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "$schema_note": "Скопируйте в config/building_page.deploy.json и подправьте под сервер. Секреты — только в .env, не сюда.",
+  "version": "1.0.0",
+  "updated": "2026-07-16",
+  "product": {
+    "id": "building_page",
+    "name": "Building Split Desk",
+    "description": "Страница здания: этажи · лоты · DLD/Ejari · Разговорчики (Early Access + round robin) · чат брокеров с N BR"
+  },
+
+  "building": {
+    "name": "Marina Gate 2",
+    "district_hint": "Dubai Marina",
+    "comment": "Имя как в ClickHouse column building / project"
+  },
+
+  "product_ui": {
+    "invite_url": "https://refty.ai/invite?ref=24WNXAJP",
+    "early_access_slots": 4,
+    "early_unlock_minutes": [0, 30, 60, 90],
+    "ask_client_after_minutes": 120,
+    "queue_mode": "round_robin",
+    "room_chat": {
+      "enabled": true,
+      "focus_rooms": "1",
+      "invite_brokers_with_rooms_only": true,
+      "comment": "В чат приглашаются только брокеры, у кого есть focus_rooms BR в этом здании"
+    }
+  },
+
+  "prerequisites": {
+    "node": ">=18",
+    "npm_packages": ["dotenv"],
+    "clickhouse": "обязателен для generate_building_page (SQL)",
+    "optional": {
+      "google_places": "рейтинг / отзывы на hero",
+      "bigquery": "не нужен для базовой building page"
+    }
+  },
+
+  "environment": {
+    "file": ".env",
+    "example": ".env.example",
+    "required": [
+      "CLICKHOUSE_HOST",
+      "CLICKHOUSE_USER",
+      "CLICKHOUSE_PASSWORD"
+    ],
+    "optional": [
+      "CLICKHOUSE_PORT",
+      "CLICKHOUSE_DATABASE",
+      "CLICKHOUSE_SECURE",
+      "CLICKHOUSE_VERIFY",
+      "REFTY_INVITE_URL",
+      "PORT"
+    ],
+    "defaults": {
+      "CLICKHOUSE_PORT": "8443",
+      "CLICKHOUSE_DATABASE": "refty",
+      "CLICKHOUSE_USER": "default",
+      "CLICKHOUSE_SECURE": "true",
+      "PORT": "3000"
+    },
+    "template": {
+      "CLICKHOUSE_HOST": "your-service.region.aws.clickhouse.cloud",
+      "CLICKHOUSE_PORT": "8443",
+      "CLICKHOUSE_USER": "default",
+      "CLICKHOUSE_PASSWORD": "your-password",
+      "CLICKHOUSE_DATABASE": "refty",
+      "CLICKHOUSE_SECURE": "true",
+      "REFTY_INVITE_URL": "https://refty.ai/invite?ref=YOUR_REF"
+    }
+  },
+
+  "sql": {
+    "database": "refty",
+    "dialect": "clickhouse",
+    "tables": {
+      "listings": "refty.unified_properties_table",
+      "sale_deals": "refty.all_transactions_matched",
+      "rent_deals": "refty.all_rent_combined",
+      "comment": "Имена таблиц можно переопределить под свой CH/SQL-кластер"
+    },
+    "filters": {
+      "building_column": "building",
+      "purpose_sale": "for-sale",
+      "purpose_rent": "for-rent"
+    }
+  },
+
+  "paths": {
+    "repo_root": "/var/www/refty_verify_algorithm",
+    "node_bin": "/usr/bin/node",
+    "env_file": "/var/www/refty_verify_algorithm/.env",
+    "generate_page_script": "scripts/generate_building_page.js",
+    "generate_templates_script": "scripts/generate_building_templates.js",
+    "public_dir": "public",
+    "page_json": "public/building_{slug}_page.json",
+    "html_split": "public/building_{slug}_b_split.html",
+    "html_elevator": "public/building_{slug}_a_elevator.html",
+    "html_gallery": "public/building_{slug}_c_gallery.html",
+    "html_dld": "public/building_{slug}_dld.html",
+    "html_index": "public/building_{slug}_templates.html",
+    "log_dir": "var",
+    "log_file": "var/building_page.log"
+  },
+
+  "pipeline": [
+    {
+      "step": 1,
+      "id": "fetch_sql",
+      "title": "Выгрузка здания из ClickHouse → page JSON",
+      "command": "node scripts/generate_building_page.js \"{{building.name}}\"",
+      "outputs": ["public/building_{slug}_page.json"]
+    },
+    {
+      "step": 2,
+      "id": "render_html",
+      "title": "Рендер шаблонов (Split Desk + elevator + gallery + DLD)",
+      "command": "node scripts/generate_building_templates.js \"{{building.name}}\"",
+      "outputs": [
+        "public/building_{slug}_b_split.html",
+        "public/building_{slug}_a_elevator.html",
+        "public/building_{slug}_c_gallery.html",
+        "public/building_{slug}_dld.html",
+        "public/building_{slug}_templates.html"
+      ]
+    },
+    {
+      "step": 3,
+      "id": "serve",
+      "title": "Раздача статики",
+      "options": [
+        "npx serve public -l 8080",
+        "python3 -m http.server 8080 --directory public",
+        "nginx → paths.public_dir"
+      ],
+      "entry_url": "/building_{slug}_b_split.html"
+    }
+  ],
+
+  "serve": {
+    "enabled": true,
+    "server_name": "buildings.example.com",
+    "url_path_split": "/buildings/{{slug}}/split.html",
+    "static_root": "/var/www/refty_verify_algorithm/public",
+    "gzip": true,
+    "cache_html_seconds": 120,
+    "basic_auth": false,
+    "basic_auth_htpasswd": "/etc/nginx/htpasswd/refty-buildings",
+    "cors_note": "Чат/лиды сейчас в localStorage браузера — без backend API"
+  },
+
+  "schedule": {
+    "enabled": false,
+    "on_calendar": "daily",
+    "on_calendar_time": "06:30:00",
+    "timezone": "Asia/Dubai",
+    "comment": "Включить на проде: nightly refresh JSON+HTML из CH"
+  },
+
+  "deploy": {
+    "install_node_modules": true,
+    "copy_env_from_example": true,
+    "rsync_enabled": false,
+    "rsync_targets": [
+      {
+        "host": "deploy@server1.example.com",
+        "path": "/var/www/refty_verify_algorithm/public/",
+        "files_glob": "building_{slug}_*"
+      }
+    ]
+  },
+
+  "quickstart": [
+    "cp config/building_page.deploy.example.json config/building_page.deploy.json",
+    "cp .env.example .env   # заполнить CLICKHOUSE_*",
+    "npm i dotenv",
+    "node scripts/generate_building_page.js \"Marina Gate 2\"",
+    "node scripts/generate_building_templates.js \"Marina Gate 2\"",
+    "npx serve public -l 8080",
+    "open http://localhost:8080/building_marina_gate_2_b_split.html"
+  ],
+
+  "notes": [
+    "Разговорчики + чат здания — demo UI (localStorage). Backend очереди/уведомлений — отдельно.",
+    "Round robin после ask client (2ч). Чат: только брокеры с focus_rooms BR.",
+    "CONFIG=/path/to/building_page.deploy.json — переопределить путь к конфигу."
+  ]
+}

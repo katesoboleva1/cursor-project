@@ -1,5 +1,30 @@
 # 🚀 Deployment Guide
 
+## Building Split Desk (страницы зданий)
+
+Сборка одной страницы (Marina Gate 2 или любое здание Дубая из ClickHouse):
+
+```bash
+npm run building-page:marina-gate-2
+# или: npm run building-page -- "Exact Building Name"
+npm run building-page:serve
+# → /building_{slug}_b_split.html
+```
+
+Конфиги: `lib/building-page/configs/` · SQL: `sql/building_split_desk/` · README: `lib/building-page/README.md`  
+Серверный шаблон: `config/building_page.deploy.example.json`
+
+Пакетно по Дубаю: `npm run building-page:all -- --min-listings 20 --limit 50`
+
+---
+
+## Регионы
+
+- **США (по умолчанию):** `us-central1` — команды ниже.
+- **Сингапур:** развёртывание в Сингапуре — см. **[DEPLOYMENT_SINGAPORE.md](./DEPLOYMENT_SINGAPORE.md)** и скрипт `scripts/deploy-singapore.sh` (регион `asia-southeast1`).
+
+---
+
 ## Варианты развертывания
 
 ### 1. Google Cloud Platform (Рекомендуется)

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marina Gate 2 · templates · Refty</title>
+  <style>
+    :root { --bg:#07090d; --card:#12151c; --line:#2a3140; --text:#f2f4f8; --muted:#9aa3b2; --accent:#efff00; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.5 ui-sans-serif,system-ui,sans-serif; background:radial-gradient(1200px 600px at 20% -10%,#1a2030,var(--bg)); color:var(--text); min-height:100vh; }
+    .wrap { max-width:960px; margin:0 auto; padding:40px 18px 60px; }
+    h1 { margin:0; font-size:clamp(1.8rem,4vw,2.6rem); letter-spacing:-.03em; }
+    .sub { color:var(--muted); margin-top:8px; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:28px; }
+    @media (min-width:900px){ .grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+    a.card {
+      display:flex; flex-direction:column; gap:10px; padding:18px; border-radius:18px;
+      background:linear-gradient(160deg,#171b24,var(--card)); border:1px solid var(--line);
+      color:inherit; text-decoration:none; min-height:220px;
+      transition: border-color .15s, transform .15s;
+    }
+    a.card:hover { border-color:rgba(239,255,0,.55); transform:translateY(-2px); }
+    .id { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:800; }
+    .name { font-size:1.35rem; font-weight:800; letter-spacing:-.02em; }
+    .blurb { color:var(--muted); font-size:14px; flex:1; }
+    .go { font-weight:800; color:var(--accent); font-size:13px; }
+    @media (max-width:800px){ .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Marina Gate 2</h1>
+    <p class="sub">Шаблоны building page · одни и те же данные ClickHouse / Signal / DLD</p>
+    <div class="grid">
+      <a class="card" href="building_marina_gate_2_a_elevator.html">
+        <div class="id">Template A</div>
+        <div class="name">Elevator</div>
+        <p class="blurb">Вертикальный лифт: этажи сверху вниз, кабина с фото и pin-unit. Лучше для «прогулки» по башне.</p>
+        <div class="go">Открыть →</div>
+      </a>
+<a class="card" href="building_marina_gate_2_b_split.html">
+        <div class="id">Template B</div>
+        <div class="name">Split Desk</div>
+        <p class="blurb">Три колонки: этаж → список лотов → детали + Refty Signal. Клик по DLD-ленте → соседняя вкладка.</p>
+        <div class="go">Открыть →</div>
+      </a>
+<a class="card" href="building_marina_gate_2_c_gallery.html">
+        <div class="id">Template C</div>
+        <div class="name">Gallery</div>
+        <p class="blurb">Photo-first сетка с фильтрами (rooms / floor band / sort) и slide-over. Для сканирования лотов.</p>
+        <div class="go">Открыть →</div>
+      </a>
+<a class="card" href="building_marina_gate_2_dld.html">
+        <div class="id">Template D</div>
+        <div class="name">DLD Transactions</div>
+        <p class="blurb">Отдельная подстраница DLD Sale / Rent по зданию. Таблицы сделок vs median AED/sqft.</p>
+        <div class="go">Открыть →</div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

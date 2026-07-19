@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-07-19",
+  "building": {
+    "name": "Marina Gate 1",
+    "slug": "marina_gate_1",
+    "district_hint": "Dubai Marina"
+  },
+  "dld_match": {
+    "mode": "auto"
+  },
+  "product_ui": {
+    "invite_url": "https://refty.ai/invite?ref=24WNXAJP",
+    "early_access_slots": 4,
+    "early_unlock_minutes": [0, 30, 60, 90],
+    "ask_client_after_minutes": 120,
+    "queue_mode": "round_robin",
+    "room_chat": {
+      "enabled": true,
+      "focus_rooms": "1",
+      "invite_brokers_with_rooms_only": true
+    }
+  },
+  "outputs": {
+    "page_json": "public/building_marina_gate_1_page.json",
+    "html_split": "public/building_marina_gate_1_b_split.html",
+    "entry_url": "/building_marina_gate_1_b_split.html"
+  },
+  "sql": {
+    "dir": "sql/building_split_desk"
+  },
+  "quickstart": [
+    "npm run building-page -- --config lib/building-page/configs/marina_gate_1.json"
+  ]
+}
